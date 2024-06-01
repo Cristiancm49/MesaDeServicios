@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "MicroApi.Seguridad.Data": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "domainController": "LDAP://srvr-dc02",
+        "passwordCrypto": "eSpNorSr",
+        "passwordToken": "asdawdqweqwsdaweqweqwqwdqwdqwrqwrfsdafadfsadsawd"
+      },
+      "hotReloadEnabled": true,
+      "nativeDebugging": false,
+      "sqlDebugging": false,
+      "jsWebView2Debugging": false
+    }
+  }
+}
