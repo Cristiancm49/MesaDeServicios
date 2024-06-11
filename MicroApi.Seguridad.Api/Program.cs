@@ -47,7 +47,23 @@ builder.Services.AddSwaggerGen(c =>
             Contact = new OpenApiContact
             {
                 Email = "german.andres201@gmail.com",
-                Name = "German Ortiz"
+                Name = "German Ortiz es mk"
+            },
+            License = new OpenApiLicense
+            {
+                Name = "Derechos Reservados",
+            }
+        });
+
+        c.SwaggerDoc("v3", new OpenApiInfo
+        {
+            Title = "ChairaAPI SQL",
+            Version = "v3",
+            Description = "Versión 3 de la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Contact = new OpenApiContact
+            {
+                Email = "joh.mosquera@udla.edu.co",
+                Name = "Johan Sebastián Mosquera Munar"
             },
             License = new OpenApiLicense
             {
@@ -97,6 +113,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddDbContext<ModelContext>(options =>
                 options.UseOracle(builder.Configuration.GetConnectionString("oracleConnection")));
 
+builder.Services.AddDbContext<ModelContextSQL>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("sqlServerConnection")));
+
 builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
 builder.Services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
 
@@ -115,6 +134,7 @@ if (!app.Environment.IsProduction())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChairaAPI v1");
         c.SwaggerEndpoint("/swagger/v2/swagger.json", "ChairaAPI v2");
+        c.SwaggerEndpoint("/swagger/v3/swagger.json", "ChairaAPI-SQL v3");
     });
 }
 
