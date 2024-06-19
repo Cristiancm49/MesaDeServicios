@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="menu-principal">
+    <div class="menu-item">
+      <h2>Menú Principal</h2>
+      <ul>
+        <li><a routerLink="/registrar">Registrar</a></li>
+        <li><a routerLink="/registrar-caso" class="active">Registrar Caso</a></li>
+        <li><a routerLink="/caso-excepcional" class="active">Registrar Caso Excepcional</a></li>
+        <li><a href="#">Mis casos</a>
+          <ul>
+            <li><a routerLink="/mis-casos-activos">Mis casos activos</a></li>
+            <li><a routerLink="/mis-casos-resueltos">Mis casos resueltos</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+    <div class="main-content">
+      <h2 class="header">Información del Caso</h2>
+      <form>
+        <div class="section">
+          <h3 class="section-header">Solicitante</h3>
+          <div class="form-group">
+            <div class="input-group">
+              <label for="identificacion">Identificación:</label>
+              <input type="text" id="identificacion" name="identificacion">
+            </div>
+            <div class="input-group">
+              <label for="nombre">Nombre del Solicitante:</label>
+              <input type="text" id="nombre" name="nombre">
+            </div>
+            <div class="input-group">
+              <label for="cargo">Cargo:</label>
+              <input type="text" id="cargo" name="cargo" class="short">
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <h3 class="section-header">Dependencia</h3>
+          <div class="form-group">
+            <div class="input-group">
+              <label for="indicativo">Indicativo:</label>
+              <input type="text" id="indicativo" name="indicativo">
+            </div>
+            <div class="input-group">
+              <label for="dependencia">Dependencia:</label>
+              <input type="text" id="dependencia" name="dependencia">
+            </div>
+            <div class="input-group">
+              <label for="telefono">Teléfono:</label>
+              <input type="text" id="telefono" name="telefono" class="short">
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <h3 class="section-header">Solicitud</h3>
+          <div class="form-group">
+            <div class="input-group">
+              <label for="fecha">Fecha y Hora:</label>
+              <input type="datetime-local" id="fecha" name="fecha" class="short">
+            </div>
+            <div class="input-group">
+              <label for="area-tecnica">Área técnica:</label>
+              <select id="area-tecnica" name="area-tecnica" class="short">
+                <option value="">Seleccionar</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="categoria">Categoría:</label>
+              <select id="categoria" name="categoria" class="short">
+                <option value="">Seleccionar</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Envío</button>
+          <button type="reset">Limpiar Formulario</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+  

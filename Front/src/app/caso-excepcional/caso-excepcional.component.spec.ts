@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategoriasComponent } from './categorias.component';
+import { CasoExcepcionalComponent } from './caso-excepcional.component';
 
-describe('CategoriasComponent', () => {
-  let component: CategoriasComponent;
-  let fixture: ComponentFixture<CategoriasComponent>;
+describe('CasoExcepcionalComponent', () => {
+  let component: CasoExcepcionalComponent;
+  let fixture: ComponentFixture<CasoExcepcionalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CategoriasComponent]
+      imports: [CasoExcepcionalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CategoriasComponent);
+    fixture = TestBed.createComponent(CasoExcepcionalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
