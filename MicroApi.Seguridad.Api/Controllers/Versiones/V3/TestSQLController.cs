@@ -19,12 +19,12 @@ namespace MicroApi.Seguridad.Api.Controllers
             _logger = logger;
             _context = context;
         }
-
+        /*
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var categorias = await _context.Categorias.ToListAsync();
             return Ok(categorias);
-        }
+        }*/
     }
 }

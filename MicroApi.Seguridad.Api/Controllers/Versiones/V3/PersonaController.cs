@@ -1,12 +1,12 @@
-﻿using MicroApi.Seguridad.Data.Context;
-using MicroApi.Seguridad.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
 {
-    [Route("api/[controller]")]
+    [Route("api/v3/[controller]")]
     [ApiController]
     public class PersonaController : ControllerBase
     {
@@ -17,86 +17,38 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
             _context = context;
         }
 
-        // GET: api/Personas
+        // GET api/v3/persona?docChaLog=1004446325
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Persona>>> GetPersonas()
+        public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
         {
-            return await _context.Persona.ToListAsync();
-        }
+            var personas = await _context.Personals
+                .Include(p => p.ChairaLogin)
+                .ThenInclude(c => c.DependenciaLogin)
+                .Include(p => p.RolModulo)
+                .Where(p => p.ChairaLogin.Doc_ChaLog == docChaLog)
+                .Select(p => new
+                {
+                    p.Id_Perso,
+                    p.ChairaLogin.Nom_ChaLog,
+                    p.ChairaLogin.Ape_ChaLog,
+                    p.ChairaLogin.Doc_ChaLog,
+                    p.ChairaLogin.Cargo_ChaLog,
+                    p.RolModulo.Nom_rolModulo,
+                    p.ChairaLogin.DependenciaLogin.Nom_DepenLog,
+                    p.ChairaLogin.DependenciaLogin.Tel_DepenLog,
+                    p.ChairaLogin.DependenciaLogin.IndiTel_DepenLog,
+                    p.ChairaLogin.DependenciaLogin.Val_DepenLog,
+                    p.PromEval_Perso
+                })
+                .ToListAsync();
 
-        // GET: api/Personas/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Persona>> GetPersona(int id)
-        {
-            var persona = await _context.Persona.FindAsync(id);
-
-            if (persona == null)
+            if (personas == null || !personas.Any())
             {
                 return NotFound();
             }
 
-            return persona;
+            return Ok(personas);
         }
 
-        // POST: api/Personas
-        [HttpPost]
-        public async Task<ActionResult<Persona>> PostPersona(Persona persona)
-        {
-            _context.Persona.Add(persona);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPersona), new { id = persona.Pk_Persona }, persona);
-        }
-
-        // PUT: api/Personas/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPersona(int id, Persona persona)
-        {
-            if (id != persona.Pk_Persona)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(persona).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // DELETE: api/Personas/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePersona(int id)
-        {
-            var persona = await _context.Persona.FindAsync(id);
-            if (persona == null)
-            {
-                return NotFound();
-            }
-
-            _context.Persona.Remove(persona);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PersonaExists(int id)
-        {
-            return _context.Persona.Any(e => e.Pk_Persona == id);
-        }
     }
 }
