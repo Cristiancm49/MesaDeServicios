@@ -89,22 +89,16 @@
   text-align: center;
 }
 
-#admin {
-  max-width: 200px;
-}
-
-.form-group,
-.form-group-solicitud {
+.form-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 10px; /* Reduced the margin-bottom */
-  margin-left: 30px;
+  margin-bottom: 20px;
+  margin-left: 70px;
 }
 
-.form-group .input-group,
-.form-group-solicitud .input-group {
+.form-group .input-group {
   flex-basis: 30%; /* Adjust this to control the width of each input group */
   display: flex;
   flex-direction: column;
@@ -112,8 +106,7 @@
   margin-left: 50px;
 }
 
-.form-group label,
-.form-group-solicitud label {
+.form-group label {
   margin-bottom: 5px;
   font-size: 1.7em;
   font-weight: bold;
@@ -121,9 +114,7 @@
 
 .form-group input,
 .form-group select,
-.form-group textarea,
-.form-group-solicitud input,
-.form-group-solicitud select {
+.form-group textarea {
   padding: 10px;
   font-size: 1.3em;
   border: 2px solid green;
@@ -134,20 +125,16 @@
 }
 
 .form-group input.short,
-.form-group select.short,
-.form-group-solicitud input.short,
-.form-group-solicitud select.short {
+.form-group select.short {
   width: 80%; /* Make the shorter inputs take less horizontal space */
   max-width: 250px; /* Limit the maximum width of the shorter inputs */
 }
 
 @media (max-width: 768px) {
-  .form-group,
-  .form-group-solicitud {
+  .form-group {
       flex-direction: column;
   }
-  .form-group .input-group,
-  .form-group-solicitud .input-group {
+  .form-group .input-group {
       flex-basis: 100%; /* The input groups will take full width in small screens */
   }
 }
