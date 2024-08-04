@@ -14,6 +14,8 @@ namespace MicroApi.Seguridad.Api
         public DbSet<ChairaLogin> ChairaLogins { get; set; }
         public DbSet<RolModulo> RolModulos { get; set; }
         public DbSet<DependenciaLogin> DependenciaLogins { get; set; }
+        public DbSet<AreaTecnica> AreasT { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -60,6 +62,12 @@ namespace MicroApi.Seguridad.Api
             {
                 entity.ToTable("DependenciaLogin");
                 entity.HasKey(e => e.Id_DepenLog);
+            });
+
+            modelBuilder.Entity<AreaTecnica>(entity =>
+            {
+                entity.ToTable("AreaTecnica");
+                entity.HasKey(e => e.id_AreaTec);
             });
         }
     }

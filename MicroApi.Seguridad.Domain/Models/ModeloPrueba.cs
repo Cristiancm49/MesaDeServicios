@@ -45,4 +45,6 @@ namespace MicroApi.Seguridad.Domain.Models
         public string IndiTel_DepenLog { get; set; }
         public int Val_DepenLog { get; set; }
     }
+
+    
 }
