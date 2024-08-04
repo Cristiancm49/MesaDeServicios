@@ -83,6 +83,7 @@
   margin-bottom: 20px;
   padding: 10px;
   max-width: 800px;
+  max-height: 410px;
   margin-top: 50px;
   margin-left: 380px;
 }
@@ -105,56 +106,52 @@
   justify-content: space-between;
 }
 
-.left-column, .right-column {
+
+
+.left-column{
+  flex: 3;
+}
+
+.right-column{
   flex: 5;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
-}
-
 .form-group label {
-  margin-bottom: 5px;
+  display: block; /* Asegura que cada grupo de etiquetas se muestre en bloques separados */
+  margin-bottom: 5px; /* Espacio entre preguntas */
   font-size: 1.2em;
 }
 
-.form-group input,
-.form-group textarea {
+/* Estilo para los labels que contienen los inputs */
+.form-group div label {
+  display: inline-block; /* Muestra los labels de los inputs en línea */
+  margin-right: 15px; /* Espacio entre los botones de radio */
+  font-size: 1em; /* Tamaño de fuente para los labels de los inputs */
+}
+
+/* Ajustes generales para inputs para mejorar la alineación */
+.form-group input[type="radio"] {
+  margin-right: 5px;
+  margin-top: 5%;
+}
+
+.form-group div {
+  margin-bottom: 10px;
+}
+
+
+.form-group input, .form-group textarea {
   padding: 10px;
   font-size: 1em;
-  border: 2px solid green;
+  border: 2px solid #077D35;
   border-radius: 4px;
-  margin-bottom: 10px;
   width: 100%;
   box-sizing: border-box;
+  margin-top: 5px;
 }
 
-.form-group-fecha {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
-}
-
-.form-group-fecha label {
-  margin-bottom: 5px;
-  font-size: 1em;
-}
-
-.form-group-fecha input,
-.form-group-fecha textarea {
-  padding: 10px;
-  font-size: 1em;
-  border: 2px solid green;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  width: 70%;
-  box-sizing: border-box;
+.form-group textarea{
+  height: 75px;
 }
 
 .form-actions {
@@ -165,12 +162,19 @@
 
 .form-actions button {
   padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
   background-color: #077D35;
   color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
 }
+
+
+#fecha {
+  width: 70%; /* O el ancho que prefieras */
+}
+
+
 
 .cases-table, .trazabilidad-table {
   width: 100%;
