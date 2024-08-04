@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="main-content">
-    <h2 class="header">Casos Delegados</h2>
+    <h2 class="header">CASOS DELEGADOS</h2>
     <div class="section">
       <h3 class="section-header">CASOS</h3>
       <table class="cases-table">
@@ -99,26 +99,33 @@
       <h3 class="section-header">DIAGNÓSTICO</h3>
       <div class="form-columns">
         <div class="left-column">
-          <div class="form-group-fecha">
+          <div class="form-group">
             <label for="fecha">Fecha y Hora:</label>
-            <input type="text" id="fecha" name="fecha">
+            <input type="text" id="fecha" name="fecha" class="input-fecha">
           </div>
+          <br>
           <div class="form-group">
             <label>¿Caso Solucionado?</label>
-            <label><input type="radio" name="solucionado" value="si"> Sí</label>
-            <label><input type="radio" name="solucionado" value="no"> No</label>
+            <div>
+              <label><input type="radio" name="solucionado" value="si"> Sí</label>
+              <label><input type="radio" name="solucionado" value="no"> No</label>
+            </div>
           </div>
           <div class="form-group">
             <label>¿Escalable?</label>
-            <label><input type="radio" name="escalable" value="si"> Sí</label>
-            <label><input type="radio" name="escalable" value="no"> No</label>
+            <div>
+              <label><input type="radio" name="escalable" value="si"> Sí</label>
+              <label><input type="radio" name="escalable" value="no"> No</label>
+            </div>
           </div>
+          
         </div>
         <div class="right-column">
           <div class="form-group">
             <label for="diagnostico-inicial">Diagnóstico Inicial:</label>
             <textarea id="diagnostico-inicial" name="diagnostico-inicial"></textarea>
           </div>
+          <br>
           <div class="form-group">
             <label for="resolucion-caso">Resolución del caso:</label>
             <textarea id="resolucion-caso" name="resolucion-caso"></textarea>

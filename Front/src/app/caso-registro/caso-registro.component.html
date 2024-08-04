@@ -1,19 +1,21 @@
 <div class="container">
-    <div class="menu-principal">
-      <div class="menu-item">
-        <h2>Menú Principal</h2>
-        <ul>
-          <li><a href="#">Registrar</a></li>
-          <li><a href="#" class="active">Registrar Caso</a></li>
-          <li><a href="#">Mis casos</a>
-            <ul>
-              <li><a href="#">Mis casos activos</a></li>
-              <li><a href="#">Mis casos resueltos</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+  <div class="menu-principal">
+    <div class="menu-item">
+      <h2>Menú Principal</h2>
+      <ul>
+        <li><a routerLink="/registrar">Registrar</a></li>
+        <li><a routerLink="/registrar-caso" class="active">Registrar Caso</a></li>
+        <li><a routerLink="/caso-excepcional">Registrar Caso Excepcional</a></li>
+        <li><a href="#">Mis casos</a>
+          <ul>
+            <li><a routerLink="/mis-casos-activos">Mis casos activos</a></li>
+            <li><a routerLink="/mis-casos-resueltos">Mis casos resueltos</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
+  </div>
+  
     <div class="main-content">
       <h2 class="header">INFORMACIÓN DEL CASO</h2>
       <form>
@@ -52,25 +54,8 @@
           </div>
         </div>
         <div class="section">
-          <h3 class="section-header" id="admin" name="administrador">ADMINISTRADOR</h3>
-          <div class="form-group">
-            <div class="input-group">
-              <label for="indicativo">Identificación:</label>
-              <input type="text" id="indicativo" name="indicativo">
-            </div>
-            <div class="input-group">
-              <label for="dependencia">Nombre:</label>
-              <input type="text" id="dependencia" name="dependencia">
-            </div>
-            <div class="input-group">
-              <label for="telefono">Cargo:</label>
-              <input type="text" id="telefono" name="telefono" class="short">
-            </div>
-          </div>
-        </div>
-        <div class="section">
           <h3 class="section-header">SOLICITUD</h3>
-          <div class="form-group-solicitud">
+          <div class="form-group">
             <div class="input-group">
               <label for="fecha">Fecha y Hora:</label>
               <input type="datetime-local" id="fecha" name="fecha" class="short">
@@ -88,7 +73,6 @@
               </select>
             </div>
           </div>
-          
           <div class="form-group">
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" rows="4"></textarea>
