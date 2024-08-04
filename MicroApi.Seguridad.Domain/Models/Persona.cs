@@ -13,7 +13,7 @@ namespace MicroApi.Seguridad.Domain.Models
         public int Id_Perso { get; set; }
         public int Id_ChaLog { get; set; }
         public int Id_RolModulo { get; set; }
-        public float? PromEval_Perso { get; set; }
+        public double? PromEval_Perso { get; set; }
 
         public virtual ChairaLogin ChairaLogin { get; set; }
         public virtual RolModulo RolModulo { get; set; }
@@ -24,9 +24,8 @@ namespace MicroApi.Seguridad.Domain.Models
         public int Id_ChaLog { get; set; }
         public string Nom_ChaLog { get; set; }
         public string Ape_ChaLog { get; set; }
-        public int Doc_ChaLog { get; set; }  // Asegúrate de que sea int
+        public int Doc_ChaLog { get; set; }
         public string Cargo_ChaLog { get; set; }
-        public int Rol_ChaLog { get; set; }
         public int Id_DepenLog { get; set; }
 
         public virtual DependenciaLogin DependenciaLogin { get; set; }
