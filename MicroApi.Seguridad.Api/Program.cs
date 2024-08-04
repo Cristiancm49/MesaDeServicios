@@ -57,6 +57,22 @@ builder.Services.AddSwaggerGen(c =>
             }
         });
 
+        c.SwaggerDoc("v4", new OpenApiInfo
+        {
+            Title = "EndPoints de Inventario",
+            Version = "VersionFinal",
+            Description = "Versión final del inventario en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Contact = new OpenApiContact
+            {
+                Email = "joh.mosquera@udla.edu.co",
+                Name = "Johan Sebastián Mosquera Munar"
+            },
+            License = new OpenApiLicense
+            {
+                Name = "Derechos Reservados",
+            }
+        });
+
 
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
@@ -121,6 +137,7 @@ if (!app.Environment.IsProduction())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pruebas");
         c.SwaggerEndpoint("/swagger/v2/swagger.json", "Roles");
+        c.SwaggerEndpoint("/swagger/v4/swagger.json", "Inventario");
     });
 }
 

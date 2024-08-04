@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MicroApi.Seguridad.Domain.Models;
+using MicroApi.Seguridad.Domain.Models.PersonalModulo;
+using MicroApi.Seguridad.Domain.Models.Inventario;
+
 
 namespace MicroApi.Seguridad.Api
 {
@@ -14,6 +17,7 @@ namespace MicroApi.Seguridad.Api
         public DbSet<ChairaLogin> ChairaLogins { get; set; }
         public DbSet<RolModulo> RolModulos { get; set; }
         public DbSet<DependenciaLogin> DependenciaLogins { get; set; }
+        public DbSet<SalaB7> SalaB7s { get; set; }
         public DbSet<AreaTecnica> AreasT { get; set; }
 
 
