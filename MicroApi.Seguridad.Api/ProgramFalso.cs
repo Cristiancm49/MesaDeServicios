@@ -1,4 +1,4 @@
-using MicroApi.Seguridad.Api.Utilidades;
+ï»¿using MicroApi.Seguridad.Api.Utilidades;
 using MicroApi.Seguridad.Api;
 using MicroApi.Seguridad.Application.Interfaces;
 using MicroApi.Seguridad.Application.Services;
@@ -11,12 +11,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Configuration;
 using System.Text;
-
+/*
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers( opc =>
+builder.Services.AddControllers(opc =>
 {
     opc.Conventions.Add(new SwaggerAgruparVersion());
 });
@@ -24,50 +24,64 @@ builder.Services.AddControllers( opc =>
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        c.SwaggerDoc("v1", new OpenApiInfo
+        Title = "ChairaAPI",
+        Version = "v1",
+        Description = "Web Api para OTI de la Universidad de la Amazonia (Florencia - CaquetÃ¡)",
+        Contact = new OpenApiContact
         {
-            Title = "ChairaAPI SQL",
-            Version = "Pruebas",
-            Description = "Versión de pruebas de la API para la OTI de la UDLA para pruebas de la mesa de servicios",
-            Contact = new OpenApiContact
-            {
-                Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebastián Mosquera Munar"
-            },
-            License = new OpenApiLicense
-            {
-                Name = "Derechos Reservados",
-            }
-        });
-
-        c.SwaggerDoc("v2", new OpenApiInfo
+            Email = "german.andres201@gmail.com",
+            Name = "German Ortiz"
+        },
+        License = new OpenApiLicense
         {
-            Title = "EndPoints de Roles",
-            Version = "VersionFinal",
-            Description = "Versión final de los roles en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
-            Contact = new OpenApiContact
-            {
-                Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebastián Mosquera Munar"
-            },
-            License = new OpenApiLicense
-            {
-                Name = "Derechos Reservados",
-            }
-        });
-
-
-        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            Name = "Derechos Reservados",
+        }
+    });
+    c.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Title = "ChairaAPI",
+        Version = "v2",
+        Description = "Web Api para OTI de la Universidad de la Amazonia (Florencia - CaquetÃ¡)",
+        Contact = new OpenApiContact
         {
-            Name = "Authorization",
-            Type = SecuritySchemeType.ApiKey,
-            Scheme = "Bearer",
-            BearerFormat = "JWT",
-            In = ParameterLocation.Header,
-        });
+            Email = "german.andres201@gmail.com",
+            Name = "German Ortiz es mk"
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Derechos Reservados",
+        }
+    });
 
-        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    c.SwaggerDoc("v3", new OpenApiInfo
+    {
+        Title = "ChairaAPI SQL",
+        Version = "v3",
+        Description = "VersiÃ³n 3 de la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+        Contact = new OpenApiContact
+        {
+            Email = "joh.mosquera@udla.edu.co",
+            Name = "Johan SebastiÃ¡n Mosquera Munar"
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Derechos Reservados",
+        }
+    });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
                 new OpenApiSecurityScheme
@@ -81,7 +95,7 @@ builder.Services.AddSwaggerGen(c =>
                 new string[]{}
             }
         });
-    }
+}
 );
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -119,8 +133,9 @@ if (!app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pruebas");
-        c.SwaggerEndpoint("/swagger/v2/swagger.json", "Roles");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChairaAPI v1");
+        c.SwaggerEndpoint("/swagger/v2/swagger.json", "ChairaAPI v2");
+        c.SwaggerEndpoint("/swagger/v3/swagger.json", "ChairaAPI-SQL v3");
     });
 }
 
@@ -131,3 +146,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+*/

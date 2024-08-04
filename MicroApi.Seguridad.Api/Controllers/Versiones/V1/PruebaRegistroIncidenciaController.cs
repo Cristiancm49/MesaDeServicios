@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
+namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
-    [Route("api/v3/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class RegistroIncidenciaController : ControllerBase
+    public class PruebaRegistroIncidenciaController : ControllerBase
     {
         private readonly ModelContextSQL _context;
 
-        public RegistroIncidenciaController(ModelContextSQL context)
+        public PruebaRegistroIncidenciaController(ModelContextSQL context)
         {
             _context = context;
         }

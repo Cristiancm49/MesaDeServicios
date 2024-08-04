@@ -16,7 +16,7 @@ using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
+namespace MicroApi.Seguridad.Api.Controllers.Base
 {
     [Route("api/v1/[controller]")]
     [ApiController]
@@ -34,7 +34,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             this.utilitiesService = utilitiesService;
             this.estudianteService = estudianteService;
             writeHttpRequests = new WriteHttpRequests();
-            this.connectionString = appSettings.Value.OracleConnection;
+            connectionString = appSettings.Value.OracleConnection;
             _crypto = new Crypto();
         }
 

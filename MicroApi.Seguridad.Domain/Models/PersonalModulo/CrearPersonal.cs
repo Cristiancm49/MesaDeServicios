@@ -10,9 +10,9 @@ namespace MicroApi.Seguridad.Domain.Models.PersonalModulo
     public class CrearPersonal
     {
         [Required]
-        public int Doc_ChaLog { get; set; } // Documento del ChairaLogin
+        public int Doc_ChaLog { get; set; }
 
         [Required]
-        public int Id_RolModulo { get; set; } // ID del RolModulo
+        public int Id_RolModulo { get; set; }
     }
 }

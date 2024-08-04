@@ -5,7 +5,7 @@ using MicroApi.Seguridad.Domain.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace MicroApi.Seguridad.Api.Controllers
+namespace MicroApi.Seguridad.Api.Controllers.Base.V3
 {
     [Route("api/v3/[controller]")]
     [ApiController]

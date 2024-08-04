@@ -1,25 +1,23 @@
-﻿using MicroApi.Seguridad.Domain.Models;
-using MicroApi.Seguridad.Domain.Models.PersonalModulo;
+﻿using MicroApi.Seguridad.Domain.Models.PersonalModulo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
+namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
 {
-    [Route("api/v3/[controller]")]
+    [Route("api/v2/[controller]")]
     [ApiController]
-    public class PersonaController : ControllerBase
+    public class RolesController : ControllerBase
     {
         private readonly ModelContextSQL _context;
 
-        public PersonaController(ModelContextSQL context)
+        public RolesController(ModelContextSQL context)
         {
             _context = context;
         }
 
-        // GET api/v3/chairaLogin?docChaLog=1004446325
         [HttpGet("ConsultarInfoChaira")]
         public async Task<IActionResult> GetChairaLogins([FromQuery] int docChaLog)
         {
@@ -72,7 +70,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
                 return BadRequest("El RolModulo especificado no existe.");
             }
 
-            // Crea una nueva entrada en la tabla Personal
             var nuevaPersona = new Personal
             {
                 Id_ChaLog = chairaLogin.Id_ChaLog,
@@ -100,7 +97,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
             return CreatedAtAction(nameof(GetPersonas), new { id = nuevaPersona.Id_Perso }, nuevaPersona);
         }
 
-        // GET api/v3/persona?docChaLog=1004446325
         [HttpGet("ConsultarPersonalModulo")]
         public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
         {
@@ -133,7 +129,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
             return Ok(personas);
         }
 
-        // PUT api/v3/persona/CambiarRolPersonalModulo
         [HttpPut("CambiarRolPersonalModulo")]
         public async Task<IActionResult> UpdatePersonaRolModulo([FromQuery] int docChaLog, [FromBody] int rolModuloId)
         {
@@ -179,3 +174,4 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
         }
     }
 }
+
