@@ -1,22 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { CasoRegistroService } from '../core/services/caso-registro.service';
+
+interface AreaTec {
+  id_AreaTec: number;
+  nom_AreaTec: string;
+  val_AreaTec: number;
+}
 
 @Component({
   selector: 'app-caso-registro',
   standalone: true,
-  imports: [],
   templateUrl: './caso-registro.component.html',
-  styleUrl: './caso-registro.component.css'
+  styleUrls: ['./caso-registro.component.css']
 })
-export class UserComponent {
-  constructor() {}
+export class CasoRegistroComponent implements OnInit {
+  areasTec: AreaTec[] = [];
 
-  onSubmit() {
-    // Lógica para enviar el formulario
-    alert('Formulario enviado');
+  constructor(private casoRegistroService: CasoRegistroService) { }
+
+  ngOnInit() {
+    this.loadAreasTec();
   }
 
-  onReset() {
-    // Lógica para resetear el formulario
-    alert('Formulario reseteado');
+  loadAreasTec() {
+    this.casoRegistroService.getAreasTec(1).subscribe({
+      next: (data) => {
+        this.areasTec = data;
+        console.log('Areas Tec recibidas:', this.areasTec);
+      },
+      error: (error) => {
+        console.error('Error fetching areas tec:', error);
+      }
+    });
   }
 }

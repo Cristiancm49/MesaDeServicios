@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Api.Controllers.Versiones.V3
+namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
     [Route("api/v3/[controller]")]
     [ApiController]

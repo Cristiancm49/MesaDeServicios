@@ -6,7 +6,8 @@
         <li><a routerLink="/registrar">Registrar</a></li>
         <li><a routerLink="/registrar-caso" class="active">Registrar Caso</a></li>
         <li><a routerLink="/caso-excepcional">Registrar Caso Excepcional</a></li>
-        <li><a href="#">Mis casos</a>
+        <li>
+          <a href="#">Mis casos</a>
           <ul>
             <li><a routerLink="/mis-casos-activos">Mis casos activos</a></li>
             <li><a routerLink="/mis-casos-resueltos">Mis casos resueltos</a></li>
@@ -15,75 +16,83 @@
       </ul>
     </div>
   </div>
-  
-    <div class="main-content">
-      <h2 class="header">INFORMACIÓN DEL CASO</h2>
-      <form>
-        <div class="section">
-          <h3 class="section-header">SOLICITANTE</h3>
-          <div class="form-group">
-            <div class="input-group">
-              <label for="identificacion">Identificación:</label>
-              <input type="text" id="identificacion" name="identificacion">
-            </div>
-            <div class="input-group">
-              <label for="nombre">Nombre del Solicitante:</label>
-              <input type="text" id="nombre" name="nombre">
-            </div>
-            <div class="input-group">
-              <label for="cargo">Cargo:</label>
-              <input type="text" id="cargo" name="cargo" class="short">
-            </div>
+
+  <div class="main-content">
+    <h2 class="header">INFORMACIÓN DEL CASO</h2>
+    <form>
+      <div class="section">
+        <h3 class="section-header">SOLICITANTE</h3>
+        <div class="form-group">
+          <div class="input-group">
+            <label for="identificacion">Identificación:</label>
+            <input type="text" id="identificacion" name="identificacion">
+          </div>
+          <div class="input-group">
+            <label for="nombre">Nombre del Solicitante:</label>
+            <input type="text" id="nombre" name="nombre">
+          </div>
+          <div class="input-group">
+            <label for="cargo">Cargo:</label>
+            <input type="text" id="cargo" name="cargo" class="short">
           </div>
         </div>
-        <div class="section">
-          <h3 class="section-header">DEPENDENCIA</h3>
-          <div class="form-group">
-            <div class="input-group">
-              <label for="indicativo">Indicativo:</label>
-              <input type="text" id="indicativo" name="indicativo">
-            </div>
-            <div class="input-group">
-              <label for="dependencia">Dependencia:</label>
-              <input type="text" id="dependencia" name="dependencia">
-            </div>
-            <div class="input-group">
-              <label for="telefono">Teléfono:</label>
-              <input type="text" id="telefono" name="telefono" class="short">
-            </div>
+      </div>
+      <div class="section">
+        <h3 class="section-header">DEPENDENCIA</h3>
+        <div class="form-group">
+          <div class="input-group">
+            <label for="indicativo">Indicativo:</label>
+            <input type="text" id="indicativo" name="indicativo">
+          </div>
+          <div class="input-group">
+            <label for="dependencia">Dependencia:</label>
+            <input type="text" id="dependencia" name="dependencia">
+          </div>
+          <div class="input-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" class="short">
           </div>
         </div>
-        <div class="section">
-          <h3 class="section-header">SOLICITUD</h3>
-          <div class="form-group">
-            <div class="input-group">
-              <label for="fecha">Fecha y Hora:</label>
-              <input type="datetime-local" id="fecha" name="fecha" class="short">
-            </div>
-            <div class="input-group">
-              <label for="area-tecnica">Área técnica:</label>
-              <select id="area-tecnica" name="area-tecnica" class="short">
-                <option value="">Seleccionar</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="categoria">Categoría:</label>
-              <select id="categoria" name="categoria" class="short">
-                <option value="">Seleccionar</option>
-              </select>
-            </div>
+      </div>
+      <div class="section">
+        <h3 class="section-header">SOLICITUD</h3>
+        <div class="form-group">
+          <div class="input-group">
+            <label for="fecha">Fecha y Hora:</label>
+            <input type="datetime-local" id="fecha" name="fecha" class="short">
           </div>
-          <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+          <div class="input-group">
+            <label for="area-tecnica">Área técnica:</label>
+            <select id="area-tecnica" name="area-tecnica" class="short">
+              <option value="">Seleccionar</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="categoria">Categoría:</label>
+            <select id="categoria" name="categoria" class="short">
+              <option value="">Seleccionar</option>
+            </select>
           </div>
         </div>
-        <div class="form-actions">
-          <button type="submit">Envío</button>
-          <button type="reset">Limpiar Formulario</button>
+        <div class="form-group">
+          <label for="descripcion">Descripción:</label>
+          <textarea id="descripcion" name="descripcion" rows="4"></textarea>
         </div>
-      </form>
-      
-    </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit">Envío</button>
+        <button type="reset">Limpiar Formulario</button>
+      </div>
+    </form>
+
   </div>
-  
+</div>
+
+<h2>Áreas Tecnológicas</h2>
+<ul>
+  @for (area of areasTec; track area.id_AreaTec) {
+    <li>
+      {{ area.nom_AreaTec }} - Valor: {{ area.val_AreaTec }}
+    </li>
+  }
+</ul>
