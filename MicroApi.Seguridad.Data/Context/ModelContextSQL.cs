@@ -2,6 +2,7 @@
 using MicroApi.Seguridad.Domain.Models;
 using MicroApi.Seguridad.Domain.Models.PersonalModulo;
 using MicroApi.Seguridad.Domain.Models.Inventario;
+using MicroApi.Seguridad.Domain.Models.Incidencias;
 
 
 namespace MicroApi.Seguridad.Api
@@ -19,7 +20,9 @@ namespace MicroApi.Seguridad.Api
         public DbSet<DependenciaLogin> DependenciaLogins { get; set; }
         public DbSet<SalaB7> SalaB7s { get; set; }
         public DbSet<BloqueEdificio> BloqueEdificios { get; set; }
+        public DbSet<TipoDispositivo> TipoDispositivos { get; set; }
         public DbSet<AreaTecnica> AreasT { get; set; }
+        public DbSet<Incidencia> Incidencias { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
