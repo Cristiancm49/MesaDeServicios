@@ -18,6 +18,7 @@ namespace MicroApi.Seguridad.Api
         public DbSet<RolModulo> RolModulos { get; set; }
         public DbSet<DependenciaLogin> DependenciaLogins { get; set; }
         public DbSet<SalaB7> SalaB7s { get; set; }
+        public DbSet<BloqueEdificio> BloqueEdificios { get; set; }
         public DbSet<AreaTecnica> AreasT { get; set; }
 
 
