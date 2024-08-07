@@ -1,4 +1,4 @@
-﻿using MicroApi.Seguridad.Domain.Models.PersonalModulo;
+﻿using MicroApi.Seguridad.Domain.Models.Incidencias;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -112,7 +112,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
                     p.ChairaLogin.Ape_ChaLog,
                     p.ChairaLogin.Doc_ChaLog,
                     p.ChairaLogin.Cargo_ChaLog,
-                    p.RolModulo.Nom_rolModulo,
+                    p.RolModulo.Nom_RolModulo,
                     p.ChairaLogin.DependenciaLogin.Nom_DepenLog,
                     p.ChairaLogin.DependenciaLogin.Tel_DepenLog,
                     p.ChairaLogin.DependenciaLogin.IndiTel_DepenLog,

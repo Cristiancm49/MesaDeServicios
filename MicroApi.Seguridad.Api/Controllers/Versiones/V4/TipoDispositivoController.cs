@@ -16,7 +16,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
             _context = context;
         }
 
-        // GET api/v3/persona/salas
         [HttpGet("Tipo de dispositivo")]
         public async Task<IActionResult> GetTipoDispositivo()
         {

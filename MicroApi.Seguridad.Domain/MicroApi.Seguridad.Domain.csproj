@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Inventario\" />
     <Folder Include="Models\Usuario\" />
   </ItemGroup>
 
