@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Domain.Models.Incidencias
+namespace MicroApi.Seguridad.Domain.Models.PersonalModulo
 {
     public class CrearPersonal
     {

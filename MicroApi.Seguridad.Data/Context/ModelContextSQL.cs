@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MicroApi.Seguridad.Domain.Models.Incidencias;
+using MicroApi.Seguridad.Domain.Models.Chaira;
+using MicroApi.Seguridad.Domain.Models.PersonalModulo;
+using MicroApi.Seguridad.Domain.Models.Inventario;
 
 
 namespace MicroApi.Seguridad.Api

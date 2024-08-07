@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MicroApi.Seguridad.Domain.Models.Chaira;
+using MicroApi.Seguridad.Domain.Models.PersonalModulo;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencias
 {

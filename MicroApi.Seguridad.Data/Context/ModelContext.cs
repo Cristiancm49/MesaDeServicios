@@ -1,5 +1,4 @@
-﻿using MicroApi.Seguridad.Domain.Models;
-using MicroApi.Seguridad.Domain.Models.Estudiante;
+﻿using MicroApi.Seguridad.Domain.Models.zEjemplos;
 using Microsoft.EntityFrameworkCore;
 
 namespace MicroApi.Seguridad.Data.Context;

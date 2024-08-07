@@ -2,7 +2,7 @@
 using MicroApi.Seguridad.Data.Utilities;
 using MicroApi.Seguridad.Domain.DTOs;
 using MicroApi.Seguridad.Domain.Interfaces;
-using MicroApi.Seguridad.Domain.Models;
+using MicroApi.Seguridad.Domain.Models.zEjemplos;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

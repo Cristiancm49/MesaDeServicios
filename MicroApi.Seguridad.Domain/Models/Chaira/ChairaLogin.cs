@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MicroApi.Seguridad.Domain.Models.Incidencias;
+using MicroApi.Seguridad.Domain.Models.PersonalModulo;
 
-namespace MicroApi.Seguridad.Domain.Models.Incidencias
+namespace MicroApi.Seguridad.Domain.Models.Chaira
 {
     [Table("ChairaLogin")]
     public class ChairaLogin

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MicroApi.Seguridad.Domain.Models.Chaira;
+using MicroApi.Seguridad.Domain.Models.Incidencias;
 
-namespace MicroApi.Seguridad.Domain.Models.Incidencias
+namespace MicroApi.Seguridad.Domain.Models.PersonalModulo
 {
     [Table("Personal")]
     public class Personal
