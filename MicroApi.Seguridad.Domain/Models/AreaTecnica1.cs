@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models
 {
-    public class AreaTecnica
+    public class AreaTecnica1
     {
 
             public int id_AreaTec { get; set; }

@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\ChairaLogin\" />
+    <Folder Include="Models\Inventario\" />
+    <Folder Include="Models\PersonalModulo\" />
     <Folder Include="Models\Usuario\" />
   </ItemGroup>
 

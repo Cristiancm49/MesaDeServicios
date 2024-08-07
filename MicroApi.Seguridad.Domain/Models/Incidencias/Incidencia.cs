@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencias
 {
@@ -27,6 +24,24 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencias
         public DateTime? FechaCierre_Incidencias { get; set; }
         public string? Resolu_Incidencias { get; set; }
         public double? PromEval_Incidencias { get; set; }
+
+        // Propiedades de navegación
+        [ForeignKey("IdSolicitante_Incidencias")]
+        public virtual ChairaLogin ChairaLoginSolicitante { get; set; }
+
+        [ForeignKey("IdAdmin_IncidenciasExc")]
+        public virtual ChairaLogin ChairaLoginAdminExc { get; set; }
+
+        [ForeignKey("Id_AreaTec")]
+        public virtual AreaTecnica AreaTecnica { get; set; }
+
+        [ForeignKey("Id_Estado")]
+        public virtual EstadoIncidencia EstadoIncidencia { get; set; }
+
+        [ForeignKey("Id_Priori")]
+        public virtual Prioridad Prioridad { get; set; }
+
+        [ForeignKey("Id_Perso")]
+        public virtual Personal Personal { get; set; }
     }
 }
-
