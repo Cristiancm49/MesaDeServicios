@@ -17,11 +17,11 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         }
 
 
-        // GET api/v3/persona?docChaLog=1004446325
+       /* // GET api/v3/persona?docChaLog=1004446325
         [HttpGet]
         public async Task<IActionResult> GetCategorias([FromQuery] int docChaLog)
         {
-            var Categorias = await _context.AreasT
+            var Categorias = await _context.AreaTecnicas
                 .Select(C => new
                 {
                     C.id_CatAre,
@@ -37,6 +37,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 
             return Ok(Areas);
         }
-
+       */
     }
 }
