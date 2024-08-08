@@ -1,8 +1,7 @@
 ﻿using MicroApi.Seguridad.Data.Conections;
 using MicroApi.Seguridad.Data.Context;
 using MicroApi.Seguridad.Domain.Interfaces;
-using MicroApi.Seguridad.Domain.Models.Estudiante;
-using MicroApi.Seguridad.Domain.Models.Solicitud;
+using MicroApi.Seguridad.Domain.Models.zEjemplos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;

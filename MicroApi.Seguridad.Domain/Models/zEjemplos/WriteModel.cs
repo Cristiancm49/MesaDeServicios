@@ -1,4 +1,4 @@
-﻿namespace MicroApi.Seguridad.Domain.Models
+﻿namespace MicroApi.Seguridad.Domain.Models.zEjemplos
 {
     public class WriteModel
     {

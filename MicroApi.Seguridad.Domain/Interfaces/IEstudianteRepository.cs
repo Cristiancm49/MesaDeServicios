@@ -1,5 +1,4 @@
-﻿using MicroApi.Seguridad.Domain.Models.Estudiante;
-using MicroApi.Seguridad.Domain.Models.Solicitud;
+﻿using MicroApi.Seguridad.Domain.Models.zEjemplos;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

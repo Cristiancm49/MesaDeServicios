@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models.PersonalModulo
 {
-    public class CrearPersonal
+    [Table("RolModulo")]
+    public class RolModulo
     {
-        [Required]
-        public int Doc_ChaLog { get; set; }
-
-        [Required]
+        [Key]
         public int Id_RolModulo { get; set; }
+        public string Nom_RolModulo { get; set; }
+        public ICollection<Personal> Personals { get; set; }
     }
+
 }
