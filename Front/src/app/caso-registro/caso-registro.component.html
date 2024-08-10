@@ -26,8 +26,8 @@
           <div class="input-group">
             <label for="identificacion">Identificación:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="identificacion" name="identificacion"  [value]="Duser.doc_ChaLog" disabled>
-              }
+            <input type="text" id="identificacion" name="identificacion" [value]="Duser.doc_ChaLog" disabled>
+            }
           </div>
           <div class="input-group">
             <label for="nombre">Nombre del Solicitante:</label>
@@ -38,8 +38,8 @@
           <div class="input-group">
             <label for="cargo">Cargo:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog" disabled>
-              }
+            <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog" disabled>
+            }
           </div>
         </div>
       </div>
@@ -49,59 +49,63 @@
           <div class="input-group">
             <label for="indicativo">Indicativo:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="indicativo" name="indicativo"  [value]="Duser.indiTel_DepenLog" disabled>
-              }
+            <input type="text" id="indicativo" name="indicativo" [value]="Duser.indiTel_DepenLog" disabled>
+            }
           </div>
           <div class="input-group">
             <label for="dependencia">Dependencia:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="dependencia" name="dependencia"  [value]="Duser.nom_DepenLog" disabled>
-              }
+            <input type="text" id="dependencia" name="dependencia" [value]="Duser.nom_DepenLog" disabled>
+            }
           </div>
           <div class="input-group">
             <label for="telefono">Teléfono:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.tel_DepenLog" disabled>
-              }
+            <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.tel_DepenLog" disabled>
+            }
           </div>
         </div>
       </div>
-      <div class="section">
-        <h3 class="section-header">SOLICITUD</h3>
-        <div class="form-group">
-          <div class="input-group">
-            <label for="fecha">Fecha y Hora:</label>
-            <input type="datetime-local" id="fecha" name="fecha" class="short" [value]="fechaHora">
+      <form (ngSubmit)="onSubmit()">
+        <div class="section">
+          <h3 class="section-header">SOLICITUD</h3>
+          <div class="form-group">
+            <div class="input-group">
+              <label for="fecha">Fecha y Hora:</label>
+              <input type="datetime-local" id="fecha" name="fecha" class="short" [ngModel]="fechaHoraString" 
+              (ngModelChange)="onFechaHoraChange($event)">
+            </div>
+            <div class="input-group">
+              <label for="categoria">Categoría:</label>
+              <select id="categoria" name="categoria" class="short" (change)="onCategoriaSelected($event)">
+                <option value="">Seleccionar</option>
+                @for (categoria of catego; track categoria.id_CatAre) {
+                  <option [value]="categoria.id_CatAre">{{ categoria.nom_CatAre }}</option>
+                }
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="area-tecnica">Área técnica:</label>
+              <select id="area-tecnica" name="area-tecnica" 
+                      [(ngModel)]="incidencia.id_AreaTec" 
+                      (change)="onAreaTecnicaSelected($event)">
+                <option [ngValue]="0">Seleccionar</option>
+                @for (area of areasTec; track area.id_AreaTec) {
+                  <option [ngValue]="area.id_AreaTec">{{ area.nom_AreaTec }}</option>
+                }
+              </select>
+            </div>
           </div>
-          <div class="input-group">
-            <label for="categoria">Categoría:</label>
-            <select id="categoria" name="categoria" class="short" (change)="onCategoriaSelected($event)">
-              <option value="">Seleccionar</option>
-              @for (categoria of catego; track categoria.id_CatAre) {
-                <option [value]="categoria.id_CatAre">{{ categoria.nom_CatAre }}</option>
-              }
-            </select>
-          </div>
-          <div class="input-group">
-            <label for="area-tecnica">Área técnica:</label>
-            <select id="area-tecnica" name="area-tecnica" class="short" style="direction: ltr;">
-              <option value="">Seleccionar</option>
-              @for (area of areasTec; track area.id_AreaTec) {
-                <option [value]="area.id_AreaTec">{{ area.nom_AreaTec }}</option>
-              }
-            </select>
+          <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="incidencia.descrip_Incidencias"></textarea>
           </div>
         </div>
-        <div class="form-group">
-          <label for="descripcion">Descripción:</label>
-          <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+        <div class="form-actions">
+          <button type="submit">Envío</button>
+          <button type="reset">Limpiar Formulario</button>
         </div>
-      </div>
-      <div class="form-actions">
-        <button type="submit">Envío</button>
-        <button type="reset">Limpiar Formulario</button>
-      </div>
+      </form>
     </form>
-
   </div>
 </div>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AreaTec } from '../../interfaces/area-tec';
 import { DatosUser } from '../../interfaces/DatosUser';
 import { Categorias } from '../../interfaces/Interfaz-categoria';
+import {Incidencia} from '../../interfaces/Insert-Incidencia';
 
 
 @Injectable({
@@ -13,6 +14,7 @@ export class CasoRegistroService {
   private apiUrl = 'https://localhost:44346/api/v1/ConsultaArea';
   private apiDatosUsurio = 'https://localhost:44346/api/v5/Incidencia/SelectSolicitante';
   private apiCategorias ="https://localhost:44346/api/v3/ConsultaCategoria"
+  private apiInsertIncidencia = 'https://localhost:44346/api/v5/Incidencia/InsertIncidencia';
 
   constructor(private http: HttpClient) { }
 
@@ -26,6 +28,10 @@ export class CasoRegistroService {
 
   getCategorias(docChaLog: number): Observable<Categorias[]> {
     return this.http.get<Categorias[]>(`${this.apiCategorias}?docChaLog=${docChaLog}`);
+  }
+
+  insertIncidencia(incidencia: Incidencia): Observable<any> {
+    return this.http.post(this.apiInsertIncidencia, incidencia);
   }
   
 }
