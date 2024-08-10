@@ -26,19 +26,19 @@
           <div class="input-group">
             <label for="identificacion">Identificación:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="identificacion" name="identificacion"  [value]="Duser.doc_ChaLog">
+              <input type="text" id="identificacion" name="identificacion"  [value]="Duser.doc_ChaLog" disabled>
               }
           </div>
           <div class="input-group">
             <label for="nombre">Nombre del Solicitante:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-            <input [value]="Duser.nom_ChaLog + ' ' +  Duser.ape_ChaLog">
+            <input [value]="Duser.nom_ChaLog + ' ' +  Duser.ape_ChaLog" disabled>
             }
           </div>
           <div class="input-group">
             <label for="cargo">Cargo:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog">
+              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog" disabled>
               }
           </div>
         </div>
@@ -49,19 +49,19 @@
           <div class="input-group">
             <label for="indicativo">Indicativo:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="indicativo" name="indicativo"  [value]="Duser.indiTel_DepenLog">
+              <input type="text" id="indicativo" name="indicativo"  [value]="Duser.indiTel_DepenLog" disabled>
               }
           </div>
           <div class="input-group">
             <label for="dependencia">Dependencia:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="dependencia" name="dependencia"  [value]="Duser.nom_DepenLog">
+              <input type="text" id="dependencia" name="dependencia"  [value]="Duser.nom_DepenLog" disabled>
               }
           </div>
           <div class="input-group">
             <label for="telefono">Teléfono:</label>
             @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.tel_DepenLog">
+              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.tel_DepenLog" disabled>
               }
           </div>
         </div>
@@ -71,7 +71,16 @@
         <div class="form-group">
           <div class="input-group">
             <label for="fecha">Fecha y Hora:</label>
-            <input type="datetime-local" id="fecha" name="fecha" class="short">
+            <input type="datetime-local" id="fecha" name="fecha" class="short" [value]="fechaHora">
+          </div>
+          <div class="input-group">
+            <label for="categoria">Categoría:</label>
+            <select id="categoria" name="categoria" class="short" (change)="onCategoriaSelected($event)">
+              <option value="">Seleccionar</option>
+              @for (categoria of catego; track categoria.id_CatAre) {
+                <option [value]="categoria.id_CatAre">{{ categoria.nom_CatAre }}</option>
+              }
+            </select>
           </div>
           <div class="input-group">
             <label for="area-tecnica">Área técnica:</label>
@@ -80,12 +89,6 @@
               @for (area of areasTec; track area.id_AreaTec) {
                 <option [value]="area.id_AreaTec">{{ area.nom_AreaTec }}</option>
               }
-            </select>
-          </div>
-          <div class="input-group">
-            <label for="categoria">Categoría:</label>
-            <select id="categoria" name="categoria" class="short">
-              <option value="">Seleccionar</option>
             </select>
           </div>
         </div>

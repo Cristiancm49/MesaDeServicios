@@ -21,21 +21,21 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         [HttpGet]
         public async Task<IActionResult> GetCategorias([FromQuery] int docChaLog)
         {
-            var Categorias = await _context.AreasT
-                .Select(C => new
+            var areas = await _context.Categorias
+                
+                .Select(a => new
                 {
-                    C.id_CatAre,
-                    C.,
-                    A.Val_AreaTec
+                    a.Id_CatAre,
+                    a.Nom_CatAre
                 })
                 .ToListAsync();
 
-            if (Areas == null || !Areas.Any())
+            if (areas == null || !areas.Any())
             {
                 return NotFound();
             }
 
-            return Ok(Areas);
+            return Ok(areas);
         }
 
     }

@@ -23,6 +23,7 @@ namespace MicroApi.Seguridad.Api
         public DbSet<TipoDispositivo> TipoDispositivos { get; set; }
         public DbSet<AreaTecnica> AreaTecnicas { get; set; }
         public DbSet<Incidencia> Incidencias { get; set; }
+        public DbSet<CategoriaAreaTec> Categorias { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -87,6 +88,9 @@ namespace MicroApi.Seguridad.Api
                 .WithMany(c => c.AreaTecnicas)
                 .HasForeignKey(a => a.Id_CatAre)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CategoriaAreaTec>()
+                .HasKey(c => c.Id_CatAre);
         }
 
     }
