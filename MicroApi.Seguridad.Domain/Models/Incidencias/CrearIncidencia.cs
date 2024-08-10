@@ -17,13 +17,5 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencias
         public byte[]? Eviden_Incidencias { get; set; }
         public double ValTotal_Incidencias { get; set; }
         public int Id_Estado { get; set; }
-        public int Id_Priori { get; set; }
-        public int? Id_Perso { get; set; }
-        public string? EscaladoA_Incidencias { get; set; }
-        public string? MotivRechazo_Incidencias { get; set; }
-        public DateTime? FechaCierre_Incidencias { get; set; }
-        public string? Resolu_Incidencias { get; set; }
-        public double? PromEval_Incidencias { get; set; }
     }
-
 }
