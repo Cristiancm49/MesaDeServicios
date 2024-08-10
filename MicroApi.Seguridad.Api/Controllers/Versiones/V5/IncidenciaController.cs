@@ -117,6 +117,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             var nuevaIncidencia = new Incidencia
             {
+                Id_Incidencias = crearIncidenciaDto.Id_Incidencias,
                 IdSolicitante_Incidencias = crearIncidenciaDto.IdSolicitante_Incidencias,
                 EsExc_Incidencias = crearIncidenciaDto.EsExc_Incidencias,
                 IdAdmin_IncidenciasExc = crearIncidenciaDto.IdAdmin_IncidenciasExc,
@@ -125,7 +126,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 Descrip_Incidencias = crearIncidenciaDto.Descrip_Incidencias,
                 Eviden_Incidencias = crearIncidenciaDto.Eviden_Incidencias,
                 ValTotal_Incidencias = crearIncidenciaDto.ValTotal_Incidencias,
-                Id_Estado = crearIncidenciaDto.Id_Estado
             };
 
             _context.Incidencias.Add(nuevaIncidencia);
@@ -136,10 +136,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
             catch (DbUpdateException ex)
             {
-                // Manejo de errores específicos
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al guardar la incidencia: {ex.Message}");
+                // Captura y muestra el mensaje de la excepción interna, si existe
+                var innerExceptionMessage = ex.InnerException?.Message ?? "Sin detalles adicionales.";
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al guardar la incidencia: {ex.Message} - {innerExceptionMessage}");
             }
-
             return CreatedAtAction(nameof(CreateIncidencia), new { id = nuevaIncidencia.Id_Incidencias }, nuevaIncidencia);
         }
     }
