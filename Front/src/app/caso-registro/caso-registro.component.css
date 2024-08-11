@@ -3,9 +3,10 @@
 }
 
 .menu-principal {
-  width: 200px;
+  width: 220px;
   background-color: #D9D9D9;
-  padding: 15px;
+  padding: 10px;
+  margin-left: -10px;
 }
 
 .menu-item {
@@ -40,7 +41,24 @@
   position: relative; /* Asegura que el ::before se posicione relativamente al enlace */
 }
 
+.menu-item ul li a.notactive {
+  border-radius: 50px;
+  padding: 5px 15px; /* Ajusta los valores según sea necesario */
+  position: relative;
+   /* Asegura que el ::before se posicione relativamente al enlace */
+}
+
 .menu-item ul li a.active::before {
+  content: '•'; /* Punto negro */
+  color: black;
+  font-size: 2em; /* Tamaño del punto, ajusta según sea necesario */
+  position:   absolute;
+  left: 2px; /* Ajusta la posición horizontal del punto */
+  top: 50%;
+  transform: translateY(-50%); /* Centra verticalmente el punto */
+}
+
+.menu-item ul li a.notactive::before {
   content: '•'; /* Punto negro */
   color: black;
   font-size: 2em; /* Tamaño del punto, ajusta según sea necesario */
@@ -81,7 +99,7 @@
   background-color: #077D35;
   color: white;
   margin: -30px -10px 25px -10px;
-  margin-left: 10px;
+  margin-left: 30px;
   padding: 10px;
   border-radius: 8px 8px 8px 8px;
   max-width: 150px;

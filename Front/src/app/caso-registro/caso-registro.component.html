@@ -1,11 +1,11 @@
+<router-outlet></router-outlet>
 <div class="container">
   <div class="menu-principal">
     <div class="menu-item">
       <h2>Menú Principal</h2>
       <ul>
-        <li><a routerLink="/registrar">Registrar</a></li>
         <li><a routerLink="/registrar-caso" class="active">Registrar Caso</a></li>
-        <li><a routerLink="/caso-excepcional">Registrar Caso Excepcional</a></li>
+        <li><a routerLink="/caso-excepcional" class="notactive">Registrar Caso Excepcional</a></li>
         <li>
           <a href="#">Mis casos</a>
           <ul>
@@ -86,7 +86,7 @@
             </div>
             <div class="input-group">
               <label for="area-tecnica">Área técnica:</label>
-              <select id="area-tecnica" name="area-tecnica" 
+              <select id="area-tecnica" name="area-tecnica"  class="short"
                       [(ngModel)]="incidencia.id_AreaTec" 
                       (change)="onAreaTecnicaSelected($event)">
                 <option [ngValue]="0">Seleccionar</option>

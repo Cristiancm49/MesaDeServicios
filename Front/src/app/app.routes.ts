@@ -3,6 +3,8 @@ import { CasoRegistroComponent } from './caso-registro/caso-registro.component';
 import { CasosGestionComponent } from './casos-gestion/casos-gestion.component';
 import { CasosSeguimientoComponent } from './casos-seguimiento/casos-seguimiento.component';
 import { RedirectGuard } from './redirect.guard';
+import { CasoExcepcionalComponent } from './caso-excepcional/caso-excepcional.component';
+import { UserComponent } from './user/user.component';
 export const routes: Routes = [
   {
     path: '',
@@ -24,6 +26,16 @@ export const routes: Routes = [
   {
     path: 'seguimiento-casos',
     component: CasosSeguimientoComponent
+  },
+
+  {
+    path: 'caso-excepcional',
+    component: CasoExcepcionalComponent 
+  },
+
+  {
+    path: 'registar-caso',
+    component: CasoRegistroComponent
   }
 
 ];

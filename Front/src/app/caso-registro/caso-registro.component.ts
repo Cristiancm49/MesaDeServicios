@@ -6,11 +6,12 @@ import { AreaTec } from '../interfaces/area-tec';
 import { DatosUser } from '../interfaces/DatosUser';
 import { Categorias } from '../interfaces/Interfaz-categoria';
 import { Incidencia } from '../interfaces/Insert-Incidencia';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-caso-registro',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink],
   templateUrl: './caso-registro.component.html',
   styleUrls: ['./caso-registro.component.css']
 })
