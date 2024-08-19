@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models.Inventario
 {
@@ -13,6 +9,9 @@ namespace MicroApi.Seguridad.Domain.Models.Inventario
     {
         [Key]
         public int Id_TipDispo { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Nom_TipDispo { get; set; }
     }
 }

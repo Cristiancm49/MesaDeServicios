@@ -17,7 +17,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             _context = context;
         }
 
-        [HttpGet("SelectIncidencias")]
+        /*[HttpGet("SelectIncidencias")]
         public async Task<IActionResult> GetIncidencias()
         {
             var result = await _context.Incidencias
@@ -76,7 +76,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                                 from p in cp.DefaultIfEmpty()
                                 join d in _context.DependenciaLogins on c.Id_DepenLog equals d.Id_DepenLog into cd
                                 from d in cd.DefaultIfEmpty()
-                                join r in _context.RolModulos on p.Id_RolModulo equals r.Id_RolModulo into pr
+                                join r in _context.RolModulos on p.Id_RolModulo equals r.Id_rolModulo into pr
                                 from r in pr.DefaultIfEmpty()
                                 where c.Doc_ChaLog == docChaLog
                                 select new
@@ -89,7 +89,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                                     d.Nom_DepenLog,
                                     d.Tel_DepenLog,
                                     d.Val_DepenLog,
-                                    Nom_RolModulo = r != null ? r.Nom_RolModulo : null,
+                                    Nom_RolModulo = r != null ? r.Nom_rolModulo : null,
 
                                     //Id para enviar al insert de incidencias
                                     c.Id_ChaLog,
@@ -251,7 +251,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(result);
         }
-
-
+        */
     }
 }

@@ -114,7 +114,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
                     p.ChairaLogin.Ape_ChaLog,
                     p.ChairaLogin.Doc_ChaLog,
                     p.ChairaLogin.Cargo_ChaLog,
-                    p.RolModulo.Nom_RolModulo,
+                    p.RolModulo.Nom_rolModulo,
                     p.ChairaLogin.DependenciaLogin.Nom_DepenLog,
                     p.ChairaLogin.DependenciaLogin.Tel_DepenLog,
                     p.ChairaLogin.DependenciaLogin.IndiTel_DepenLog,

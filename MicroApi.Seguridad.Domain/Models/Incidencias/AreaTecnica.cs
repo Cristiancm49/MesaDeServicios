@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencias
 {
@@ -13,10 +9,20 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencias
     {
         [Key]
         public int Id_AreaTec { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Nom_AreaTec { get; set; }
+
+        [Required]
         public int Val_AreaTec { get; set; }
+
+        [Required]
         public int Id_CatAre { get; set; }
-        public CategoriaAreaTec CategoriaAreaTec { get; set; }
-        public ICollection<Incidencia> Incidencias { get; set; }
+
+        [ForeignKey("Id_CatAre")]
+        public virtual CategoriaAreaTec CategoriaAreaTec { get; set; }
+
+        public virtual ICollection<Incidencia> Incidencias { get; set; }
     }
 }

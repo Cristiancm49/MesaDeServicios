@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models.PersonalModulo
 {
@@ -12,9 +8,10 @@ namespace MicroApi.Seguridad.Domain.Models.PersonalModulo
     public class RolModulo
     {
         [Key]
-        public int Id_RolModulo { get; set; }
-        public string Nom_RolModulo { get; set; }
-        public ICollection<Personal> Personals { get; set; }
-    }
+        public int Id_rolModulo { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string Nom_rolModulo { get; set; }
+    }
 }

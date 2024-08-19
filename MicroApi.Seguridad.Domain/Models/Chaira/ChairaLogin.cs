@@ -11,15 +11,29 @@ namespace MicroApi.Seguridad.Domain.Models.Chaira
     {
         [Key]
         public int Id_ChaLog { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Nom_ChaLog { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Ape_ChaLog { get; set; }
+
+        [Required]
         public int Doc_ChaLog { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Cargo_ChaLog { get; set; }
+
+        [Required]
         public int Id_DepenLog { get; set; }
-        public DependenciaLogin DependenciaLogin { get; set; }
+
+        [ForeignKey("Id_DepenLog")]
+        public virtual DependenciaLogin DependenciaLogin { get; set; }
+
         public virtual ICollection<Incidencia> IncidenciasSolicitante { get; set; }
         public virtual ICollection<Incidencia> IncidenciasAdminExc { get; set; }
-        public virtual ICollection<Personal> Personals { get; set; }
     }
-
 }
