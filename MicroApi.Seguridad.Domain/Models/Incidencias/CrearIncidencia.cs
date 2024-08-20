@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencias
 {
-    public class CrearIncidenciaDto
+    public class CrearIncidencia
     {
         public int Id_Incidencias { get; set; }
         public int IdSolicitante_Incidencias { get; set; }

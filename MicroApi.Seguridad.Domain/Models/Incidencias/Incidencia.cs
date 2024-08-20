@@ -63,7 +63,6 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencias
         public virtual AreaTecnica AreaTecnica { get; set; }
         public virtual EstadoIncidencia EstadoIncidencia { get; set; }
         public virtual Prioridad Prioridad { get; set; }
-        public virtual ChairaLogin Personal { get; set; } // Relacionado con Id_Perso
         public virtual ICollection<Diagnosticos> Diagnosticos { get; set; }
     }
 }

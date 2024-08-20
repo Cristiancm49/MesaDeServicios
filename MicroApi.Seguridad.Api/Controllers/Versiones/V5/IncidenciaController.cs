@@ -17,20 +17,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             _context = context;
         }
 
-        /*[HttpGet("SelectIncidencias")]
+        [HttpGet("SelectIncidencias")]
         public async Task<IActionResult> GetIncidencias()
         {
             var result = await _context.Incidencias
-                .Include(i => i.ChairaLoginSolicitante)
-                .Include(i => i.ChairaLoginAdminExc)
-                .Include(i => i.AreaTecnica)
-                .ThenInclude(at => at.CategoriaAreaTec)
-                .Include(i => i.EstadoIncidencia)
-                .Include(i => i.Prioridad)
-                .Include(i => i.Personal)
-                .ThenInclude(p => p.ChairaLogin)
-                .Include(i => i.Personal)
-                .ThenInclude(p => p.RolModulo)
                 .Select(i => new
                 {
                     i.Id_Incidencias,
@@ -46,16 +36,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                     i.ValTotal_Incidencias,
                     Tipo_Estado = i.EstadoIncidencia.Tipo_Estado,
                     Tipo_Priori = i.Prioridad.Tipo_Priori,
-                    i.Id_Perso,
-                    Id_ChaLog_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Id_ChaLog : (int?)null,
-                    Nom_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Nom_ChaLog : null,
-                    Ape_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Ape_ChaLog : null,
-                    Rol_Personal = i.Personal != null && i.Personal.RolModulo != null ? i.Personal.RolModulo.Nom_RolModulo : null,
-                    i.EscaladoA_Incidencias,
-                    i.MotivRechazo_Incidencias,
-                    i.FechaCierre_Incidencias,
-                    i.Resolu_Incidencias,
-                    i.PromEval_Incidencias
+                    i.Id_Perso
                 })
                 .OrderBy(i => i.Id_Incidencias)
                 .ToListAsync();
@@ -67,6 +48,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(result);
         }
+
 
         [HttpGet("SelectSolicitante")]
         public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
@@ -108,7 +90,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
         // POST api/incidencias
         [HttpPost("InsertIncidencia")]
-        public async Task<IActionResult> CreateIncidencia([FromBody] CrearIncidenciaDto crearIncidenciaDto)
+        public async Task<IActionResult> InsertIncidencia([FromBody] CrearIncidencia crearIncidenciaDto)
         {
             if (crearIncidenciaDto == null)
             {
@@ -125,7 +107,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 Id_AreaTec = crearIncidenciaDto.Id_AreaTec,
                 Descrip_Incidencias = crearIncidenciaDto.Descrip_Incidencias,
                 Eviden_Incidencias = crearIncidenciaDto.Eviden_Incidencias,
-                ValTotal_Incidencias = crearIncidenciaDto.ValTotal_Incidencias,
+                ValTotal_Incidencias = crearIncidenciaDto.ValTotal_Incidencias
             };
 
             _context.Incidencias.Add(nuevaIncidencia);
@@ -140,23 +122,19 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 var innerExceptionMessage = ex.InnerException?.Message ?? "Sin detalles adicionales.";
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al guardar la incidencia: {ex.Message} - {innerExceptionMessage}");
             }
-            return CreatedAtAction(nameof(CreateIncidencia), new { id = nuevaIncidencia.Id_Incidencias }, nuevaIncidencia);
-        }
 
+            return CreatedAtAction(nameof(InsertIncidencia), new { id = nuevaIncidencia.Id_Incidencias }, nuevaIncidencia);
+        }
+        
         [HttpGet("SelectIncidenciasRegistradas")]
         public async Task<IActionResult> GetIncidenciasRegistradas()
         {
             var result = await _context.Incidencias
                 .Include(i => i.ChairaLoginSolicitante)
-                .Include(i => i.ChairaLoginAdminExc)
                 .Include(i => i.AreaTecnica)
                 .ThenInclude(at => at.CategoriaAreaTec)
                 .Include(i => i.EstadoIncidencia)
                 .Include(i => i.Prioridad)
-                .Include(i => i.Personal)
-                .ThenInclude(p => p.ChairaLogin)
-                .Include(i => i.Personal)
-                .ThenInclude(p => p.RolModulo)
                 .Where(i => i.EstadoIncidencia.Tipo_Estado == "Registrada")
                 .Select(i => new
                 {
@@ -173,48 +151,35 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                     i.ValTotal_Incidencias,
                     Tipo_Estado = i.EstadoIncidencia.Tipo_Estado,
                     Tipo_Priori = i.Prioridad.Tipo_Priori,
-                    i.Id_Perso,
-                    Id_ChaLog_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Id_ChaLog : (int?)null,
-                    Nom_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Nom_ChaLog : null,
-                    Ape_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Ape_ChaLog : null,
-                    Rol_Personal = i.Personal != null && i.Personal.RolModulo != null ? i.Personal.RolModulo.Nom_RolModulo : null,
-                    i.EscaladoA_Incidencias,
-                    i.MotivRechazo_Incidencias,
-                    i.FechaCierre_Incidencias,
-                    i.Resolu_Incidencias,
-                    i.PromEval_Incidencias
+                    i.Id_Perso
                 })
                 .OrderBy(i => i.Id_Incidencias)
                 .ToListAsync();
 
             if (result == null || !result.Any())
             {
-                return NotFound("No se encontraron Incidencias.");
+                return NotFound("No se encontraron Incidencias registradas.");
             }
 
             return Ok(result);
         }
 
+        
         [HttpGet("SelectIncidenciasXEstado")]
-        public async Task<IActionResult> GetIncidenciasXEstado([FromQuery] string estado)
+        public async Task<IActionResult> GetIncidenciasPorEstado([FromQuery] string estado)
         {
-            if (string.IsNullOrEmpty(estado))
+            if (string.IsNullOrWhiteSpace(estado))
             {
-                return BadRequest("El estado no puede estar vacío.");
+                return BadRequest("El parámetro de estado no puede estar vacío.");
             }
 
             var result = await _context.Incidencias
                 .Include(i => i.ChairaLoginSolicitante)
-                .Include(i => i.ChairaLoginAdminExc)
                 .Include(i => i.AreaTecnica)
                 .ThenInclude(at => at.CategoriaAreaTec)
                 .Include(i => i.EstadoIncidencia)
                 .Include(i => i.Prioridad)
-                .Include(i => i.Personal)
-                .ThenInclude(p => p.ChairaLogin)
-                .Include(i => i.Personal)
-                .ThenInclude(p => p.RolModulo)
-                .Where(i => i.EstadoIncidencia.Tipo_Estado == estado) // Filtrar por el estado proporcionado
+                .Where(i => i.EstadoIncidencia.Tipo_Estado == estado)
                 .Select(i => new
                 {
                     i.Id_Incidencias,
@@ -230,27 +195,18 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                     i.ValTotal_Incidencias,
                     Tipo_Estado = i.EstadoIncidencia.Tipo_Estado,
                     Tipo_Priori = i.Prioridad.Tipo_Priori,
-                    i.Id_Perso,
-                    Id_ChaLog_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Id_ChaLog : (int?)null,
-                    Nom_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Nom_ChaLog : null,
-                    Ape_Personal = i.Personal != null && i.Personal.ChairaLogin != null ? i.Personal.ChairaLogin.Ape_ChaLog : null,
-                    Rol_Personal = i.Personal != null && i.Personal.RolModulo != null ? i.Personal.RolModulo.Nom_RolModulo : null,
-                    i.EscaladoA_Incidencias,
-                    i.MotivRechazo_Incidencias,
-                    i.FechaCierre_Incidencias,
-                    i.Resolu_Incidencias,
-                    i.PromEval_Incidencias
+                    i.Id_Perso
                 })
                 .OrderBy(i => i.Id_Incidencias)
                 .ToListAsync();
 
             if (result == null || !result.Any())
             {
-                return NotFound("No se encontraron Incidencias.");
+                return NotFound($"No se encontraron Incidencias con el estado '{estado}'.");
             }
 
             return Ok(result);
         }
-        */
+
     }
 }
