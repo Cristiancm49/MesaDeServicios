@@ -17,17 +17,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAreas([FromQuery] int Id_CatAre)
+        [HttpGet("GetAreas")]
+        public async Task<IActionResult> GetAreas([FromQuery] int CaAr_Id)
         {
-            var areas = await _context.AreaTecnicas
-                .Where(a => a.Id_CatAre == Id_CatAre)
+            var areas = await _context.IncidenciaAreaTecnicas
+                .Where(a => a.CaAr_Id == CaAr_Id)
                 .Select(a => new
                 {
-                    a.Id_AreaTec,
-                    a.Nom_AreaTec,
-                    a.Val_AreaTec
-
+                    a.ArTe_Id,
+                    a.ArTe_Nombre,
+                    a.ArTe_Valor
                 })
                 .ToListAsync();
 

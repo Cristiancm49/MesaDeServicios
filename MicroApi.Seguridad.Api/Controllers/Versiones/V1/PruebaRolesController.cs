@@ -18,7 +18,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         {
             _context = context;
         }
-
+        /*
         [HttpGet("ConsultarInfoChaira")]
         public async Task<IActionResult> GetChairaLogins([FromQuery] int docChaLog)
         {
@@ -173,6 +173,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
 
             return NoContent(); // Retorna 204 No Content en caso de éxito
-        }
+        }*/
     }
 }

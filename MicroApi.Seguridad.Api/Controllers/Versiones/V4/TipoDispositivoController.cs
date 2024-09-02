@@ -15,7 +15,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
         {
             _context = context;
         }
-
+        /*
         [HttpGet("Tipo de dispositivo")]
         public async Task<IActionResult> GetTipoDispositivo()
         {
@@ -34,6 +34,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
             }
 
             return Ok(BloqueEdificio);
-        }
+        }*/
     }
 }

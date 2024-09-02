@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MicroApi.Seguridad.Domain.Models.Incidencias;
-using MicroApi.Seguridad.Domain.Models.Chaira;
-using MicroApi.Seguridad.Domain.Models.PersonalModulo;
 using MicroApi.Seguridad.Domain.Models.Inventario;
+using MicroApi.Seguridad.Domain.Models.Incidencia;
+using MicroApi.Seguridad.Domain.Models.Persona;
+using MicroApi.Seguridad.Domain.Models.EncuestaCalidad;
 
 namespace MicroApi.Seguridad.Api
 {
@@ -13,122 +13,172 @@ namespace MicroApi.Seguridad.Api
         {
         }
 
-        public DbSet<Personal> Personals { get; set; }
-        public DbSet<ChairaLogin> ChairaLogins { get; set; }
-        public DbSet<RolModulo> RolModulos { get; set; }
-        public DbSet<DependenciaLogin> DependenciaLogins { get; set; }
-        public DbSet<BloqueEdificio> BloqueEdificios { get; set; }
-        public DbSet<TipoDispositivo> TipoDispositivos { get; set; }
-        public DbSet<AreaTecnica> AreaTecnicas { get; set; }
         public DbSet<Incidencia> Incidencias { get; set; }
-        public DbSet<CategoriaAreaTec> Categorias { get; set; }
-        public DbSet<HojaDeVida> HojasDeVida { get; set; }
-        public DbSet<Diagnosticos> Diagnosticos { get; set; }
-        public DbSet<PisoOficina> PisosOficina { get; set; }
-        public DbSet<CategoriaProblema> CategoriasProblema { get; set; }
+        public DbSet<IncidenciaAreaTecnica> IncidenciaAreaTecnicas { get; set; }
+        public DbSet<IncidenciaAreaTecnicaCategoria> IncidenciaAreaTecnicaCategorias { get; set; }
+        public DbSet<IncidenciaEstado> IncidenciaEstados { get; set; }
+        public DbSet<IncidenciaPrioridad> IncidenciaPrioridades { get; set; }
+        public DbSet<Contrato> Contratos { get; set; }
+        public DbSet<PersonaGeneral> PersonaGenerales { get; set; }
+        public DbSet<Unidad> Unidades { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<UsuarioRol> UsuarioRoles { get; set; }
+        public DbSet<InventarioBloqueEdificio> InventarioBloqueEdificios { get; set; }
+        public DbSet<InventarioPisoOficina> InventarioPisoOficinas { get; set; }
+        public DbSet<EncuestaCalidad> EncuestasCalidad { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuración para la entidad Incidencia
-            modelBuilder.Entity<Incidencia>()
-                .HasOne(i => i.ChairaLoginSolicitante)
-                .WithMany(c => c.IncidenciasSolicitante)
-                .HasForeignKey(i => i.IdSolicitante_Incidencias)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de Incidencia
+            modelBuilder.Entity<Incidencia>(entity =>
+            {
+                entity.HasKey(e => e.Inci_Id);
 
-            modelBuilder.Entity<Incidencia>()
-                .HasOne(i => i.ChairaLoginAdminExc)
-                .WithMany(c => c.IncidenciasAdminExc)
-                .HasForeignKey(i => i.IdAdmin_IncidenciasExc)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.ContratoSolicitante)
+                    .WithMany()
+                    .HasForeignKey(e => e.Cont_IdSolicitante)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Incidencia>()
-                .HasOne(i => i.AreaTecnica)
-                .WithMany(a => a.Incidencias)
-                .HasForeignKey(i => i.Id_AreaTec)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.ContratoAdminExc)
+                    .WithMany()
+                    .HasForeignKey(e => e.Cont_IdAdminExc)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Incidencia>()
-                .HasOne(i => i.EstadoIncidencia)
-                .WithMany(e => e.Incidencias)
-                .HasForeignKey(i => i.Id_Estado)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.IncidenciaAreaTecnica)
+                    .WithMany()
+                    .HasForeignKey(e => e.ArTe_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Incidencia>()
-                .HasOne(i => i.Prioridad)
-                .WithMany(p => p.Incidencias)
-                .HasForeignKey(i => i.Id_Priori)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.IncidenciaEstado)
+                    .WithMany()
+                    .HasForeignKey(e => e.InEs_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuración para la entidad ChairaLogin
-            modelBuilder.Entity<ChairaLogin>()
-                .HasOne(c => c.DependenciaLogin)
-                .WithMany(d => d.ChairaLogins)
-                .HasForeignKey(c => c.Id_DepenLog)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.IncidenciaPrioridad)
+                    .WithMany()
+                    .HasForeignKey(e => e.InPr_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuración para la entidad Personal
-            modelBuilder.Entity<Personal>()
-                .HasOne(p => p.ChairaLogin)
-                .WithMany()
-                .HasForeignKey(p => p.Id_ChaLog)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.Usuario)
+                    .WithMany()
+                    .HasForeignKey(e => e.Usua_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
-            modelBuilder.Entity<Personal>()
-                .HasOne(p => p.RolModulo)
-                .WithMany()
-                .HasForeignKey(p => p.Id_RolModulo)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de IncidenciaAreaTecnica
+            modelBuilder.Entity<IncidenciaAreaTecnica>(entity =>
+            {
+                entity.HasKey(e => e.ArTe_Id);
 
-            // Configuración para la entidad AreaTecnica
-            modelBuilder.Entity<AreaTecnica>()
-                .HasOne(a => a.CategoriaAreaTec)
-                .WithMany(c => c.AreaTecnicas)
-                .HasForeignKey(a => a.Id_CatAre)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.IncidenciaAreaTecnicaCategoria)
+                    .WithMany()
+                    .HasForeignKey(e => e.CaAr_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
-            // Configuración para la entidad HojaDeVida
-            modelBuilder.Entity<HojaDeVida>()
-                .HasOne(h => h.Dispositivo)
-                .WithMany(d => d.HojasDeVida)
-                .HasForeignKey(h => h.Id_Dispo)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de IncidenciaAreaTecnicaCategoria
+            modelBuilder.Entity<IncidenciaAreaTecnicaCategoria>(entity =>
+            {
+                entity.HasKey(e => e.CaAr_Id);
+            });
 
-            modelBuilder.Entity<HojaDeVida>()
-                .HasOne(h => h.Personal)
-                .WithMany(p => p.HojasDeVida)
-                .HasForeignKey(h => h.Id_Perso)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de IncidenciaEstado
+            modelBuilder.Entity<IncidenciaEstado>(entity =>
+            {
+                entity.HasKey(e => e.InEs_Id);
+            });
 
-            modelBuilder.Entity<HojaDeVida>()
-                .HasOne(h => h.CategoriaProblema)
-                .WithMany(c => c.HojasDeVida)
-                .HasForeignKey(h => h.Id_CatProb)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de IncidenciaPrioridad
+            modelBuilder.Entity<IncidenciaPrioridad>(entity =>
+            {
+                entity.HasKey(e => e.InPr_Id);
+            });
 
-            // Configuración para la entidad Diagnosticos
-            modelBuilder.Entity<Diagnosticos>()
-                .HasOne(d => d.Personal)
-                .WithMany(p => p.Diagnosticos)
-                .HasForeignKey(d => d.Id_Perso)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de Contrato
+            modelBuilder.Entity<Contrato>(entity =>
+            {
+                entity.HasKey(e => e.Cont_Id);
 
-            modelBuilder.Entity<Diagnosticos>()
-                .HasOne(d => d.Incidencia)
-                .WithMany(i => i.Diagnosticos)
-                .HasForeignKey(d => d.Id_Incidencia)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.PersonaGeneral)
+                    .WithMany()
+                    .HasForeignKey(e => e.PeGe_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuración para la entidad PisoOficina
-            modelBuilder.Entity<PisoOficina>()
-                .HasOne(p => p.BloqueEdificio)
-                .WithMany(b => b.PisosOficina)
-                .HasForeignKey(p => p.Id_BloqEdi)
-                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(e => e.Unidad)
+                    .WithMany()
+                    .HasForeignKey(e => e.Unid_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
-            // Configuración para la entidad CategoriaProblema
-            modelBuilder.Entity<CategoriaProblema>()
-                .HasKey(c => c.Id_CatProb);
+            // Configuración de PersonaGeneral
+            modelBuilder.Entity<PersonaGeneral>(entity =>
+            {
+                entity.HasKey(e => e.PeGe_Id);
+            });
+
+            // Configuración de Unidad
+            modelBuilder.Entity<Unidad>(entity =>
+            {
+                entity.HasKey(e => e.Unid_Id);
+            });
+
+            // Configuración de Usuario
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                // Clave primaria
+                entity.HasKey(e => e.Usua_Id);
+
+                // Configuración de la relación con la entidad Contrato
+                entity.HasOne(e => e.Contrato)
+                    .WithMany()
+                    .HasForeignKey(e => e.Cont_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Configuración de la relación con la entidad UsuarioRol
+                entity.HasOne(e => e.UsuarioRol)
+                    .WithMany()
+                    .HasForeignKey(e => e.UsRo_Id)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Configuración de la restricción de unicidad en Cont_Id
+                entity.HasIndex(e => e.Cont_Id)
+                    .IsUnique()
+                    .HasDatabaseName("UQ_Usuario_Cont_Id");
+            });
+
+
+            // Configuración de UsuarioRol
+            modelBuilder.Entity<UsuarioRol>(entity =>
+            {
+                entity.HasKey(e => e.UsRo_Id);
+            });
+
+            // Configuración de InventarioBloqueEdificio
+            modelBuilder.Entity<InventarioBloqueEdificio>(entity =>
+            {
+                entity.HasKey(e => e.BlEd_Id);
+                entity.Property(e => e.BlEd_Nombre).IsRequired().HasMaxLength(50);
+
+                // Configuración de la relación
+                entity.HasMany(e => e.PisosOficinas)
+                      .WithOne(p => p.BloqueEdificio)
+                      .HasForeignKey(p => p.BlEd_Id)
+                      .OnDelete(DeleteBehavior.Cascade); // o DeleteBehavior.Restrict si prefieres
+            });
+
+            // Configuración de InventarioPisoOficina
+            modelBuilder.Entity<InventarioPisoOficina>(entity =>
+            {
+                entity.HasKey(e => e.PiOf_Id);
+                entity.Property(e => e.PiOf_Nombre).IsRequired().HasMaxLength(50);
+
+                // Configuración de la relación
+                entity.HasOne(e => e.BloqueEdificio)
+                      .WithMany(b => b.PisosOficinas)
+                      .HasForeignKey(e => e.BlEd_Id)
+                      .OnDelete(DeleteBehavior.Cascade); // o DeleteBehavior.Restrict si prefieres
+            });
         }
     }
 }

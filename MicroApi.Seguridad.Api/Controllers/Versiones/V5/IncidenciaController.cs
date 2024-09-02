@@ -16,7 +16,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("SelectIncidencias")]
         public async Task<IActionResult> GetIncidencias()
         {
@@ -206,7 +206,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
 
             return Ok(result);
-        }
+        }*/
 
     }
 }

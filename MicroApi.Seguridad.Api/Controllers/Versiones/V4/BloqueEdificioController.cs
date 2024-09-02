@@ -15,26 +15,25 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
         {
             _context = context;
         }
-
+        
         // GET api/v3/persona/salas
         [HttpGet("Bloque o edificio")]
-        public async Task<IActionResult> GetBloqueEdificio()
+        public async Task<IActionResult> GetAll()
         {
-            var BloqueEdificio = await _context.BloqueEdificios
-                .Select(s => new
+            var bloques = await _context.InventarioBloqueEdificios
+                .Select(b => new
                 {
-                    s.Id_BloqEdi,
-                    s.Nom_BloqEdi
-
+                    b.BlEd_Id,
+                    b.BlEd_Nombre
                 })
                 .ToListAsync();
 
-            if (BloqueEdificio == null || !BloqueEdificio.Any())
+            if (bloques == null || !bloques.Any())
             {
-                return NotFound("No se encontraron bloques o edificios.");
+                return NotFound("No se encontraron bloques de edificio.");
             }
 
-            return Ok(BloqueEdificio);
+            return Ok(bloques);
         }
     }
 }

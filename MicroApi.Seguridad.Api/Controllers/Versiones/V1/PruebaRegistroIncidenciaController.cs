@@ -21,22 +21,40 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         [HttpGet]
         public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
         {
-            var personas = await _context.Personals
-                .Include(p => p.ChairaLogin)
-                .ThenInclude(c => c.DependenciaLogin)
-                .Include(p => p.RolModulo)
-                .Where(p => p.ChairaLogin.Doc_ChaLog == docChaLog)
-                .Select(p => new
+            var personas = await _context.Usuarios
+                .Include(u => u.Contrato)
+                    .ThenInclude(c => c.Unidad)
+                .Include(u => u.Contrato)
+                    .ThenInclude(c => c.PersonaGeneral)
+                .Where(u => u.Contrato.PersonaGeneral.PeGe_DocumentoIdentidad == docChaLog)
+                .Select(u => new
                 {
-                    p.ChairaLogin.Nom_ChaLog,
-                    p.ChairaLogin.Ape_ChaLog,
-                    p.ChairaLogin.Doc_ChaLog,
-                    p.ChairaLogin.Cargo_ChaLog,
-                    p.ChairaLogin.DependenciaLogin.Nom_DepenLog,
-                    p.ChairaLogin.DependenciaLogin.Tel_DepenLog,
-                    p.ChairaLogin.DependenciaLogin.IndiTel_DepenLog,
-                    p.ChairaLogin.DependenciaLogin.Val_DepenLog,
-                    p.PromEval_Perso
+                    u.Usua_Id,
+                    u.Usua_PromedioEvaluacion,
+                    u.Usua_Estado,
+                    u.Usua_FechaRegistro,
+                    Contrato = new
+                    {
+                        u.Contrato.Cont_Cargo,
+                        u.Contrato.Cont_FechaInicio,
+                        u.Contrato.Cont_FechaFin,
+                        u.Contrato.Cont_Estado,
+                        Unidad = new
+                        {
+                            u.Contrato.Unidad.Unid_Nombre,
+                            u.Contrato.Unidad.Unid_Telefono,
+                            u.Contrato.Unidad.Unid_ExtTelefono,
+                            u.Contrato.Unidad.Unid_Valor
+                        },
+                        PersonaGeneral = new
+                        {
+                            u.Contrato.PersonaGeneral.PeGe_DocumentoIdentidad,
+                            u.Contrato.PersonaGeneral.PeGe_PrimerNombre,
+                            u.Contrato.PersonaGeneral.PeGe_SegundoNombre,
+                            u.Contrato.PersonaGeneral.PeGe_PrimerApellido,
+                            u.Contrato.PersonaGeneral.PeGe_SegundoApellido
+                        }
+                    }
                 })
                 .ToListAsync();
 
@@ -47,6 +65,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 
             return Ok(personas);
         }
+
 
     }
 }

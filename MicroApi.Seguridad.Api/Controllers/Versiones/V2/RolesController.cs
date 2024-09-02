@@ -1,4 +1,5 @@
-﻿using MicroApi.Seguridad.Domain.Models.PersonalModulo;
+﻿using MicroApi.Seguridad.Domain.Models.Persona;
+using MicroApi.Seguridad.Domain.Models.PersonalModulo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -18,65 +19,145 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
             _context = context;
         }
 
-        [HttpGet("ConsultarInfoChaira")]
-        public async Task<IActionResult> GetChairaLogins([FromQuery] int docChaLog)
+        // GET: api/usuarios/contratos-activos
+        [HttpGet("contratos-activos")]
+        public async Task<IActionResult> GetPersonasConContratosActivos()
         {
-            var chairaLogins = await _context.ChairaLogins
-                .Include(c => c.DependenciaLogin)
-                .Where(c => c.Doc_ChaLog == docChaLog)
+            var personasConContratosActivos = await _context.Contratos
+                .Where(c => c.Cont_Estado == true) // Filtrar contratos activos (Cont_Estado == 1)
                 .Select(c => new
                 {
-                    c.Id_ChaLog,
-                    c.Nom_ChaLog,
-                    c.Ape_ChaLog,
-                    c.Doc_ChaLog,
-                    c.Cargo_ChaLog,
-                    c.DependenciaLogin.Nom_DepenLog,
-                    c.DependenciaLogin.Tel_DepenLog,
-                    c.DependenciaLogin.IndiTel_DepenLog,
-                    c.DependenciaLogin.Val_DepenLog,
+                    PrimerNombre = c.PersonaGeneral.PeGe_PrimerNombre,
+                    SegundoNombre = c.PersonaGeneral.PeGe_SegundoNombre,
+                    PrimerApellido = c.PersonaGeneral.PeGe_PrimerApellido,
+                    SegundoApellido = c.PersonaGeneral.PeGe_SegundoApellido,
+                    DocumentoIdentidad = c.PersonaGeneral.PeGe_DocumentoIdentidad,
+                    Cargo = c.Cont_Cargo,
+                    FechaInicio = c.Cont_FechaInicio,
+                    FechaFin = c.Cont_FechaFin,
+                    NombreUnidad = c.Unidad.Unid_Nombre,
+                    ExtTelefonoUnidad = c.Unidad.Unid_ExtTelefono,
+                    TelefonoUnidad = c.Unidad.Unid_Telefono,
+                    EstadoContrato = c.Cont_Estado
                 })
                 .ToListAsync();
 
-            if (chairaLogins == null || !chairaLogins.Any())
+            if (personasConContratosActivos == null || !personasConContratosActivos.Any())
             {
                 return NotFound();
             }
 
-            return Ok(chairaLogins);
+            return Ok(personasConContratosActivos);
         }
 
-        [HttpPost("AgregarAlModulo")]
-        public async Task<IActionResult> InsertarPersonal([FromBody] CrearPersonal modelo)
+
+
+        [HttpPost("insertar-usuario")]
+        public async Task<IActionResult> InsertarUsuario([FromQuery] int numeroDocumento, [FromQuery] int usRoId)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                // Obtener el Cont_Id del contrato asociado al número de documento, solo si el contrato está activo
+                var contId = await _context.Contratos
+                    .Where(c => c.PersonaGeneral.PeGe_DocumentoIdentidad == numeroDocumento && c.Cont_Estado)
+                    .Select(c => c.Cont_Id)
+                    .FirstOrDefaultAsync();
+
+                // Verifica si se encontró un Cont_Id válido
+                if (contId == 0)
+                {
+                    // Retorna un mensaje informativo si no se encontró un contrato activo
+                    return NotFound(new { Message = "No se encontró un contrato activo para el número de documento proporcionado." });
+                }
+
+                // Verifica si el UsRo_Id es válido
+                var usuarioRolExistente = await _context.UsuarioRoles.AnyAsync(ur => ur.UsRo_Id == usRoId);
+                if (!usuarioRolExistente)
+                {
+                    // Retorna un mensaje informativo si el rol de usuario no existe
+                    return BadRequest(new { Message = "El rol de usuario proporcionado no existe." });
+                }
+
+                // Insertar un nuevo registro en la tabla Usuario
+                var nuevoUsuario = new Usuario
+                {
+                    UsRo_Id = usRoId,
+                    Cont_Id = contId,
+                    Usua_Estado = true,
+                    Usua_FechaRegistro = DateTime.Now
+                };
+
+                _context.Usuarios.Add(nuevoUsuario);
+
+                // Intentar guardar los cambios en la base de datos
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Usuario insertado exitosamente." });
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores y retorno de un mensaje de error
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Se produjo un error al insertar el usuario.", Error = ex.Message });
+            }
+        }
+
+        [HttpGet("personas-contratos-activos")]
+        public async Task<IActionResult> GetUsuariosConContratosActivos()
+        {
+            var usuariosConContratosActivos = await _context.Contratos
+                .Where(c => c.Cont_Estado == true) // Filtrar contratos activos (Cont_Estado == 1)
+                .SelectMany(c => _context.Usuarios
+                    .Where(u => u.Cont_Id == c.Cont_Id)
+                    .Select(u => new
+                    {
+                        PrimerNombre = c.PersonaGeneral.PeGe_PrimerNombre,
+                        SegundoNombre = c.PersonaGeneral.PeGe_SegundoNombre,
+                        PrimerApellido = c.PersonaGeneral.PeGe_PrimerApellido,
+                        SegundoApellido = c.PersonaGeneral.PeGe_SegundoApellido,
+                        DocumentoIdentidad = c.PersonaGeneral.PeGe_DocumentoIdentidad,
+                        EstadoContrato = c.Cont_Estado,
+                        EstadoUsuario = u.Usua_Estado,
+                        RolNombre = u.UsuarioRol.UsRo_Nombre,
+                        FechaRegistro = u.Usua_FechaRegistro,
+                        PromedioEvaluacion = u.Usua_PromedioEvaluacion
+                    })
+                )
+                .ToListAsync();
+
+            if (usuariosConContratosActivos == null || !usuariosConContratosActivos.Any())
+            {
+                return NotFound();
             }
 
-            // Encuentra el ChairaLogin con el número de documento
-            var chairaLogin = await _context.ChairaLogins
-                .FirstOrDefaultAsync(c => c.Doc_ChaLog == modelo.Doc_ChaLog);
+            return Ok(usuariosConContratosActivos);
+        }
 
-            if (chairaLogin == null)
+        [HttpPut("actualizar-rol")]
+        public async Task<IActionResult> UpdateUserRole([FromQuery] int numeroDocumento, [FromQuery] int nuevoRolId)
+        {
+            // Obtén el ID del contrato asociado al número de documento
+            var contrato = await _context.Contratos
+                .Include(c => c.PersonaGeneral)
+                .Where(c => c.PersonaGeneral.PeGe_DocumentoIdentidad == numeroDocumento && c.Cont_Estado == true)
+                .Select(c => new { c.Cont_Id })
+                .FirstOrDefaultAsync();
+
+            if (contrato == null)
             {
-                return NotFound("El ChairaLogin con el número de documento especificado no existe.");
+                return NotFound("No se encontró un contrato activo para el número de documento proporcionado.");
             }
 
-            // Verifica si el RolModulo existe
-            var rolModulo = await _context.RolModulos.FindAsync(modelo.Id_RolModulo);
-            if (rolModulo == null)
+            // Actualiza el rol del usuario asociado al Cont_Id
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Cont_Id == contrato.Cont_Id);
+
+            if (usuario == null)
             {
-                return BadRequest("El RolModulo especificado no existe.");
+                return NotFound("No se encontró un usuario asociado al contrato.");
             }
 
-            var nuevaPersona = new Personal
-            {
-                Id_ChaLog = chairaLogin.Id_ChaLog,
-                Id_RolModulo = modelo.Id_RolModulo
-            };
-
-            _context.Personals.Add(nuevaPersona);
+            usuario.UsRo_Id = nuevoRolId;
+            _context.Usuarios.Update(usuario);
 
             try
             {
@@ -84,93 +165,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
             }
             catch (DbUpdateException ex)
             {
-                // Captura el error y muestra más detalles
-                var errorMessage = $"Error al crear la nueva entrada: {ex.InnerException?.Message ?? ex.Message}";
-                return StatusCode(500, errorMessage);
-            }
-            catch (Exception ex)
-            {
-                // Maneja cualquier otra excepción
-                return StatusCode(500, $"Error inesperado: {ex.Message}");
+                return StatusCode(500, $"Error al actualizar el rol del usuario: {ex.Message}");
             }
 
-            return CreatedAtAction(nameof(GetPersonas), new { id = nuevaPersona.Id_Perso }, nuevaPersona);
-        }
-
-        [HttpGet("ConsultarPersonalModulo")]
-        public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
-        {
-            var personas = await _context.Personals
-                .Include(p => p.ChairaLogin)
-                .ThenInclude(c => c.DependenciaLogin)
-                .Include(p => p.RolModulo)
-                .Where(p => p.ChairaLogin.Doc_ChaLog == docChaLog)
-                .Select(p => new
-                {
-                    p.Id_Perso,
-                    p.ChairaLogin.Nom_ChaLog,
-                    p.ChairaLogin.Ape_ChaLog,
-                    p.ChairaLogin.Doc_ChaLog,
-                    p.ChairaLogin.Cargo_ChaLog,
-                    p.RolModulo.Nom_rolModulo,
-                    p.ChairaLogin.DependenciaLogin.Nom_DepenLog,
-                    p.ChairaLogin.DependenciaLogin.Tel_DepenLog,
-                    p.ChairaLogin.DependenciaLogin.IndiTel_DepenLog,
-                    p.ChairaLogin.DependenciaLogin.Val_DepenLog,
-                    p.PromEval_Perso
-                })
-                .ToListAsync();
-
-            if (personas == null || !personas.Any())
-            {
-                return NotFound();
-            }
-
-            return Ok(personas);
-        }
-
-        [HttpPut("CambiarRolPersonalModulo")]
-        public async Task<IActionResult> UpdatePersonaRolModulo([FromQuery] int docChaLog, [FromBody] int rolModuloId)
-        {
-            // Encuentra el ChairaLogin con el número de documento
-            var chairaLogin = await _context.ChairaLogins
-                .FirstOrDefaultAsync(c => c.Doc_ChaLog == docChaLog);
-
-            if (chairaLogin == null)
-            {
-                return NotFound("El ChairaLogin con el número de documento especificado no existe.");
-            }
-
-            // Encuentra la persona asociada al ChairaLogin
-            var persona = await _context.Personals
-                .FirstOrDefaultAsync(p => p.Id_ChaLog == chairaLogin.Id_ChaLog);
-
-            if (persona == null)
-            {
-                return NotFound("La persona asociada a este número de documento no existe.");
-            }
-
-            // Verifica si el RolModulo existe
-            var rolModulo = await _context.RolModulos.FindAsync(rolModuloId);
-            if (rolModulo == null)
-            {
-                return BadRequest("El RolModulo especificado no existe.");
-            }
-
-            // Actualiza el campo Id_RolModulo
-            persona.Id_RolModulo = rolModuloId;
-
-            // Guarda los cambios en la base de datos
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return StatusCode(500, "Error al actualizar la información");
-            }
-
-            return NoContent(); // Retorna 204 No Content en caso de éxito
+            return Ok("Rol del usuario actualizado exitosamente.");
         }
     }
 }
