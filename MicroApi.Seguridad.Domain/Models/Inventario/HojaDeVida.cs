@@ -1,5 +1,4 @@
-﻿using MicroApi.Seguridad.Domain.Models.PersonalModulo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -44,8 +43,8 @@ namespace MicroApi.Seguridad.Domain.Models.Inventario
         [ForeignKey("Id_Dispo")]
         public virtual Dispositivos Dispositivo { get; set; }
 
-        [ForeignKey("Id_Perso")]
-        public virtual Personal Personal { get; set; }
+       // [ForeignKey("Id_Perso")]
+       // public virtual Personal Personal { get; set; }
 
         [ForeignKey("Id_CatProb")]
         public virtual CategoriaProblema CategoriaProblema { get; set; }

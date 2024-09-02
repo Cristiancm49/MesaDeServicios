@@ -1,5 +1,4 @@
 ﻿using MicroApi.Seguridad.Domain.Models;
-using MicroApi.Seguridad.Domain.Models.PersonalModulo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

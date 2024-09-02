@@ -1,5 +1,4 @@
-﻿using MicroApi.Seguridad.Domain.Models.Chaira;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -58,8 +57,8 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencias
         public double? PromEval_Incidencias { get; set; }
 
         // Propiedades de navegación
-        public virtual ChairaLogin ChairaLoginSolicitante { get; set; }
-        public virtual ChairaLogin ChairaLoginAdminExc { get; set; }
+        //public virtual ChairaLogin ChairaLoginSolicitante { get; set; }
+       // public virtual ChairaLogin ChairaLoginAdminExc { get; set; }
         public virtual AreaTecnica AreaTecnica { get; set; }
         public virtual EstadoIncidencia EstadoIncidencia { get; set; }
         public virtual Prioridad Prioridad { get; set; }

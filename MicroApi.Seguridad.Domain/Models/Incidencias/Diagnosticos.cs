@@ -1,5 +1,4 @@
-﻿using MicroApi.Seguridad.Domain.Models.PersonalModulo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -42,8 +41,8 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencias
 
         public string MotivDevol_Diag { get; set; }
 
-        [ForeignKey("Id_Perso")]
-        public virtual Personal Personal { get; set; }
+       // [ForeignKey("Id_Perso")]
+        //public virtual Personal Personal { get; set; }
 
         [ForeignKey("Id_Incidencia")]
         public virtual Incidencia Incidencia { get; set; }
