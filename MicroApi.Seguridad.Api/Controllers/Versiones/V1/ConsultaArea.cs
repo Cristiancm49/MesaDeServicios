@@ -17,25 +17,26 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             _context = context;
         }
 
+        // GET api/v3/Areas
         [HttpGet("GetAreas")]
-        public async Task<IActionResult> GetAreas([FromQuery] int CaAr_Id)
+        public async Task<IActionResult> GetCategorias()
         {
-            var areas = await _context.IncidenciasAreaTecnica
-                .Where(a => a.CaAr_Id == CaAr_Id)
-                .Select(a => new
+            var areastec = await _context.IncidenciasAreaTecnica
+                .Select(c => new
                 {
-                    a.ArTe_Id,
-                    a.ArTe_Nombre,
-                    a.ArTe_Valor
+                    c.ArTe_Id,
+                    c.ArTe_Nombre,
+                    c.ArTe_Valor,
+                    c.CaAr_Id
                 })
                 .ToListAsync();
 
-            if (areas == null || !areas.Any())
+            if (areastec == null || !areastec.Any())
             {
                 return NotFound();
             }
 
-            return Ok(areas);
+            return Ok(areastec);
         }
     }
 }

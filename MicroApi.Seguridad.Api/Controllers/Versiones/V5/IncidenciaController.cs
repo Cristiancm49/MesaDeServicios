@@ -1,4 +1,5 @@
-﻿using MicroApi.Seguridad.Domain.Models.Incidencias;
+﻿using MicroApi.Seguridad.Domain.Models.Incidencia;
+using MicroApi.Seguridad.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
+
         [HttpGet("SolicitarIncidencias/{documentoIdentidad}")]
         public async Task<IActionResult> GetContratosPorDocumento(int documentoIdentidad)
         {
@@ -76,6 +78,75 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(usuarios);
         }
+
+        [HttpGet("CatAreasTec")]
+        public async Task<IActionResult> GetCategorias()
+        {
+            var categorias = await _context.IncidenciasAreaTecnicaCategoria
+                .Select(c => new
+                {
+                    c.CaAr_Id,
+                    c.CaAr_Nombre,
+                    c.CaAr_Valor
+                })
+                .ToListAsync();
+
+            if (categorias == null || !categorias.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(categorias);
+        }
+
+        [HttpGet("AreasTec")]
+        public async Task<IActionResult> GetAreasTec()
+        {
+            var areastec = await _context.IncidenciasAreaTecnica
+                .Select(c => new
+                {
+                    c.ArTe_Id,
+                    c.ArTe_Nombre,
+                    c.ArTe_Valor,
+                    c.CaAr_Id
+                })
+                .ToListAsync();
+
+            if (areastec == null || !areastec.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(areastec);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateIncidencia([FromBody] IncidenciaDto incidenciaDto)
+        {
+            try
+            {
+                var incidencia = new Incidencia
+                {
+                    Cont_IdSolicitante = incidenciaDto.Cont_IdSolicitante,
+                    Inci_EsExc = incidenciaDto.Inci_EsExc,
+                    Usua_IdAdminExc = incidenciaDto.Usua_IdAdminExc,
+                    Inci_FechaRegistro = incidenciaDto.Inci_FechaRegistro,
+                    ArTe_Id = incidenciaDto.ArTe_Id,
+                    Inci_Descripcion = incidenciaDto.Inci_Descripcion,
+                    Inci_ValorTotal = incidenciaDto.Inci_ValorTotal
+                };
+
+                _context.Incidencias.Add(incidencia);
+                await _context.SaveChangesAsync();
+                return Ok(incidencia);
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar el error
+                return BadRequest(new { message = "Error al guardar la incidencia", details = ex.Message });
+            }
+        }
+
         /*
         [HttpGet("SelectIncidencias")]
         public async Task<IActionResult> GetIncidencias()
@@ -185,7 +256,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return CreatedAtAction(nameof(InsertIncidencia), new { id = nuevaIncidencia.Id_Incidencias }, nuevaIncidencia);
         }
-        
+
         [HttpGet("SelectIncidenciasRegistradas")]
         public async Task<IActionResult> GetIncidenciasRegistradas()
         {
@@ -224,7 +295,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             return Ok(result);
         }
 
-        
+
         [HttpGet("SelectIncidenciasXEstado")]
         public async Task<IActionResult> GetIncidenciasPorEstado([FromQuery] string estado)
         {
@@ -267,6 +338,5 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(result);
         }*/
-
     }
 }

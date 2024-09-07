@@ -25,7 +25,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
                 .Select(c => new
                 {
                     c.CaAr_Id,
-                    c.CaAr_Nombre
+                    c.CaAr_Nombre,
+                    c.CaAr_Valor
                 })
                 .ToListAsync();
 

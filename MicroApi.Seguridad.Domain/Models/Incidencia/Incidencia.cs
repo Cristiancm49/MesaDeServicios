@@ -39,10 +39,7 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
         public byte[] Inci_Evidencia { get; set; }
 
         [Required]
-        public float Inci_ValorTotal { get; set; }
-
-        [Required]
-        public int InEs_Id { get; set; }  // Default value is 1
+        public int Inci_ValorTotal { get; set; }
 
         [Required]
         public int InPr_Id { get; set; }
@@ -60,9 +57,6 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
 
         [ForeignKey("ArTe_Id")]
         public virtual IncidenciaAreaTecnica AreaTecnica { get; set; }
-
-        [ForeignKey("InEs_Id")]
-        public virtual IncidenciaEstado Estado { get; set; }
 
         [ForeignKey("InPr_Id")]
         public virtual IncidenciaPrioridad Prioridad { get; set; }

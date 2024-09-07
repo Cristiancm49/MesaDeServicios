@@ -18,7 +18,6 @@ namespace MicroApi.Seguridad.Api
         public DbSet<Incidencia> Incidencias { get; set; }
         public DbSet<IncidenciaAreaTecnica> IncidenciasAreaTecnica { get; set; }
         public DbSet<IncidenciaAreaTecnicaCategoria> IncidenciasAreaTecnicaCategoria { get; set; }
-        public DbSet<IncidenciaEstado> IncidenciasEstado { get; set; }
         public DbSet<IncidenciaPrioridad> IncidenciasPrioridad { get; set; }
         public DbSet<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
         public DbSet<IncidenciaTrazabilidadEstado> IncidenciasTrazabilidadEstado { get; set; }
@@ -77,11 +76,6 @@ namespace MicroApi.Seguridad.Api
                 entity.HasOne(e => e.Prioridad)
                     .WithMany(p => p.Incidencia)
                     .HasForeignKey(e => e.InPr_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.Estado)
-                    .WithMany(es => es.Incidencia)
-                    .HasForeignKey(e => e.InEs_Id)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -233,6 +227,10 @@ namespace MicroApi.Seguridad.Api
                 entity.Property(e => e.UsRo_Nombre)
                     .HasMaxLength(50);
             });
+
+            //Trigger de incidencia
+            modelBuilder.Entity<Incidencia>()
+                .ToTable(tb => tb.HasTrigger("trg_UpdateIncidencia"));
         }
 
     }
