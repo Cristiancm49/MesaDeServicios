@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MicroApi.Seguridad.Data.Context;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
 {

@@ -5,7 +5,7 @@ using MicroApi.Seguridad.Domain.Models.Persona;
 using MicroApi.Seguridad.Domain.Models.Encuesta;
 using MicroApi.Seguridad.Domain.Models.Trazabilidad;
 
-namespace MicroApi.Seguridad.Api
+namespace MicroApi.Seguridad.Data.Context
 {
     public class ModelContextSQL : DbContext
     {
@@ -232,6 +232,5 @@ namespace MicroApi.Seguridad.Api
             modelBuilder.Entity<Incidencia>()
                 .ToTable(tb => tb.HasTrigger("trg_UpdateIncidencia"));
         }
-
     }
 }

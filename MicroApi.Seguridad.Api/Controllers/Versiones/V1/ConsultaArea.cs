@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MicroApi.Seguridad.Domain.Models.Incidencia;
+using MicroApi.Seguridad.Data.Context;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
