@@ -65,7 +65,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                                                        (p.PeGe_SegundoApellido ?? ""),
                                       r.UsRo_Nombre,
                                       c.Cont_Estado,
-                                      u.Usua_Estado
+                                      u.Usua_Estado,
+                                      u.Usua_Id
                                   }).ToListAsync();
 
             if (usuarios == null || !usuarios.Any())
