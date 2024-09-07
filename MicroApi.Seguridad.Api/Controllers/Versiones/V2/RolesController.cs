@@ -70,7 +70,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
                 }
 
                 // Verifica si el UsRo_Id es válido
-                var usuarioRolExistente = await _context.UsuarioRoles.AnyAsync(ur => ur.UsRo_Id == usRoId);
+                var usuarioRolExistente = await _context.UsuariosRoles.AnyAsync(ur => ur.UsRo_Id == usRoId);
                 if (!usuarioRolExistente)
                 {
                     // Retorna un mensaje informativo si el rol de usuario no existe

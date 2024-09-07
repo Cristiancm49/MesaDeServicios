@@ -12,25 +12,27 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
     public class PersonaGeneral
     {
         [Key]
-        [Column("PeGe_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PeGe_Id { get; set; }
 
         [Required]
-        [Column("PeGe_DocumentoIdentidad")]
         public int PeGe_DocumentoIdentidad { get; set; }
 
         [Required]
-        [Column("PeGe_PrimerNombre")]
+        [MaxLength(50)]
         public string PeGe_PrimerNombre { get; set; }
 
-        [Column("PeGe_SegundoNombre")]
-        public string? PeGe_SegundoNombre { get; set; }
+        [MaxLength(50)]
+        public string PeGe_SegundoNombre { get; set; }
 
         [Required]
-        [Column("PeGe_PrimerApellido")]
+        [MaxLength(50)]
         public string PeGe_PrimerApellido { get; set; }
 
-        [Column("PeGe_SegundoApellido")]
-        public string? PeGe_SegundoApellido { get; set; }
+        [MaxLength(50)]
+        public string PeGe_SegundoApellido { get; set; }
+
+        // Relación con Contrato
+        public virtual ICollection<Contrato> Contratos { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
         [HttpGet("Bloque o edificio")]
         public async Task<IActionResult> GetAll()
         {
-            var bloques = await _context.InventarioBloqueEdificios
+            var bloques = await _context.InventariosBloquesEdificio
                 .Select(b => new
                 {
                     b.BlEd_Id,

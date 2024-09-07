@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencia
 {
@@ -12,11 +8,14 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
     public class IncidenciaPrioridad
     {
         [Key]
-        [Column("InPr_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InPr_Id { get; set; }
 
         [Required]
-        [Column("InPr_Tipo")]
+        [MaxLength(50)]
         public string InPr_Tipo { get; set; }
+
+        // Relación con Incidencia
+        public virtual ICollection<Incidencia> Incidencia { get; set; }
     }
 }

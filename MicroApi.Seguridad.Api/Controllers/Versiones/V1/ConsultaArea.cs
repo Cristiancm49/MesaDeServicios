@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MicroApi.Seguridad.Domain.Models.Incidencias;
+using MicroApi.Seguridad.Domain.Models.Incidencia;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
@@ -20,7 +20,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         [HttpGet("GetAreas")]
         public async Task<IActionResult> GetAreas([FromQuery] int CaAr_Id)
         {
-            var areas = await _context.IncidenciaAreaTecnicas
+            var areas = await _context.IncidenciasAreaTecnica
                 .Where(a => a.CaAr_Id == CaAr_Id)
                 .Select(a => new
                 {

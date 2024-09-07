@@ -16,6 +16,65 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
+        [HttpGet("SolicitarIncidencias/{documentoIdentidad}")]
+        public async Task<IActionResult> GetContratosPorDocumento(int documentoIdentidad)
+        {
+            var contratos = await (from c in _context.Contratos
+                                   join u in _context.Unidades on c.Unid_Id equals u.Unid_Id
+                                   join p in _context.PersonasGenerales on c.PeGe_Id equals p.PeGe_Id into personaJoin
+                                   from p in personaJoin.DefaultIfEmpty() // LEFT JOIN
+                                   where c.Cont_Estado == true && p.PeGe_DocumentoIdentidad == documentoIdentidad
+                                   select new
+                                   {
+                                       c.Cont_Id,
+                                       p.PeGe_DocumentoIdentidad,
+                                       NombreCompleto = p.PeGe_PrimerNombre + " " +
+                                                        (p.PeGe_SegundoNombre ?? "") + " " +
+                                                        p.PeGe_PrimerApellido + " " +
+                                                        (p.PeGe_SegundoApellido ?? ""),
+                                       c.Cont_Cargo,
+                                       u.Unid_ExtTelefono,
+                                       u.Unid_Nombre,
+                                       u.Unid_Telefono,
+                                       u.Unid_Valor,
+                                       c.Cont_Estado
+                                   }).ToListAsync();
+
+            if (contratos == null || !contratos.Any())
+            {
+                return NotFound(new { message = "No se encontraron contratos activos para el documento proporcionado." });
+            }
+
+            return Ok(contratos);
+        }
+
+        [HttpGet("InscribirAdmin/{documentoIdentidad}")]
+        public async Task<IActionResult> GetUsuarioPorDocumento(int documentoIdentidad)
+        {
+            var usuarios = await (from u in _context.Usuarios
+                                  join c in _context.Contratos on u.Cont_Id equals c.Cont_Id
+                                  join r in _context.UsuariosRoles on u.UsRo_Id equals r.UsRo_Id
+                                  join p in _context.PersonasGenerales on c.PeGe_Id equals p.PeGe_Id
+                                  where r.UsRo_Nombre == "Administrador" && p.PeGe_DocumentoIdentidad == documentoIdentidad
+                                  select new
+                                  {
+                                      p.PeGe_DocumentoIdentidad,
+                                      NombreCompleto = p.PeGe_PrimerNombre + " " +
+                                                       (p.PeGe_SegundoNombre ?? "") + " " +
+                                                       p.PeGe_PrimerApellido + " " +
+                                                       (p.PeGe_SegundoApellido ?? ""),
+                                      r.UsRo_Nombre,
+                                      c.Cont_Estado,
+                                      u.Usua_Estado
+                                  }).ToListAsync();
+
+            if (usuarios == null || !usuarios.Any())
+            {
+                return NotFound(new { message = "No se encontraron usuarios con el rol de Administrador para el documento proporcionado." });
+            }
+
+            return Ok(usuarios);
+        }
         /*
         [HttpGet("SelectIncidencias")]
         public async Task<IActionResult> GetIncidencias()

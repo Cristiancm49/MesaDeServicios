@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MicroApi.Seguridad.Domain.Models.Inventario;
 
 namespace MicroApi.Seguridad.Domain.Models.Persona
 {
@@ -12,35 +13,37 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
     public class Contrato
     {
         [Key]
-        [Column("Cont_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Cont_Id { get; set; }
 
         [Required]
-        [Column("Cont_Cargo")]
+        [MaxLength(50)]
         public string Cont_Cargo { get; set; }
 
         [Required]
-        [Column("Cont_FechaInicio")]
         public DateTime Cont_FechaInicio { get; set; }
 
         [Required]
-        [Column("Cont_FechaFin")]
         public DateTime Cont_FechaFin { get; set; }
 
         [Required]
-        [Column("Cont_Estado")]
         public bool Cont_Estado { get; set; }
 
-        [ForeignKey("Unidad")]
-        [Column("Unid_Id")]
+        [Required]
         public int Unid_Id { get; set; }
 
-        [ForeignKey("PersonaGeneral")]
-        [Column("PeGe_Id")]
         public int? PeGe_Id { get; set; }
 
-        // Propiedades de navegación
+        // Relaciones
+        [ForeignKey("PeGe_Id")]
+        public virtual PersonaGeneral PersonaGeneral { get; set; }
+
+        [ForeignKey("Unid_Id")]
         public virtual Unidad Unidad { get; set; }
-        public virtual PersonaGeneral? PersonaGeneral { get; set; }
+
+        // Relación con Usuario
+        public virtual ICollection<Usuario> Usuarios { get; set; }
+        public virtual ICollection<Incidencia.Incidencia> Incidencia { get; set; }
+        public virtual ICollection<Responsable> Responsables{ get; set; }
     }
 }

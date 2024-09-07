@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencia
 {
@@ -12,18 +8,17 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
     public class IncidenciaAreaTecnicaCategoria
     {
         [Key]
-        [Column("CaAr_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CaAr_Id { get; set; }
 
         [Required]
-        [Column("CaAr_Nombre")]
+        [MaxLength(50)]
         public string CaAr_Nombre { get; set; }
 
         [Required]
-        [Column("CaAr_Valor")]
         public int CaAr_Valor { get; set; }
 
-        // Propiedades de navegación
-        public virtual ICollection<IncidenciaAreaTecnica> IncidenciaAreaTecnicas { get; set; }
+        // Relación con IncidenciaAreaTecnica
+        public virtual ICollection<IncidenciaAreaTecnica> IncidenciasAreaTecnica { get; set; }
     }
 }

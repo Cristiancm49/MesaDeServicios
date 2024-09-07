@@ -21,7 +21,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         [HttpGet("GetCategorias")]
         public async Task<IActionResult> GetCategorias()
         {
-            var categorias = await _context.IncidenciaAreaTecnicaCategorias
+            var categorias = await _context.IncidenciasAreaTecnicaCategoria
                 .Select(c => new
                 {
                     c.CaAr_Id,

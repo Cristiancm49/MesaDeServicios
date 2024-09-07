@@ -12,23 +12,23 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
     public class Unidad
     {
         [Key]
-        [Column("Unid_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Unid_Id { get; set; }
 
         [Required]
-        [Column("Unid_Nombre")]
+        [MaxLength(50)]
         public string Unid_Nombre { get; set; }
 
         [Required]
-        [Column("Unid_Telefono")]
         public int Unid_Telefono { get; set; }
 
         [Required]
-        [Column("Unid_ExtTelefono")]
         public int Unid_ExtTelefono { get; set; }
 
         [Required]
-        [Column("Unid_Valor")]
         public double Unid_Valor { get; set; }
+
+        // Relación con Contrato
+        public virtual ICollection<Contrato> Contratos { get; set; }
     }
 }

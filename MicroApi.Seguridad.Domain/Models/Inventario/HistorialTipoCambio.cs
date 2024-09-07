@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models.Inventario
 {
-    [Table("InventarioBloqueEdificio")]
-    public class InventarioBloqueEdificio
+    [Table("HistorialTipoCambio")]
+    public class HistorialTipoCambio
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int BlEd_Id { get; set; }
+        public int HiTiCa_id { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string BlEd_Nombre { get; set; }
+        public string HiTiCa_Nombre { get; set; }
 
-        // Relación con InventarioPisoOficina
-        public virtual ICollection<InventarioPisoOficina> PisosOficina { get; set; }
+        // Relación con HistorialCambios
+        public virtual ICollection<HistorialCambios> HistorialesCambios { get; set; }
     }
 }

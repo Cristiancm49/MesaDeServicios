@@ -12,20 +12,21 @@ namespace MicroApi.Seguridad.Domain.Models.Inventario
     public class InventarioPisoOficina
     {
         [Key]
-        [Column("PiOf_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PiOf_Id { get; set; }
 
-        [Column("PiOf_Nombre")]
         [Required]
-        [StringLength(50)]
+        [MaxLength(50)]
         public string PiOf_Nombre { get; set; }
 
-        [Column("BlEd_Id")]
+        [Required]
         public int BlEd_Id { get; set; }
 
-        // Navigation property
+        // Relación con InventarioBloqueEdificio
         [ForeignKey("BlEd_Id")]
-        public InventarioBloqueEdificio BloqueEdificio { get; set; }
-    }
+        public virtual InventarioBloqueEdificio BloqueEdificio { get; set; }
 
+        // Relación con InventarioGeneral
+        public virtual ICollection<InventarioGeneral> InventariosGenerales { get; set; }
+    }
 }

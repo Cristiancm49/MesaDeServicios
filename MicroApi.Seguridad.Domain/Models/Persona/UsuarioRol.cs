@@ -12,11 +12,14 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
     public class UsuarioRol
     {
         [Key]
-        [Column("UsRo_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UsRo_Id { get; set; }
 
         [Required]
-        [Column("UsRo_Nombre")]
+        [MaxLength(50)]
         public string UsRo_Nombre { get; set; }
+
+        // Relación con Usuario
+        public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

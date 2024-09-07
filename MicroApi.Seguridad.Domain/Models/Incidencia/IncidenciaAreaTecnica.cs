@@ -8,22 +8,23 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
     public class IncidenciaAreaTecnica
     {
         [Key]
-        [Column("ArTe_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ArTe_Id { get; set; }
 
         [Required]
-        [Column("ArTe_Nombre")]
+        [MaxLength(50)]
         public string ArTe_Nombre { get; set; }
 
         [Required]
-        [Column("ArTe_Valor")]
         public int ArTe_Valor { get; set; }
 
-        [ForeignKey("IncidenciaAreaTecnicaCategoria")]
-        [Column("CaAr_Id")]
+        [Required]
         public int CaAr_Id { get; set; }
 
-        // Propiedad de navegación
-        public virtual IncidenciaAreaTecnicaCategoria IncidenciaAreaTecnicaCategoria { get; set; }
+        [ForeignKey("CaAr_Id")]
+        public virtual IncidenciaAreaTecnicaCategoria Categoria { get; set; }
+
+        // Relación con Incidencia
+        public virtual ICollection<Incidencia> Incidencia { get; set; }
     }
 }

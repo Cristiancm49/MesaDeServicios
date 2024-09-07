@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MicroApi.Seguridad.Domain.Models.Encuesta;
+using MicroApi.Seguridad.Domain.Models.Trazabilidad;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencia
 {
@@ -14,77 +16,58 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
     public class Incidencia
     {
         [Key]
-        [Column("Inci_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Inci_Id { get; set; }
 
         [Required]
-        [ForeignKey("ContratoSolicitante")]
-        [Column("Cont_IdSolicitante")]
         public int Cont_IdSolicitante { get; set; }
 
         [Required]
-        [Column("Inci_EsExc")]
-        [DefaultValue(false)]
-        public bool Inci_EsExc { get; set; }
+        public bool Inci_EsExc { get; set; }  // Default value is false (0)
 
-        [ForeignKey("ContratoAdminExc")]
-        [Column("Cont_IdAdminExc")]
-        public int? Cont_IdAdminExc { get; set; }
+        public int? Usua_IdAdminExc { get; set; }
 
         [Required]
-        [Column("Inci_FechaHora")]
-        public DateTime Inci_FechaHora { get; set; }
+        public DateTime Inci_FechaRegistro { get; set; }
 
         [Required]
-        [ForeignKey("AreaTecnica")]
-        [Column("ArTe_Id")]
         public int ArTe_Id { get; set; }
 
         [Required]
-        [Column("Inci_Descripcion")]
         public string Inci_Descripcion { get; set; }
 
-        [Column("Inci_Evidencia")]
-        public byte[]? Inci_Evidencia { get; set; }
+        public byte[] Inci_Evidencia { get; set; }
 
         [Required]
-        [Column("Inci_ValorTotal")]
-        public double Inci_ValorTotal { get; set; }
+        public float Inci_ValorTotal { get; set; }
 
         [Required]
-        [ForeignKey("EstadoIncidencia")]
-        [Column("InEs_Id")]
-        [DefaultValue(1)]
-        public int InEs_Id { get; set; }
+        public int InEs_Id { get; set; }  // Default value is 1
 
         [Required]
-        [ForeignKey("PrioridadIncidencia")]
-        [Column("InPr_Id")]
         public int InPr_Id { get; set; }
 
-        [ForeignKey("Usuario")]
-        [Column("Usua_Id")]
-        public int? Usua_Id { get; set; }
+        public string Inci_MotivoRechazo { get; set; }
 
-        [MaxLength(50)]
-        [Column("Inci_EscaladoA")]
-        public string? Inci_EscaladoA { get; set; }
-
-        [Column("Inci_MotivRechazo")]
-        public string? Inci_MotivRechazo { get; set; }
-
-        [Column("Inci_FechaCierre")]
         public DateTime? Inci_FechaCierre { get; set; }
 
-        [Column("Inci_Resolucion")]
-        public string? Inci_Resolucion { get; set; }
+        // Relaciones
+        [ForeignKey("Usua_IdAdminExc")]
+        public virtual Usuario AdminExc { get; set; }
 
-        // Propiedades de navegación
-        public virtual Contrato ContratoSolicitante { get; set; }
-        public virtual Contrato ContratoAdminExc { get; set; }
-        public virtual IncidenciaAreaTecnica IncidenciaAreaTecnica { get; set; }
-        public virtual IncidenciaEstado IncidenciaEstado { get; set; }
-        public virtual IncidenciaPrioridad IncidenciaPrioridad { get; set; }
-        public virtual Usuario Usuario { get; set; }
+        [ForeignKey("Cont_IdSolicitante")]
+        public virtual Contrato Solicitante { get; set; }
+
+        [ForeignKey("ArTe_Id")]
+        public virtual IncidenciaAreaTecnica AreaTecnica { get; set; }
+
+        [ForeignKey("InEs_Id")]
+        public virtual IncidenciaEstado Estado { get; set; }
+
+        [ForeignKey("InPr_Id")]
+        public virtual IncidenciaPrioridad Prioridad { get; set; }
+
+        public virtual ICollection<EncuestaCalidad> EncuestaCalidad { get; set; }
+        public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
     }
 }

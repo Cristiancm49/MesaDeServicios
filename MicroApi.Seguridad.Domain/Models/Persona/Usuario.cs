@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MicroApi.Seguridad.Domain.Models.Trazabilidad;
+using MicroApi.Seguridad.Domain.Models.Inventario;
 
 namespace MicroApi.Seguridad.Domain.Models.Persona
 {
@@ -12,30 +14,33 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
     public class Usuario
     {
         [Key]
-        [Column("Usua_Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Usua_Id { get; set; }
 
-        [Column("Usua_PromedioEvaluacion")]
         public double? Usua_PromedioEvaluacion { get; set; }
 
-        [ForeignKey("UsuarioRol")]
-        [Column("UsRo_Id")]
+        [Required]
         public int UsRo_Id { get; set; }
 
         [Required]
-        [Column("Usua_Estado")]
         public bool Usua_Estado { get; set; }
 
-        [ForeignKey("Contrato")]
-        [Column("Cont_Id")]
-        public int? Cont_Id { get; set; }
+        [Required]
+        public int Cont_Id { get; set; }
 
         [Required]
-        [Column("Usua_FechaRegistro")]
         public DateTime Usua_FechaRegistro { get; set; }
 
-        // Propiedades de navegación
-        public virtual Contrato? Contrato { get; set; }
+        // Relaciones
+        [ForeignKey("Cont_Id")]
+        public virtual Contrato Contrato { get; set; }
+
+        [ForeignKey("UsRo_Id")]
         public virtual UsuarioRol UsuarioRol { get; set; }
+
+        public virtual ICollection<Incidencia.Incidencia> Incidencia { get; set; }
+        public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
+        public virtual ICollection<HistorialCambios> HistorialesCambios { get; set; }
+        public virtual ICollection<InventarioGeneral> InventariosGenerales { get; set; }
     }
 }
