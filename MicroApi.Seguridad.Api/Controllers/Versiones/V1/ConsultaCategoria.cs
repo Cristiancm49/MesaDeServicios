@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MicroApi.Seguridad.Data.Context;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
@@ -17,26 +18,25 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         }
 
 
-        // GET api/v3/persona?docChaLog=1004446325
-        [HttpGet]
-        public async Task<IActionResult> GetCategorias([FromQuery] int docChaLog)
+        // GET api/v3/categorias
+        [HttpGet("GetCategorias")]
+        public async Task<IActionResult> GetCategorias()
         {
-            var areas = await _context.Categorias
-                
-                .Select(a => new
+            var categorias = await _context.IncidenciasAreaTecnicaCategoria
+                .Select(c => new
                 {
-                    a.Id_CatAre,
-                    a.Nom_CatAre
+                    c.CaAr_Id,
+                    c.CaAr_Nombre,
+                    c.CaAr_Valor
                 })
                 .ToListAsync();
 
-            if (areas == null || !areas.Any())
+            if (categorias == null || !categorias.Any())
             {
                 return NotFound();
             }
 
-            return Ok(areas);
+            return Ok(categorias);
         }
-
     }
 }

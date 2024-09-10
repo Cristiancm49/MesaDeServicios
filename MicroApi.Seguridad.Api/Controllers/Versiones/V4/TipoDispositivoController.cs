@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using MicroApi.Seguridad.Data.Context;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
 {
@@ -15,7 +16,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
         {
             _context = context;
         }
-
+        /*
         [HttpGet("Tipo de dispositivo")]
         public async Task<IActionResult> GetTipoDispositivo()
         {
@@ -34,6 +35,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V4
             }
 
             return Ok(BloqueEdificio);
-        }
+        }*/
     }
 }

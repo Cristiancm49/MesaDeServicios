@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MicroApi.Seguridad.Domain.Models.Incidencias;
+using MicroApi.Seguridad.Domain.Models.Incidencia;
+using MicroApi.Seguridad.Data.Context;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
@@ -17,26 +18,26 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAreas([FromQuery] int Id_CatAre)
+        // GET api/v3/Areas
+        [HttpGet("GetAreas")]
+        public async Task<IActionResult> GetCategorias()
         {
-            var areas = await _context.AreaTecnicas
-                .Where(a => a.Id_CatAre == Id_CatAre)
-                .Select(a => new
+            var areastec = await _context.IncidenciasAreaTecnica
+                .Select(c => new
                 {
-                    a.Id_AreaTec,
-                    a.Nom_AreaTec,
-                    a.Val_AreaTec
-
+                    c.ArTe_Id,
+                    c.ArTe_Nombre,
+                    c.ArTe_Valor,
+                    c.CaAr_Id
                 })
                 .ToListAsync();
 
-            if (areas == null || !areas.Any())
+            if (areastec == null || !areastec.Any())
             {
                 return NotFound();
             }
 
-            return Ok(areas);
+            return Ok(areastec);
         }
     }
 }
