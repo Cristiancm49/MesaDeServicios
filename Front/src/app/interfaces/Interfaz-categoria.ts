@@ -1,5 +1,6 @@
 export interface Categorias {
-    id_CatAre: number;
-    nom_CatAre: string;
+    caAr_Id: number,
+    caAr_Nombre: string,
+    caAr_Valor: number
   }
   

@@ -1,12 +1,11 @@
 export interface DatosAdmin {
-  id_ChaLog: number;
-  nom_ChaLog: string;
-  ape_ChaLog: string;
-  doc_ChaLog: number;
-  cargo_ChaLog: string;
-  nom_DepenLog: string;
-  tel_DepenLog: string;
-  indiTel_DepenLog: string;
-  val_DepenLog: number;
+  peGe_DocumentoIdentidad: number;
+  nombreCompleto: string;
+  usRo_Nombre: string;
+  cont_Estado: boolean;
+  usua_Estado: boolean;
+  usua_Id: number;
+  cont_Id: number;
 }
+
   

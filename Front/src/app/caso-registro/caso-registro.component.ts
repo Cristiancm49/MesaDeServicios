@@ -65,7 +65,7 @@ export class CasoRegistroComponent implements OnInit {
   loadDatosUser() {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
-    this.casoRegistroService.getDatosUsuario(1004446325).subscribe({
+    this.casoRegistroService.getDatosUsuario(1234567890).subscribe({
       next: (data) => {
         this.DatosUsuario = data;
         this.isLoading = false;
@@ -80,7 +80,7 @@ export class CasoRegistroComponent implements OnInit {
 
   loadCategorias() {
     this.isLoading = true;
-    this.casoRegistroService.getCategorias(1).subscribe({
+    this.casoRegistroService.getCategorias().subscribe({
       next: (data) => {
         this.catego = data;
         this.isLoading = false;
@@ -118,7 +118,7 @@ export class CasoRegistroComponent implements OnInit {
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.idSolicitante_Incidencias = this.DatosUsuario[0].id_ChaLog;
+      //this.incidencia.idSolicitante_Incidencias = this.DatosUsuario[0].cont_Id;
     }
 
     console.log('id_Incidencias:', this.incidencia.id_Incidencias);

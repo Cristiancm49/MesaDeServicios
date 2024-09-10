@@ -12,11 +12,11 @@ import {Incidencia} from '../../interfaces/Insert-Incidencia';
   providedIn: 'root'
 })
 export class CasoRegistroService {
-  private apiUrl = 'https://localhost:44346/api/v1/ConsultaArea';
-  private apiDatosUsurio = 'https://localhost:44346/api/v5/Incidencia/SelectSolicitante';
-  private apiCategorias ="https://localhost:44346/api/v3/ConsultaCategoria"
+  private apiUrl = 'https://localhost:44346/api/v5/Incidencia/AreasTec';
+  private apiDatosUsurio = 'https://localhost:44346/api/v5/Incidencia/SolicitarIncidencias';
+  private apiCategorias ="https://localhost:44346/api/v5/Incidencia/CatAreasTec"
   private apiInsertIncidencia = 'https://localhost:44346/api/v5/Incidencia/InsertIncidencia';
-  private apiDatosAdmin= 'https://localhost:44346/api/v5/Incidencia/SelectSolicitante';
+  private apiDatosAdmin= 'https://localhost:44346/api/v5/Incidencia/InscribirAdmin';
 
   constructor(private http: HttpClient) { }
 
@@ -24,16 +24,16 @@ export class CasoRegistroService {
     return this.http.get<AreaTec[]>(`${this.apiUrl}?Id_CatAre=${Id_CatAre}`);
   }
 
-  getDatosUsuario(docChaLog: number): Observable<DatosUser[]> {
-    return this.http.get<DatosUser[]>(`${this.apiDatosUsurio}?docChaLog=${docChaLog}`);
+  getDatosUsuario(peGe_DocumentoIdentidad: number): Observable<DatosUser[]> {
+    return this.http.get<DatosUser[]>(`${this.apiDatosUsurio}/${peGe_DocumentoIdentidad}`);
   }
 
-  getDatosAdministrador(docChaLog: number): Observable<DatosAdmin[]> {
-    return this.http.get<DatosAdmin[]>(`${this.apiDatosAdmin}?docChaLog=${docChaLog}`);
+  getDatosAdministrador(peGe_DocumentoIdentidad: number): Observable<DatosAdmin[]> {
+    return this.http.get<DatosAdmin[]>(`${this.apiDatosAdmin}/${peGe_DocumentoIdentidad}`);
   }
 
-  getCategorias(docChaLog: number): Observable<Categorias[]> {
-    return this.http.get<Categorias[]>(`${this.apiCategorias}?docChaLog=${docChaLog}`);
+  getCategorias(): Observable<Categorias[]> {
+    return this.http.get<Categorias[]>(`${this.apiCategorias}`);
   }
 
   insertIncidencia(incidencia: Incidencia): Observable<any> {

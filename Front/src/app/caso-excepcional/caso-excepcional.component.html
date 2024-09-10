@@ -29,14 +29,14 @@
             </div>
             <div class="input-group">
               <label for="nombre">Nombre del Solicitante:</label>
-              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input [value]="Duser.nom_ChaLog + ' ' +  Duser.ape_ChaLog" disabled>
+              @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+              <input [value]="Duser.nombreCompleto" disabled>
               }
             </div>
             <div class="input-group">
               <label for="cargo">Cargo:</label>
-              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog" disabled>
+              @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cont_Cargo" disabled>
               }
             </div>
           </div>
@@ -46,20 +46,20 @@
           <div class="form-group">
             <div class="input-group">
               <label for="indicativo">Indicativo:</label>
-              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="indicativo" name="indicativo" [value]="Duser.indiTel_DepenLog" disabled>
+              @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+              <input type="text" id="indicativo" name="indicativo" [value]="Duser.unid_ExtTelefono" disabled>
               }
             </div>
             <div class="input-group">
               <label for="dependencia">Dependencia:</label>
-              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="dependencia" name="dependencia" [value]="Duser.nom_DepenLog" disabled>
+              @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+              <input type="text" id="dependencia" name="dependencia" [value]="Duser.unid_Nombre" disabled>
               }
             </div>
             <div class="input-group">
               <label for="telefono">Teléfono:</label>
-              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
-              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.tel_DepenLog" disabled>
+              @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.unid_Telefono" disabled>
               }
             </div>
           </div>
@@ -69,20 +69,20 @@
           <div class="form-group">
             <div class="input-group">
               <label for="identificacion">Identificación:</label>
-              @for (Duser of DatosAdministrador; track Duser.id_ChaLog) {
-              <input type="text" id="identificacion" name="identificacion" [value]="Duser.doc_ChaLog" disabled>
+              @for (Duser of DatosAdministrador; track Duser.peGe_DocumentoIdentidad) {
+              <input type="text" id="identificacion" name="identificacion" [value]="Duser.peGe_DocumentoIdentidad" disabled>
               }
             </div>
             <div class="input-group">
               <label for="nombre">Nombre del Solicitante:</label>
-              @for (Duser of DatosAdministrador; track Duser.id_ChaLog) {
-              <input [value]="Duser.nom_ChaLog + ' ' +  Duser.ape_ChaLog" disabled>
+              @for (Duser of DatosAdministrador; track Duser.peGe_DocumentoIdentidad) {
+              <input [value]="Duser.nombreCompleto" disabled>
               }
             </div>
             <div class="input-group">
               <label for="cargo">Cargo:</label>
-              @for (Duser of DatosAdministrador; track Duser.id_ChaLog) {
-              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog" disabled>
+              @for (Duser of DatosAdministrador; track Duser.peGe_DocumentoIdentidad) {
+              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.usRo_Nombre" disabled>
               }
             </div>
           </div>
@@ -100,8 +100,8 @@
                 <label for="categoria">Categoría:</label>
                 <select id="categoria" name="categoria" class="short" (change)="onCategoriaSelected($event)">
                   <option value="">Seleccionar</option>
-                  @for (categoria of catego; track categoria.id_CatAre) {
-                    <option [value]="categoria.id_CatAre">{{ categoria.nom_CatAre }}</option>
+                  @for (categoria of catego; track categoria.caAr_Id) {
+                    <option [value]="categoria.caAr_Id">{{ categoria.caAr_Nombre }}</option>
                   }
                 </select>
               </div>
@@ -111,8 +111,8 @@
                         [(ngModel)]="incidencia.id_AreaTec" 
                         (change)="onAreaTecnicaSelected($event)">
                   <option [ngValue]="0">Seleccionar</option>
-                  @for (area of areasTec; track area.id_AreaTec) {
-                    <option [ngValue]="area.id_AreaTec">{{ area.nom_AreaTec }}</option>
+                  @for (area of areasTec; track area.arTe_Id) {
+                    <option [ngValue]="area.arTe_Id">{{ area.arTe_Nombre }}</option>
                   }
                 </select>
               </div>

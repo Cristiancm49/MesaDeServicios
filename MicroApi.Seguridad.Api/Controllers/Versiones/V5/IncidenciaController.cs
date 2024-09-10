@@ -103,9 +103,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         }
 
         [HttpGet("AreasTec")]
-        public async Task<IActionResult> GetAreasTec()
+        public async Task<IActionResult> GetAreasTec([FromQuery] int Id_CatAre)
         {
             var areastec = await _context.IncidenciasAreaTecnica
+                .Where(c => c.ArTe_Id == Id_CatAre)
                 .Select(c => new
                 {
                     c.ArTe_Id,

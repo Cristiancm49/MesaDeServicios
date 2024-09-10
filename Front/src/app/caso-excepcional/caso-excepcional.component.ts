@@ -118,7 +118,7 @@ export class CasoExcepcionalComponent implements OnInit{
 
   loadCategorias() {
     this.isLoading = true;
-    this.casoRegistroService.getCategorias(1).subscribe({
+    this.casoRegistroService.getCategorias().subscribe({
       next: (data) => {
         this.catego = data;
         this.isLoading = false;
@@ -156,11 +156,11 @@ export class CasoExcepcionalComponent implements OnInit{
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.idSolicitante_Incidencias = this.DatosUsuario[0].id_ChaLog;
+      //this.incidencia.idSolicitante_Incidencias = this.DatosUsuario[0].id_ChaLog;
     }
 
     if (this.DatosAdministrador.length > 0) {
-      this.incidencia.idAdmin_IncidenciasExc = this.DatosAdministrador[0].id_ChaLog;
+      //this.incidencia.idAdmin_IncidenciasExc = this.DatosAdministrador[0].id_ChaLog;
     }
     
     if (!(this.incidencia.fechaHora_Incidencias instanceof Date) || isNaN(this.incidencia.fechaHora_Incidencias.getTime())) {
