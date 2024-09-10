@@ -5,10 +5,17 @@ import { CasosSeguimientoComponent } from './casos-seguimiento/casos-seguimiento
 import { RedirectGuard } from './redirect.guard';
 import { CasoExcepcionalComponent } from './caso-excepcional/caso-excepcional.component';
 import { UserComponent } from './user/user.component';
+import { InicioComponent } from './inicio/inicio.component';
+import { CasoActivoComponent } from './caso-activo/caso-activo.component';
+import { CasosResueltosComponent } from './casos-resueltos/casos-resueltos.component';
+import { CasosHistorialComponent } from './casos-historial/casos-historial.component';
+import { AdministrarRolComponent } from './administrar-rol/administrar-rol.component';
+import { CasoFinalizadoComponent } from './caso-finalizado/caso-finalizado.component';
+import { CasosDelegadosComponent } from './casos-delegados/casos-delegados.component';
 export const routes: Routes = [
   {
     path: '',
-    component: CasoRegistroComponent,
+    component: InicioComponent,
     pathMatch: 'full'
   },
   {
@@ -36,6 +43,37 @@ export const routes: Routes = [
   {
     path: 'registar-caso',
     component: CasoRegistroComponent
+  },
+
+  {
+    path: 'Inicio',
+    component: InicioComponent
+  },
+
+  {
+    path: 'Caso-activo',
+    component: CasoActivoComponent
+  },
+
+  {
+    path: 'Caso-resuelto',
+    component: CasosResueltosComponent
+  },
+  {
+    path: 'Caso-historial',
+    component: CasosHistorialComponent
+  },
+  {
+    path: 'Admi-Rol',
+    component: AdministrarRolComponent
+  },
+  {
+    path: 'Caso-Delegado',
+    component: CasosDelegadosComponent
+  },
+  {
+    path: 'Caso-Finalizado',
+    component: CasoFinalizadoComponent
   }
 
 ];

@@ -1,12 +1,21 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .container {
   display: flex;
+  margin: 0;
+  padding: 0; /* Elimina cualquier padding adicional */
 }
 
 .menu-principal {
-  width: 200px;
-  height: 873px;
-  background-color: #ebe6e6;
-  padding: 15px;
+  width: 250px;
+  background-color: #ece6e6;
+  padding: 10px;
+  margin: 0; /* Asegura que no haya margen */
+  box-sizing: border-box; /* Incluye el padding dentro del ancho y alto */
 }
 
 .menu-item {
@@ -14,8 +23,9 @@
 }
 
 .menu-item h2 {
-  font-size: 1.5em;
+  font-size: 1.8em;
   margin-bottom: 10px;
+  text-align: center; /* Centra el título */
 }
 
 .menu-item ul {
@@ -24,12 +34,23 @@
 }
 
 .menu-item ul li {
-  margin: 10px 0;
+  margin: 1px 0;
 }
 
-.menu-item ul li a {
+.menu-item ul li > a {
   text-decoration: none;
   color: black;
+  display: flex;
+  align-items: center;
+  font-weight: bold; /* Negrita para los enlaces de primer nivel */
+}
+
+.menu-item ul li > ul {
+  padding-left: 20px; /* Indentación para submenús */
+}
+
+.menu-item ul li > ul li a {
+  font-weight: normal; /* Submenús sin negrita */
 }
 
 .menu-item ul li a.active {
@@ -37,18 +58,59 @@
   color: white;
   background-color: #077D35;
   border-radius: 50px;
-  padding: 5px 15px; 
-  position: relative; 
+  padding: 5px 15px;
+  position: relative;
 }
 
-.menu-item ul li a.active::before {
-  content: '•'; /* Punto negro */
+.menu-item ul li a.notactive {
+  border-radius: 50px;
+  padding: 5px 15px;
+  position: relative;
+}
+
+.menu-item ul li a.active::before,
+.menu-item ul li a.notactive::before {
+  content: '•';
   color: black;
-  font-size: 2em; /* Tamaño del punto, ajusta según sea necesario */
+  font-size: 2em;
   position: absolute;
-  left: 2px; /* Ajusta la posición horizontal del punto */
+  left: 2px;
   top: 50%;
-  transform: translateY(-50%); /* Centra verticalmente el punto */
+  transform: translateY(-50%);
+}
+
+.menu-item ul li a i {
+  margin-right: 10px;
+  font-size: 1.7em; /* Aumenta el tamaño del ícono */
+}
+
+/* Íconos personalizados */
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.icon-register {
+  background-image: url("../../../public/iconos/registro.png");
+}
+
+.icon-cases {
+  background-image: url("../../../public/iconos/casos.png");
+}
+
+.icon-admin {
+  background-image: url("../../../public/iconos/admin.png");
+}
+
+.icon-tools {
+  background-image: url("../../../public/iconos/herramientas.png");
+}
+
+.icon-gestion {
+  background-image: url("../../../public/iconos/gestion.png");
 }
 
 .main-content {
@@ -63,5 +125,4 @@
 .main-content img {
   max-width: 100%;
   height: auto;
-
 }

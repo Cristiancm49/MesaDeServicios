@@ -22,9 +22,12 @@ export class CasoRegistroComponent implements OnInit {
   isLoading = true;
   selectedCategoriaId = 0;
   fechaHoraString: string = '';
+  private nextIncidenciaId = 3; 
+  showNotification = false;
+  notificationMessage = '';
 
   incidencia: Incidencia = {
-    id_Incidencias: 20,
+    id_Incidencias: this.nextIncidenciaId,
     idSolicitante_Incidencias: 0,
     esExc_Incidencias: false,
     idAdmin_IncidenciasExc: null,
@@ -140,11 +143,39 @@ export class CasoRegistroComponent implements OnInit {
     this.casoRegistroService.insertIncidencia(this.incidencia).subscribe({
       next: (response) => {
         console.log('Incidencia insertada con éxito:', response);
-        // Aquí puedes agregar lógica adicional después de la inserción exitosa
+        this.showNotification = true;
+        this.notificationMessage = 'Incidencia insertada con éxito';
+        this.nextIncidenciaId++;
+        this.resetIncidencia();
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 5000); 
       },
       error: (error) => {
         console.error('Error al insertar la incidencia:', error);
+        this.showNotification = true;
+        this.notificationMessage = 'Error al insertar la incidencia';
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 5000);
       }
     });
+  }
+
+  private resetIncidencia() {
+    this.incidencia = {
+      id_Incidencias: this.nextIncidenciaId,
+      idSolicitante_Incidencias: 0,
+      esExc_Incidencias: false,
+      idAdmin_IncidenciasExc: null,
+      fechaHora_Incidencias: new Date(),
+      id_AreaTec: 0,
+      descrip_Incidencias: '',
+      eviden_Incidencias: null,
+      valTotal_Incidencias: 0
+    };
+    this.cargarFechaHora();
+    this.selectedCategoriaId = 0;
+    this.loadAreasTec(0);
   }
 }

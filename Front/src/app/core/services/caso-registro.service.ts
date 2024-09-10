@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AreaTec } from '../../interfaces/area-tec';
 import { DatosUser } from '../../interfaces/DatosUser';
+import { DatosAdmin } from '../../interfaces/DatosAdmin';
 import { Categorias } from '../../interfaces/Interfaz-categoria';
 import {Incidencia} from '../../interfaces/Insert-Incidencia';
 
@@ -15,6 +16,7 @@ export class CasoRegistroService {
   private apiDatosUsurio = 'https://localhost:44346/api/v5/Incidencia/SelectSolicitante';
   private apiCategorias ="https://localhost:44346/api/v3/ConsultaCategoria"
   private apiInsertIncidencia = 'https://localhost:44346/api/v5/Incidencia/InsertIncidencia';
+  private apiDatosAdmin= 'https://localhost:44346/api/v5/Incidencia/SelectSolicitante';
 
   constructor(private http: HttpClient) { }
 
@@ -24,6 +26,10 @@ export class CasoRegistroService {
 
   getDatosUsuario(docChaLog: number): Observable<DatosUser[]> {
     return this.http.get<DatosUser[]>(`${this.apiDatosUsurio}?docChaLog=${docChaLog}`);
+  }
+
+  getDatosAdministrador(docChaLog: number): Observable<DatosAdmin[]> {
+    return this.http.get<DatosAdmin[]>(`${this.apiDatosAdmin}?docChaLog=${docChaLog}`);
   }
 
   getCategorias(docChaLog: number): Observable<Categorias[]> {

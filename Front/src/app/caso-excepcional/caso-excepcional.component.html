@@ -23,15 +23,21 @@
           <div class="form-group">
             <div class="input-group">
               <label for="identificacion">Identificación:</label>
-              <input type="text" id="identificacion" name="identificacion">
+              <input type="text" id="identificacion" name="identificacion" 
+                     [(ngModel)]="identificacionUsuario" 
+                     (keyup.enter)="buscarUsuario()">
             </div>
             <div class="input-group">
               <label for="nombre">Nombre del Solicitante:</label>
-              <input type="text" id="nombre" name="nombre">
+              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
+              <input [value]="Duser.nom_ChaLog + ' ' +  Duser.ape_ChaLog" disabled>
+              }
             </div>
             <div class="input-group">
               <label for="cargo">Cargo:</label>
-              <input type="text" id="cargo" name="cargo" class="short">
+              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
+              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog" disabled>
+              }
             </div>
           </div>
         </div>
@@ -40,15 +46,21 @@
           <div class="form-group">
             <div class="input-group">
               <label for="indicativo">Indicativo:</label>
-              <input type="text" id="indicativo" name="indicativo">
+              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
+              <input type="text" id="indicativo" name="indicativo" [value]="Duser.indiTel_DepenLog" disabled>
+              }
             </div>
             <div class="input-group">
               <label for="dependencia">Dependencia:</label>
-              <input type="text" id="dependencia" name="dependencia">
+              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
+              <input type="text" id="dependencia" name="dependencia" [value]="Duser.nom_DepenLog" disabled>
+              }
             </div>
             <div class="input-group">
               <label for="telefono">Teléfono:</label>
-              <input type="text" id="telefono" name="telefono" class="short">
+              @for (Duser of DatosUsuario; track Duser.id_ChaLog) {
+              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.tel_DepenLog" disabled>
+              }
             </div>
           </div>
         </div>
@@ -56,51 +68,66 @@
           <h3 class="section-header" id="admin" name="administrador">ADMINISTRADOR</h3>
           <div class="form-group">
             <div class="input-group">
-              <label for="indicativo">Identificación:</label>
-              <input type="text" id="indicativo" name="indicativo">
+              <label for="identificacion">Identificación:</label>
+              @for (Duser of DatosAdministrador; track Duser.id_ChaLog) {
+              <input type="text" id="identificacion" name="identificacion" [value]="Duser.doc_ChaLog" disabled>
+              }
             </div>
             <div class="input-group">
-              <label for="dependencia">Nombre:</label>
-              <input type="text" id="dependencia" name="dependencia">
+              <label for="nombre">Nombre del Solicitante:</label>
+              @for (Duser of DatosAdministrador; track Duser.id_ChaLog) {
+              <input [value]="Duser.nom_ChaLog + ' ' +  Duser.ape_ChaLog" disabled>
+              }
             </div>
             <div class="input-group">
-              <label for="telefono">Cargo:</label>
-              <input type="text" id="telefono" name="telefono" class="short">
+              <label for="cargo">Cargo:</label>
+              @for (Duser of DatosAdministrador; track Duser.id_ChaLog) {
+              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo_ChaLog" disabled>
+              }
             </div>
           </div>
         </div>
-        <div class="section">
-          <h3 class="section-header">SOLICITUD</h3>
-          <div class="form-group-solicitud">
-            <div class="input-group">
-              <label for="fecha">Fecha y Hora:</label>
-              <input type="datetime-local" id="fecha" name="fecha" class="short">
+        <form (ngSubmit)="onSubmit()">
+          <div class="section">
+            <h3 class="section-header">SOLICITUD</h3>
+            <div class="form-group">
+              <div class="input-group">
+                <label for="fecha">Fecha y Hora:</label>
+                <input type="datetime-local" id="fecha" name="fecha" class="short" [ngModel]="fechaHoraString" 
+                (ngModelChange)="onFechaHoraChange($event)">
+              </div>
+              <div class="input-group">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" name="categoria" class="short" (change)="onCategoriaSelected($event)">
+                  <option value="">Seleccionar</option>
+                  @for (categoria of catego; track categoria.id_CatAre) {
+                    <option [value]="categoria.id_CatAre">{{ categoria.nom_CatAre }}</option>
+                  }
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="area-tecnica">Área técnica:</label>
+                <select id="area-tecnica" name="area-tecnica"  class="short"
+                        [(ngModel)]="incidencia.id_AreaTec" 
+                        (change)="onAreaTecnicaSelected($event)">
+                  <option [ngValue]="0">Seleccionar</option>
+                  @for (area of areasTec; track area.id_AreaTec) {
+                    <option [ngValue]="area.id_AreaTec">{{ area.nom_AreaTec }}</option>
+                  }
+                </select>
+              </div>
             </div>
-            <div class="input-group">
-              <label for="area-tecnica">Área técnica:</label>
-              <select id="area-tecnica" name="area-tecnica" class="short">
-                <option value="">Seleccionar</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="categoria">Categoría:</label>
-              <select id="categoria" name="categoria" class="short">
-                <option value="">Seleccionar</option>
-              </select>
+            <div class="form-group">
+              <label for="descripcion">Descripción:</label>
+              <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="incidencia.descrip_Incidencias"></textarea>
             </div>
           </div>
-          
-          <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+          <div class="form-actions">
+            <button type="submit">Envío</button>
+            <button type="reset">Limpiar Formulario</button>
           </div>
-        </div>
-        <div class="form-actions">
-          <button type="submit">Envío</button>
-          <button type="reset">Limpiar Formulario</button>
-        </div>
+        </form>
       </form>
-      
     </div>
   </div>
   

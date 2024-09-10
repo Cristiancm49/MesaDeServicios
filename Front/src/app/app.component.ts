@@ -11,6 +11,8 @@ import { CasosHistorialComponent } from './casos-historial/casos-historial.compo
 import { AdministrarRolComponent } from './administrar-rol/administrar-rol.component';
 import { CasosGestionComponent } from './casos-gestion/casos-gestion.component';
 import { CasosSeguimientoComponent } from './casos-seguimiento/casos-seguimiento.component';
+import { UserComponent } from "./user/user.component";
+import { MenuComponent } from './menu/menu.component';
 
 
 
@@ -19,7 +21,7 @@ import { CasosSeguimientoComponent } from './casos-seguimiento/casos-seguimiento
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [RouterOutlet, CasoRegistroComponent, CasoExcepcionalComponent, CasoActivoComponent, CasosResueltosComponent, CasosDelegadosComponent, InicioComponent, CasoFinalizadoComponent, CasosHistorialComponent, AdministrarRolComponent, CasosGestionComponent, CasosSeguimientoComponent]
+  imports: [RouterOutlet, CasoRegistroComponent, CasoExcepcionalComponent, CasoActivoComponent, CasosResueltosComponent, CasosDelegadosComponent, InicioComponent, CasoFinalizadoComponent, CasosHistorialComponent, AdministrarRolComponent, CasosGestionComponent, CasosSeguimientoComponent, UserComponent, MenuComponent]
 })
 
 
