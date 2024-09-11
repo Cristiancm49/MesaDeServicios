@@ -1,0 +1,58 @@
+<router-outlet></router-outlet>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menú Principal</mat-toolbar>
+    <mat-nav-list>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Registrar</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/registar-caso">Registrar Caso</a>
+        <a mat-list-item routerLink="/caso-excepcional" class="notactive">Registrar Caso Excepcional</a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Mis casos</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/Caso-activo" class="notactive">Mis Casos Activos</a>
+        <a mat-list-item routerLink="/Caso-resuelto" class="notactive">Mis Casos Resueltos</a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Administrador</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/gestion-casos" class="notactive">Casos</a>
+        <a mat-list-item routerLink="/Caso-historial" class="notactive">Historial de casos</a>
+        <a mat-list-item routerLink="/Admi-Rol" class="notactive">Administrar roles</a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Herramientas</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/inventario-salas" class="notactive">Inventario de las salas</a>
+        <a mat-list-item href="https://chaira.uniamazonia.edu.co/Reservas/Views/Public/Salas.aspx?tipo=Sistemas" target="_blank" rel="noopener noreferrer" class="notactive">
+          Disponibilidad de salas
+        </a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Gestión de casos</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/Caso-Delegado" class="notactive">Casos delegados</a>
+        <a mat-list-item routerLink="/Caso-Finalizado" class="notactive">Casos finalizados</a>
+      </mat-expansion-panel>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

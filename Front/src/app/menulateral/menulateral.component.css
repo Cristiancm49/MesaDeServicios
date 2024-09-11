@@ -1,0 +1,89 @@
+/* Contenedor del sidenav */
+.sidenav-container {
+  height: 100%;
+}
+
+/* Menú lateral (sidenav) */
+.sidenav {
+  width: 300px; /* Ajusta al ancho del diseño anterior */
+  background-color: #e6ece6; /* Color de fondo del menú anterior */
+  padding: 10px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+  justify-content: center;
+}
+
+/* Mantener la barra de herramientas fija */
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Estilo de los ítems del menú */
+.mat-nav-list a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold; /* Negrita para los enlaces de primer nivel */
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  border-radius: 50px;
+}
+
+.mat-nav-list a.active {
+  background-color: #077D35;
+  color: white;
+  border-radius: 50px; 
+}
+
+/* Estilo del ítem de menú inactivo */
+.mat-nav-list a:not(.active) {
+  color: black; 
+  background-color: transparent; 
+}
+/* Estilos para los íconos personalizados */
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.icon-register {
+  background-image: url("../../../public/iconos/registro.png");
+}
+
+.icon-cases {
+  background-image: url("../../../public/iconos/casos.png");
+}
+
+.icon-admin {
+  background-image: url("../../../public/iconos/admin.png");
+}
+
+.icon-tools {
+  background-image: url("../../../public/iconos/herramientas.png");
+}
+
+.icon-gestion {
+  background-image: url("../../../public/iconos/gestion.png");
+}
+
+/* Contenido principal */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  margin-top: -50px;
+}
+
+.main-content img {
+  max-width: 100%;
+  height: auto;
+}

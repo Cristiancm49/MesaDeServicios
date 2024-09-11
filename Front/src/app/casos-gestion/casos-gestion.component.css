@@ -106,6 +106,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    table-layout: fixed; /* Para mantener un ancho uniforme en las columnas */
   }
   
   .cases-table th, .trazabilidad-table th {
@@ -113,10 +114,22 @@
     color: white; /* Blanco */
   }
   
-  .cases-table th, .cases-table td, .trazabilidad-table th, .trazabilidad-table td {
+  .cases-table th, .trazabilidad-table th, 
+  .cases-table td, .trazabilidad-table td {
     border: 1px solid #000000;
     padding: 8px;
     text-align: center;
+  }
+
+  .selected-row {
+    background-color: #077D35; /* Color de fondo para la fila seleccionada */
+    color: white; /* Color del texto para la fila seleccionada */
+}
+
+  .table-container {
+      max-height: calc(8 * 50px); /* Altura para mostrar las primeras 8 filas (ajusta el valor según la altura de las filas) */
+      overflow-y: auto; /* Scroll vertical */
+      overflow-x: auto; /* Scroll horizontal */
   }
   
   .section-container {
@@ -187,7 +200,7 @@
     display: flex;
     flex-direction: column; /* Organiza los elementos en columna */
     align-items: center; /* Alinea todos los elementos al centro */
-    margin-top: 100px;
+    margin-top: 55px;
 }
 
 

@@ -3,8 +3,8 @@
 }
 
 .menu-principal {
-  width: 250px;
-  background-color: #ece6e6;
+  width: 300px;
+  background-color: #ffffff;
   padding: 10px;
   margin: 0; /* Asegura que no haya margen */
   box-sizing: border-box; /* Incluye el padding dentro del ancho y alto */
@@ -198,6 +198,7 @@
 .form-actions {
   display: flex;
   justify-content: flex-end;
+  margin-top: -20px;
 }
 
 .form-actions button {

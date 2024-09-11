@@ -1,20 +1,5 @@
 <router-outlet></router-outlet>
 <div class="container">
-    <div class="menu-principal">
-      <div class="menu-item">
-        <h2>Menú Principal</h2>
-        <ul>
-          <li><a routerLink="/registar-caso" class="notactive">Registrar Caso</a></li>
-          <li><a  class="active">Registrar Caso Excepcional</a></li>
-          <li><a href="#">Mis casos</a>
-            <ul>
-              <li><a href="#">Mis casos activos</a></li>
-              <li><a href="#">Mis casos resueltos</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
     <div class="main-content">
       <h2 class="header">INFORMACIÓN DEL CASO</h2>
       <form>
@@ -27,16 +12,15 @@
                      [(ngModel)]="identificacionUsuario" 
                      (keyup.enter)="buscarUsuario()">
             </div>
-            <div class="input-group">
+            <div class="input-group" *ngIf="DatosUsuario.length > 0">
               <label for="nombre">Nombre del Solicitante:</label>
-              @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
-              <input [value]="Duser.nombreCompleto" disabled>
-              }
+              <input *ngFor="let Duser of DatosUsuario" 
+                     [value]="Duser.nombreCompleto || ''" disabled>
             </div>
             <div class="input-group">
               <label for="cargo">Cargo:</label>
               @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
-              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cont_Cargo" disabled>
+              <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cont_Cargo || ''" disabled>
               }
             </div>
           </div>
@@ -47,19 +31,19 @@
             <div class="input-group">
               <label for="indicativo">Indicativo:</label>
               @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
-              <input type="text" id="indicativo" name="indicativo" [value]="Duser.unid_ExtTelefono" disabled>
+              <input type="text" id="indicativo" name="indicativo" [value]="Duser.unid_ExtTelefono || '' " disabled>
               }
             </div>
             <div class="input-group">
               <label for="dependencia">Dependencia:</label>
               @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
-              <input type="text" id="dependencia" name="dependencia" [value]="Duser.unid_Nombre" disabled>
+              <input type="text" id="dependencia" name="dependencia" [value]="Duser.unid_Nombre || ''" disabled>
               }
             </div>
             <div class="input-group">
               <label for="telefono">Teléfono:</label>
               @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
-              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.unid_Telefono" disabled>
+              <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.unid_Telefono "  disabled>
               }
             </div>
           </div>

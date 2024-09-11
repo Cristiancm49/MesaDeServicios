@@ -1,141 +1,41 @@
 <div class="container">
-    <div class="menu-principal">
-        <div class="menu-item">
-            <h2>Menú Principal</h2>
-            <ul>
-                <li><a href="#">Registrar</a></li>
-                <li><a href="#">Registrar Caso</a></li>
-                <li><a href="#" class="active">Gestión de Casos</a>
-
-                </li>
-            </ul>
-        </div>
-    </div>
     <div class="main-content">
         <div class="section">
             <h3 class="section-header">GESTIÓN DE CASOS</h3>
-            <table class="cases-table">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Nombre Solicitante</th>
-                        <th>Cargo</th>
-                        <th>Dependencia</th>
-                        <th>Teléfono</th>
-                        <th>Tipo de Caso</th>
-                        <th>Área Tecnica</th>
-                        <th>Categoría</th>
-                        <th>Descripción</th>
-                        <th>Fecha Solicitud</th>
-                        <th>Prioridad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>2</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>3</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>4</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>5</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>6</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>7</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table class="cases-table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nombre Solicitante</th>
+                            <th>Cargo</th>
+                            <th>Dependencia</th>
+                            <th>Teléfono</th>
+                            <th>Tipo de Caso</th>
+                            <th>Área Técnica</th>
+                            <th>Categoría</th>
+                            <th>Descripción</th>
+                            <th>Fecha Solicitud</th>
+                            <th>Prioridad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let incidencia of vistadatos; let i = index" [class.selected-row]="selectedRowIndex === i"
+                        (click)="onRowSelect(i, vistadatos)">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ incidencia.nombreCompleto }}</td>
+                            <td>{{ incidencia.cargo }}</td>
+                            <td>{{ incidencia.nombreUnidad }}</td>
+                            <td>{{ incidencia.telefonoUnidad }}</td>
+                            <td>{{ incidencia.nombreCategoriaAreaTecnica }}</td>
+                            <td>{{ incidencia.nombreAreaTecnica }}</td>
+                            <td>{{ incidencia.nombreCategoriaAreaTecnica }}</td>
+                            <td>{{ incidencia.descripcionIncidencia }}</td>
+                            <td>{{ incidencia.fechaSolicitudIncidencia | date:'dd/MM/yyyy HH:mm' }}</td>
+                            <td>{{ incidencia.prioridad }}</td>
+                        </tr>
+                    </tbody>
+                </table>
         </div>
         <div *ngIf="mostrarDefault">
             <div class="filter-container">
