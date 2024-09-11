@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MicroApi.Seguridad.Data.Context;
 using Microsoft.SqlServer.Server;
+using MicroApi.Seguridad.Domain.Models.Trazabilidad;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 {
@@ -47,6 +48,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                     r => r.UsRo_Id,
                     (u, r) => new
                     {
+                        u.Usuario.Usua_Id,
                         NombreCompleto = $"{u.Persona.PeGe_PrimerNombre} {u.Persona.PeGe_SegundoNombre} {u.Persona.PeGe_PrimerApellido} {u.Persona.PeGe_SegundoApellido}",
                         RolNombre = r.UsRo_Nombre,
                         IncidenciasActivas = u.IncidenciasActivas.Count(),
@@ -63,5 +65,36 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             return Ok(usuariosConIncidencias);
         }
 
+        [HttpPost("AsignarUsuario")]
+        public async Task<IActionResult> AsignarUsuario([FromBody] TrazabilidadDto dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Datos no válidos.");
+            }
+
+            var trazabilidad = new IncidenciaTrazabilidad
+            {
+                Inci_Id = dto.Inci_Id,
+                Usua_Id = dto.Usua_Id,
+                InTrEs_Id = 5, // Estado asignado
+                InTr_FechaActualizacion = DateTime.UtcNow,
+                InTr_Solucionado = false,
+                InTr_Revisado = true
+            };
+
+            _context.IncidenciasTrazabilidad.Add(trazabilidad);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(trazabilidad);
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar excepciones relacionadas con la base de datos
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }
