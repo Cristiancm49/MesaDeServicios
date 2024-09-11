@@ -151,7 +151,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         }
 
         // GET api/incidencia
-        [HttpGet("InsertIncidencias(Normal-Excepcional")]
+        [HttpGet("SelectIncidencias")]
         public async Task<IActionResult> GetIncidencias()
         {
             var incidencias = await _context.IncidenciasTrazabilidad
@@ -190,7 +190,31 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(incidencias);
         }
-        /*
+
+        [HttpGet("SelectIncidenciasRegistradas")]
+        public async Task<IActionResult> GetIncidenciasRegistradas()
+        {
+            var incidencias = await _context.IncidenciasTrazabilidad
+                .Where(it => it.InTrEs_Id == 1)
+                .Select(it => new
+                {
+                    NombreCompleto = it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerNombre + " " +
+                                     (it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre != null ? it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre + " " : "") +
+                                     it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerApellido + " " +
+                                     (it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoApellido ?? ""),
+                    Cargo = it.Incidencia.Solicitante.Cont_Cargo,
+                    NombreUnidad = it.Incidencia.Solicitante.Unidad.Unid_Nombre,
+                    TelefonoUnidad = it.Incidencia.Solicitante.Unidad.Unid_Telefono,
+                    NombreCategoriaAreaTecnica = it.Incidencia.AreaTecnica.Categoria.CaAr_Nombre,
+                    NombreAreaTecnica = it.Incidencia.AreaTecnica.ArTe_Nombre,
+                    DescripcionIncidencia = it.Incidencia.Inci_Descripcion,
+                    FechaSolicitudIncidencia = it.Incidencia.Inci_FechaRegistro,
+                    Prioridad = it.Incidencia.Prioridad.InPr_Tipo
+                })
+                .ToListAsync();
+
+            return Ok(incidencias);
+        }        /*
         [HttpGet("SelectSolicitante")]
         public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
         {
