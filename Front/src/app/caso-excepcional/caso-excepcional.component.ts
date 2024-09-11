@@ -31,6 +31,7 @@ export class CasoExcepcionalComponent implements OnInit{
   indicativo: string = '';
   dependencia: string = '';
   telefono: string = '';
+  valorprioridad: number = 0;
 
   incidencia: Incidencia = {
     cont_IdSolicitante: 0,
@@ -52,13 +53,14 @@ export class CasoExcepcionalComponent implements OnInit{
     this.loadDatosAdmin();
   }
 
-  loadAreasTec(selectedCategoriaId : number) {
+  loadAreasTec(selectedCategoriaId: number) {
     this.isLoading = true;
     this.casoRegistroService.getAreasTec(selectedCategoriaId).subscribe({
       next: (data) => {
         this.areasTec = data;
-        this.isLoading = false; 
+        this.isLoading = false;
         console.log('Areas Tec:', this.areasTec);
+        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching areas tec:', error);
@@ -88,12 +90,11 @@ export class CasoExcepcionalComponent implements OnInit{
         this.DatosUsuario = data;
         this.isLoading = false;
         console.log('Datos Usuario:', this.DatosUsuario);
-        // Aquí puedes agregar lógica adicional para manejar los datos recibidos
+        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching Datos User:', error);
         this.isLoading = false;
-        // Aquí puedes manejar el error, por ejemplo, mostrando un mensaje al usuario
       }
     });
   }
@@ -121,6 +122,7 @@ export class CasoExcepcionalComponent implements OnInit{
         this.catego = data;
         this.isLoading = false;
         console.log('Good Categorias:', this.areasTec);
+        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching categorias:', error);
@@ -140,6 +142,20 @@ export class CasoExcepcionalComponent implements OnInit{
     this.incidencia.inci_FechaRegistro = now;
     this.fechaHoraString = now.toISOString().slice(0, 16);
   }
+
+  calcularPrioridad(): void {
+    if (this.DatosUsuario.length > 0 && this.catego.length > 0 && this.areasTec.length > 0) {
+      const valorUsuario = this.DatosUsuario[0].unid_Valor || 0;
+      const valorCategoria = this.catego.find(c => c.caAr_Id === this.selectedCategoriaId)?.caAr_Valor || 0;
+      const valorAreaTec = this.areasTec.find(a => a.arTe_Id === this.incidencia.arTe_Id)?.arTe_Valor || 0;
+      
+      this.valorprioridad = valorUsuario + valorCategoria + valorAreaTec;
+      this.incidencia.inci_ValorTotal = this.valorprioridad;
+      console.log('Prioridad calculada:', this.valorprioridad);
+    } else {
+      console.log('No se puede calcular la prioridad aún, faltan datos');
+    }
+  }
   
   onFechaHoraChange(event: any) {
     const fechaHoraString = event.target.value;
@@ -151,6 +167,7 @@ export class CasoExcepcionalComponent implements OnInit{
     const lastValue = selectedValue.split(':').pop();
     this.incidencia.arTe_Id = lastValue ? parseInt(lastValue, 10) : 0;
     console.log('Área técnica seleccionada:', this.incidencia.arTe_Id);
+    this.calcularPrioridad();
   }
 
 
