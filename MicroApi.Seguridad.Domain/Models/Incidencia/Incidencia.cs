@@ -44,8 +44,6 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
         [Required]
         public int InPr_Id { get; set; }
 
-        public string Inci_MotivoRechazo { get; set; }
-
         public DateTime? Inci_FechaCierre { get; set; }
 
         // Relaciones

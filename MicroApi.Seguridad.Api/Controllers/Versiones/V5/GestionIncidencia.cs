@@ -66,7 +66,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         }
 
         [HttpPost("AsignarUsuario")]
-        public async Task<IActionResult> AsignarUsuario([FromBody] TrazabilidadDto dto)
+        public async Task<IActionResult> AsignarUsuario([FromBody] AsignarIncidenciaDto dto)
         {
             if (dto == null)
             {
@@ -77,7 +77,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             {
                 Inci_Id = dto.Inci_Id,
                 Usua_Id = dto.Usua_Id,
-                InTrEs_Id = 5, // Estado asignado
+                InTrEs_Id = 3, // Estado asignado
                 InTr_FechaActualizacion = DateTime.UtcNow,
                 InTr_Solucionado = false,
                 InTr_Revisado = true
@@ -96,5 +96,33 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpPost("RechazarIncidencia")]
+        public async Task<IActionResult> RechazarIncidencia([FromBody] RechazarIncidenciaDto dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Datos no válidos.");
+            }
+
+            try
+            {
+                // Llamar al procedimiento almacenado
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.RechazarIncidencia @Inci_Id, @InTr_FechaActualizacion, @InTr_MotivoRechazo",
+                    new SqlParameter("@Inci_Id", dto.Inci_Id),
+                    new SqlParameter("@InTr_FechaActualizacion", dto.InTr_FechaActualizacion),
+                    new SqlParameter("@InTr_MotivoRechazo", dto.InTr_MotivoRechazo)
+                );
+
+                return Ok("Incidencia rechazada con éxito.");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar excepciones relacionadas con la base de datos
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
     }
 }
