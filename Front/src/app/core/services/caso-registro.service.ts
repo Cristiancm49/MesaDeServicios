@@ -15,7 +15,7 @@ export class CasoRegistroService {
   private apiUrl = 'https://localhost:44346/api/v5/Incidencia/AreasTec';
   private apiDatosUsurio = 'https://localhost:44346/api/v5/Incidencia/SolicitarIncidencias';
   private apiCategorias ="https://localhost:44346/api/v5/Incidencia/CatAreasTec"
-  private apiInsertIncidencia = 'https://localhost:44346/api/v5/Incidencia/InsertIncidencia';
+  private apiInsertIncidencia = 'https://localhost:44346/api/v5/Incidencia/InsertIncidencias(Normal&Excepcional)';
   private apiDatosAdmin= 'https://localhost:44346/api/v5/Incidencia/InscribirAdmin';
 
   constructor(private http: HttpClient) { }

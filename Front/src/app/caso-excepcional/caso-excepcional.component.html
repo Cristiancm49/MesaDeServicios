@@ -108,9 +108,9 @@
               <div class="input-group">
                 <label for="area-tecnica">Área técnica:</label>
                 <select id="area-tecnica" name="area-tecnica"  class="short"
-                        [(ngModel)]="incidencia.id_AreaTec" 
+                        [(ngModel)]="incidencia.arTe_Id" 
                         (change)="onAreaTecnicaSelected($event)">
-                  <option [ngValue]="0">Seleccionar</option>
+                  <option [ngValue]="">Seleccionar</option>
                   @for (area of areasTec; track area.arTe_Id) {
                     <option [ngValue]="area.arTe_Id">{{ area.arTe_Nombre }}</option>
                   }
@@ -119,7 +119,7 @@
             </div>
             <div class="form-group">
               <label for="descripcion">Descripción:</label>
-              <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="incidencia.descrip_Incidencias"></textarea>
+              <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="incidencia.inci_Descripcion"></textarea>
             </div>
           </div>
           <div class="form-actions">
