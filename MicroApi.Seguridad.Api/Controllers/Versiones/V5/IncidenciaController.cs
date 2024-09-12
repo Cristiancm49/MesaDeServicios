@@ -149,7 +149,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return CreatedAtAction(nameof(CreateIncidencia), new { id = incidencia.Inci_Id }, incidencia);
         }
-
+        /*
         // GET api/incidencia
         [HttpGet("SelectIncidencias")]
         public async Task<IActionResult> GetIncidencias()
@@ -190,12 +190,12 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(incidencias);
         }
-
+        */
         [HttpGet("SelectIncidenciasRegistradas")]
         public async Task<IActionResult> GetIncidenciasRegistradas()
         {
             var incidencias = await _context.IncidenciasTrazabilidad
-                .Where(it => it.InTrEs_Id == 1)
+                .Where(it => it.Incidencia.Inci_UltimoEstado == 1)
                 .Select(it => new
                 {
                     it.Incidencia.Inci_Id,

@@ -46,6 +46,8 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
 
         public DateTime? Inci_FechaCierre { get; set; }
 
+        public int? Inci_UltimoEstado { get; set; }
+
         // Relaciones
         [ForeignKey("Usua_IdAdminExc")]
         public virtual Usuario AdminExc { get; set; }

@@ -82,31 +82,24 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 return BadRequest("Datos no válidos.");
             }
 
-            var trazabilidad = new IncidenciaTrazabilidad
-            {
-                Inci_Id = dto.Inci_Id,
-                Usua_Id = dto.Usua_Id,
-                InTrEs_Id = 3, // Estado asignado
-                InTr_FechaActualizacion = DateTime.UtcNow,
-                InTr_Solucionado = false,
-                InTr_Revisado = true
-            };
-
-            _context.IncidenciasTrazabilidad.Add(trazabilidad);
-
             try
             {
-                await _context.SaveChangesAsync();
-                return Ok(trazabilidad);
+                // Llamar al procedimiento almacenado
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.AsignarUsuarioAIncidencia @Inci_Id, @Usua_Id",
+                    new SqlParameter("@Inci_Id", dto.Inci_Id),
+                    new SqlParameter("@Usua_Id", dto.Usua_Id)
+                );
+
+                return Ok("Usuario asignado a la incidencia con éxito.");
             }
             catch (DbUpdateException ex)
             {
                 // Manejar excepciones relacionadas con la base de datos
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
 
-        [HttpPost("RechazarIncidencia")]
+        [HttpPost("RechazarIncidencia")] //Procedimeinto de rechazo de incidencia
         public async Task<IActionResult> RechazarIncidencia([FromBody] RechazarIncidenciaDto dto)
         {
             if (dto == null)
@@ -132,6 +125,30 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
         }
 
+        [HttpPost("CambioPrioridad")] //Procedimiento de cambio de prioridad, justificando el motivo
+        public async Task<IActionResult> CambioPrioridad([FromBody] CambioPrioridadDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Datos no válidos.");
+            }
 
+            try
+            {
+                // Llamar al procedimiento almacenado
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.UpdateIncidenciaPrioridad @Inci_Id, @New_Prioridad, @MotivoCambio",
+                    new SqlParameter("@Inci_Id", dto.Inci_Id),
+                    new SqlParameter("@New_Prioridad", dto.New_Prioridad),
+                    new SqlParameter("@MotivoCambio", dto.MotivoCambio)
+                );
+
+                return Ok("Prioridad de la incidencia actualizada con éxito.");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar excepciones relacionadas con la base de datos
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }
