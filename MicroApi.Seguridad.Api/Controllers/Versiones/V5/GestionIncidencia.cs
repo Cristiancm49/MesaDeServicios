@@ -49,6 +49,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                     r => r.UsRo_Id,
                     (u, r) => new
                     {
+                        u.Usuario.Usua_Id,
                         NombreCompleto = $"{u.Persona.PeGe_PrimerNombre} {u.Persona.PeGe_SegundoNombre} {u.Persona.PeGe_PrimerApellido} {u.Persona.PeGe_SegundoApellido}",
                         RolNombre = r.UsRo_Nombre,
                         IncidenciasActivas = u.IncidenciasActivas.Count(),

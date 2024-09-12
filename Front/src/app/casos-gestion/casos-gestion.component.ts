@@ -4,6 +4,7 @@ import { ViewIncidencia } from '../interfaces/ViewIndicencia';
 import { CasoGestion } from '../core/services/caso-gestion';
 import { ViewPersonalAsignacion } from '../interfaces/ViewPersonalAsignacion';
 import { InsertAsignacion } from '../interfaces/Insert-Asignacion';
+import { ViewRoles } from '../interfaces/ViewRoles';
 
 @Component({
   selector: 'app-casos-gestion',
@@ -19,11 +20,13 @@ export class CasosGestionComponent {
   vistadatos: ViewIncidencia[] = [];
   vistapersonal: ViewPersonalAsignacion[] = [];
   insertarpersonal: InsertAsignacion[] = [];
+  vistaroles: ViewRoles[] = [];
   isLoading = true;
   selectedRowIndex: number | null = null;
   selectedRowIndexP: number | null = null;
   showNotification = false;
   notificationMessage = '';
+  selectedRolId = 0;
 
   InsertAsignacion: InsertAsignacion = {
 
@@ -35,7 +38,8 @@ export class CasosGestionComponent {
 
   ngOnInit() {
     this.loadDatosIncidencia();
-    this.loadDatosPersonal();
+    this.loadDatosPersonal(0);
+    this.loadDatosRol();
   }
 
 
@@ -56,11 +60,11 @@ export class CasosGestionComponent {
     });
   }
 
-  loadDatosPersonal() {
+  loadDatosPersonal(selectedRolId: number) {
     this.isLoading = true;
     console.log('Requesting DatosPersonal...');
     
-    this.casoGestion.mostrarpersonal().subscribe({
+    this.casoGestion.mostrarpersonal(selectedRolId).subscribe({
       next: (data) => {
         this.vistapersonal = data;
         this.isLoading = false;
@@ -73,10 +77,25 @@ export class CasosGestionComponent {
     });
   }
 
+  loadDatosRol() {
+    this.isLoading = true;
+    console.log('Requesting Datos Rol...');
+    
+    this.casoGestion.getRoles().subscribe({
+      next: (data) => {
+        this.vistaroles = data;
+        this.isLoading = false;
+        console.log('Datos Rol:', this.vistaroles);
+      },
+      error: (error) => {
+        console.error('Sin datos de Rol:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
   onSubmit() {
     
-
-
     console.log('Valores capturados:');
     console.log('Id Incidencia:', this.InsertAsignacion.inci_Id);
     console.log('Id Personal:', this.InsertAsignacion.usua_Id);
@@ -101,20 +120,28 @@ export class CasosGestionComponent {
     });
   }
 
-
-  onRowSelect(index: number, item: any): void {
-    this.selectedRowIndex = index; // Actualiza el índice de la fila seleccionada
-    console.log(`Fila seleccionada: ${index + 1}`);
-    console.log('Datos de la fila:', this.vistadatos); // Muestra los datos de la fila
-    this.InsertAsignacion.inci_Id = index + 1;
+  onRolSelected(event: any) {
+    this.selectedRolId = parseInt(event.target.value) || 0;
+    console.log('Categoría seleccionada:', this.selectedRolId);
+    this.loadDatosPersonal(this.selectedRolId);
   }
 
-  onRowSelectP(index: number, item: any): void {
-    this.selectedRowIndexP = index; // Actualiza el índice de la fila seleccionada
-    console.log(`Fila seleccionada: ${index + 1}`);
-    console.log('Datos de la fila:', this.vistapersonal); // Muestra los datos de la fila
-    this.InsertAsignacion.usua_Id = index + 1;
+  onRowSelect(index: number, inci_Id: number): void {
+    this.selectedRowIndex = index; // Usamos el índice para seleccionar la fila
+    console.log(`Fila seleccionada: ${index}`);
+    console.log(`Id de la incidencia seleccionada: ${inci_Id}`);
+    this.InsertAsignacion.inci_Id = inci_Id; 
   }
+  
+
+
+  onRowSelectP(usua_Id: number, item: any): void {
+  this.selectedRowIndexP = usua_Id; // Guarda el usua_Id seleccionado
+  console.log(`Usuario seleccionado con usua_Id: ${usua_Id}`);
+  console.log('Datos del usuario seleccionado:', item); // Muestra los datos del usuario seleccionado
+  this.InsertAsignacion.usua_Id = usua_Id; // Asigna el usua_Id a InsertAsignacion sin modificarlo
+  }
+
 
   mostrarSeccion(seccion: string): void {
     this.mostrarDefault = seccion === 'default';
