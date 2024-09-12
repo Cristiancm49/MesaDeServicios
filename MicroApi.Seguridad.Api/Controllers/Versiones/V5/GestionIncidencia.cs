@@ -22,56 +22,71 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         }
 
         [HttpGet("UsuariosConIncidenciasAsignadas")]
-        public async Task<IActionResult> GetUsuariosConIncidenciasAsignadas([FromQuery] int? id_Rol = null)
+        public async Task<IActionResult> UsuariosConIncidenciasAsignadas([FromQuery] int? id_Rol = null)
         {
-            var usuariosConIncidenciasQuery = _context.Usuarios
-                .Join(
-                    _context.Contratos,
+            // Construir la consulta base
+            var query = _context.Usuarios
+                .Join(_context.Contratos,
                     u => u.Cont_Id,
                     c => c.Cont_Id,
-                    (u, c) => new { Usuario = u, Contrato = c }
-                )
-                .Join(
-                    _context.PersonasGenerales,
-                    uc => uc.Contrato.PeGe_Id,
+                    (u, c) => new { u, c })
+                .Join(_context.PersonasGenerales,
+                    uc => uc.c.PeGe_Id,
                     p => p.PeGe_Id,
-                    (uc, p) => new { uc.Usuario, uc.Contrato, Persona = p }
-                )
-                .GroupJoin(
-                    _context.IncidenciasTrazabilidad.Where(t => t.InTrEs_Id == 3),
-                    uc => uc.Usuario.Usua_Id,
+                    (uc, p) => new { uc.u, uc.c, p })
+                .GroupJoin(_context.IncidenciasTrazabilidad,
+                    up => up.u.Usua_Id,
                     t => t.Usua_Id,
-                    (uc, trazabilidades) => new { uc.Usuario, uc.Contrato, uc.Persona, IncidenciasActivas = trazabilidades }
-                )
-                .Join(
-                    _context.UsuariosRoles,
-                    u => u.Usuario.UsRo_Id,
+                    (up, t) => new { up.u, up.c, up.p, Trazabilidad = t })
+                .SelectMany(
+                    up => up.Trazabilidad.DefaultIfEmpty(),
+                    (up, t) => new { up.u, up.p, up.c, Trazabilidad = t })
+                .Join(_context.Incidencias,
+                    ut => ut.Trazabilidad.Inci_Id,
+                    i => i.Inci_Id,
+                    (ut, i) => new { ut.u, ut.p, ut.c, i })
+                .Join(_context.UsuariosRoles,
+                    ui => ui.u.UsRo_Id,
                     r => r.UsRo_Id,
-                    (u, r) => new
-                    {
-                        u.Usuario.Usua_Id,
-                        NombreCompleto = $"{u.Persona.PeGe_PrimerNombre} {u.Persona.PeGe_SegundoNombre} {u.Persona.PeGe_PrimerApellido} {u.Persona.PeGe_SegundoApellido}",
-                        RolNombre = r.UsRo_Nombre,
-                        IncidenciasActivas = u.IncidenciasActivas.Count(),
-                        u.Usuario.Usua_PromedioEvaluacion,
-                        u.Usuario.UsRo_Id
-                    }
-                );
+                    (ui, r) => new { ui.u, ui.p, ui.c, ui.i, r })
+                .Where(x => x.c.Cont_Estado == true) // Filtrar contratos activos
+                .GroupBy(x => new
+                {
+                    x.u.Usua_Id,
+                    x.p.PeGe_PrimerNombre,
+                    x.p.PeGe_SegundoNombre,
+                    x.p.PeGe_PrimerApellido,
+                    x.p.PeGe_SegundoApellido,
+                    x.u.Usua_PromedioEvaluacion,
+                    x.r.UsRo_Id, // Incluyendo el Id del rol en la agrupación
+                    x.r.UsRo_Nombre
+                })
+                .Select(g => new
+                {
+                    g.Key.Usua_Id,
+                    NombreCompleto = $"{g.Key.PeGe_PrimerNombre} {g.Key.PeGe_SegundoNombre ?? ""} {g.Key.PeGe_PrimerApellido} {g.Key.PeGe_SegundoApellido ?? ""}",
+                    RolNombre = g.Key.UsRo_Nombre,
+                    IncidenciasActivas = g.Count(x => x.i.Inci_UltimoEstado == 3), // Contar incidencias activas
+                    PromedioEvaluacion = g.Key.Usua_PromedioEvaluacion
+                });
 
-            // Aplicamos el filtro por id_Rol si se proporciona
+            // Filtrar por id_Rol si se proporciona
             if (id_Rol.HasValue)
             {
-                usuariosConIncidenciasQuery = usuariosConIncidenciasQuery.Where(u => u.UsRo_Id == id_Rol.Value);
+                query = query.Where(x => x.RolNombre == _context.UsuariosRoles
+                    .Where(r => r.UsRo_Id == id_Rol.Value)
+                    .Select(r => r.UsRo_Nombre)
+                    .FirstOrDefault());
             }
 
-            var usuariosConIncidencias = await usuariosConIncidenciasQuery.ToListAsync();
+            var result = await query.ToListAsync();
 
-            if (usuariosConIncidencias == null || !usuariosConIncidencias.Any())
+            if (result == null || !result.Any())
             {
                 return NotFound();
             }
 
-            return Ok(usuariosConIncidencias);
+            return Ok(result);
         }
 
         [HttpPost("AsignarUsuario")]
