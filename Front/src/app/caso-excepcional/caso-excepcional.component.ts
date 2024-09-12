@@ -32,6 +32,8 @@ export class CasoExcepcionalComponent implements OnInit{
   dependencia: string = '';
   telefono: string = '';
   valorprioridad: number = 0;
+  notificationMessage = '';
+  showNotification = false;
 
   incidencia: Incidencia = {
     cont_IdSolicitante: 0,
@@ -199,19 +201,19 @@ export class CasoExcepcionalComponent implements OnInit{
     this.casoRegistroService.insertIncidencia(this.incidencia).subscribe({
       next: (response) => {
         console.log('Incidencia insertada con éxito:', response);
-        //this.showNotification = true;
-        //this.notificationMessage = 'Incidencia insertada con éxito';
+        this.showNotification = true;
+        this.notificationMessage = 'Incidencia Excepcional insertada con éxito';
         this.resetIncidencia();
         setTimeout(() => {
-          //this.showNotification = false;
+          this.showNotification = false;
         }, 5000); 
       },
       error: (error) => {
         console.error('Error al insertar la incidencia:', error);
-        //this.showNotification = true;
-        //this.notificationMessage = 'Error al insertar la incidencia';
+        this.showNotification = true;
+        this.notificationMessage = 'Error al insertar la incidencia';
         setTimeout(() => {
-          //this.showNotification = false;
+          this.showNotification = false;
         }, 5000);
       }
     });
