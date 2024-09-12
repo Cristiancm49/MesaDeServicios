@@ -37,7 +37,7 @@ namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
         [Required]
         public bool InTr_Escalable { get; set; }
 
-        public string InTr_Motivodevolucion { get; set; }
+        public string InTr_MotivoRechazo { get; set; }
 
         [Required]
         public bool InTr_Revisado { get; set; }
