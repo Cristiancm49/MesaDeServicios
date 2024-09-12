@@ -38,7 +38,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                     (uc, p) => new { uc.Usuario, uc.Contrato, Persona = p }
                 )
                 .GroupJoin(
-                    _context.IncidenciasTrazabilidad.Where(t => t.InTrEs_Id == 5),
+                    _context.IncidenciasTrazabilidad.Where(t => t.InTrEs_Id == 3),
                     uc => uc.Usuario.Usua_Id,
                     t => t.Usua_Id,
                     (uc, trazabilidades) => new { uc.Usuario, uc.Contrato, uc.Persona, IncidenciasActivas = trazabilidades }
