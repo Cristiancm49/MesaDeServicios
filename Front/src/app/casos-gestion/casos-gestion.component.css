@@ -54,20 +54,21 @@
     text-align: center;
   }
   
-  .cases-table, .trazabilidad-table {
+  .cases-table, .trazabilidad-table, .cases-table-personal {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
     table-layout: fixed; /* Para mantener un ancho uniforme en las columnas */
   }
   
-  .cases-table th, .trazabilidad-table th {
+  .cases-table th, .trazabilidad-table th, .cases-table-personal th {
     background-color: #077D35; /* Verde */
     color: white; /* Blanco */
   }
   
   .cases-table th, .trazabilidad-table th, 
-  .cases-table td, .trazabilidad-table td {
+  .cases-table td, .trazabilidad-table td,
+  .cases-table-personal th, .cases-table-personal td {
     border: 1px solid #000000;
     padding: 8px;
     text-align: center;
@@ -86,6 +87,11 @@
   .cases-table th:nth-child(9),
   .cases-table td:nth-child(9) {
     width: 15%; /* Columna "No." toma solo el 5% del ancho */
+  }
+
+  .cases-table-personal th:nth-child(1),
+  .cases-table-personal td:nth-child(1){
+    width: 15%;
   }
 
 
@@ -249,4 +255,22 @@
 
 .assign-button:hover {
     background-color: #077D35;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  background-color: #077D35;
+  color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: fadeInOut 5s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 1; }
 }

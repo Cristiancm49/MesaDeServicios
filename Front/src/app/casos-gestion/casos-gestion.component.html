@@ -53,29 +53,29 @@
                         <option value="user">Usuario</option>
                     </select>
                 </div>
-                <table class="cases-table">
+                <div *ngIf="showNotification" class="notification">
+                    {{ notificationMessage }}
+                  </div>
+                <table class="cases-table-personal">
                     <tr>
                         <th>NO.</th>
                         <th>NOMBRE</th>
                         <th>ROL</th>
+                        <th>NO. INCIDENCIAS</th>
+                        <th>PROMEDIO</th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Juan Pérez</td>
-                        <td>Admin</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Maria López</td>
-                        <td>Usuario</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Luis Martínez</td>
-                        <td>Admin</td>
-                    </tr>
+                    <tbody>
+                        <tr *ngFor="let persona of vistapersonal; let usua_Id = index" [class.selected-row]="selectedRowIndexP === usua_Id"
+                        (click)="onRowSelectP(usua_Id, vistapersonal)">
+                            <td>{{ persona.usua_Id }}</td>
+                            <td>{{ persona.nombreCompleto }}</td>
+                            <td>{{ persona.rolNombre }}</td>
+                            <td>{{ persona.incidenciasActivas }}</td>
+                            <td>{{ persona.usua_PromedioEvaluacion }}</td>
+                        </tr>
+                    </tbody>
                 </table>
-                <button type="button" class="assign-button">Asignar</button>
+                <button type="submit" class="assign-button" (click)="onSubmit()">Asignar</button>
             </div>
         </div>
         <div *ngIf="mostrarEscalar">
