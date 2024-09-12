@@ -20,10 +20,11 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
+
         [HttpGet("UsuariosConIncidenciasAsignadas")]
-        public async Task<IActionResult> GetUsuariosConIncidenciasAsignadas()
+        public async Task<IActionResult> GetUsuariosConIncidenciasAsignadas([FromQuery] int? id_Rol = null)
         {
-            var usuariosConIncidencias = await _context.Usuarios
+            var usuariosConIncidenciasQuery = _context.Usuarios
                 .Join(
                     _context.Contratos,
                     u => u.Cont_Id,
@@ -48,14 +49,21 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                     r => r.UsRo_Id,
                     (u, r) => new
                     {
-                        u.Usuario.Usua_Id,
                         NombreCompleto = $"{u.Persona.PeGe_PrimerNombre} {u.Persona.PeGe_SegundoNombre} {u.Persona.PeGe_PrimerApellido} {u.Persona.PeGe_SegundoApellido}",
                         RolNombre = r.UsRo_Nombre,
                         IncidenciasActivas = u.IncidenciasActivas.Count(),
-                        u.Usuario.Usua_PromedioEvaluacion
+                        u.Usuario.Usua_PromedioEvaluacion,
+                        u.Usuario.UsRo_Id
                     }
-                )
-                .ToListAsync();
+                );
+
+            // Aplicamos el filtro por id_Rol si se proporciona
+            if (id_Rol.HasValue)
+            {
+                usuariosConIncidenciasQuery = usuariosConIncidenciasQuery.Where(u => u.UsRo_Id == id_Rol.Value);
+            }
+
+            var usuariosConIncidencias = await usuariosConIncidenciasQuery.ToListAsync();
 
             if (usuariosConIncidencias == null || !usuariosConIncidencias.Any())
             {

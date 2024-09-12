@@ -170,6 +170,25 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
 
             return Ok("Rol del usuario actualizado exitosamente.");
         }
+
+        [HttpGet("RolesModulo")]
+        public async Task<IActionResult> GetRolesModulo()
+        {
+            var roles = await _context.UsuariosRoles
+                .Select(r => new
+                {
+                    r.UsRo_Id,
+                    r.UsRo_Nombre
+                })
+                .ToListAsync();
+
+            if (roles == null || !roles.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(roles);
+        }
     }
 }
 

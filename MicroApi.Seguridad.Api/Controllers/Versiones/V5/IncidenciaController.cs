@@ -198,6 +198,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 .Where(it => it.InTrEs_Id == 1)
                 .Select(it => new
                 {
+                    it.Incidencia.Inci_Id,
                     NombreCompleto = it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerNombre + " " +
                                      (it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre != null ? it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre + " " : "") +
                                      it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerApellido + " " +
