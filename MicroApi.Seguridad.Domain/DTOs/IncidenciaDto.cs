@@ -9,7 +9,6 @@ namespace MicroApi.Seguridad.Domain.DTOs
     public class IncidenciaDto
     {
         public int Cont_IdSolicitante { get; set; }
-        public bool Inci_EsExc { get; set; }
         public int? Usua_IdAdminExc { get; set; }
         public DateTime Inci_FechaRegistro { get; set; }
         public int ArTe_Id { get; set; }

@@ -135,13 +135,13 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             var incidencia = new Incidencia
             {
                 Cont_IdSolicitante = incidenciaDto.Cont_IdSolicitante,
-                Inci_EsExc = incidenciaDto.Inci_EsExc,
                 Usua_IdAdminExc = incidenciaDto.Usua_IdAdminExc,
                 Inci_FechaRegistro = incidenciaDto.Inci_FechaRegistro,
                 ArTe_Id = incidenciaDto.ArTe_Id,
                 Inci_Descripcion = incidenciaDto.Inci_Descripcion,
                 Inci_ValorTotal = incidenciaDto.Inci_ValorTotal,
-                InPr_Id = 4
+                InPr_Id = 4,
+                Inci_UltimoEstado = 1
             };
 
             _context.Incidencias.Add(incidencia);
