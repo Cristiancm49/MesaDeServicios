@@ -32,7 +32,8 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         [Required]
         public int Unid_Id { get; set; }
 
-        public int? PeGe_Id { get; set; }
+        [Required]
+        public int PeGe_Id { get; set; }
 
         // Relaciones
         [ForeignKey("PeGe_Id")]
