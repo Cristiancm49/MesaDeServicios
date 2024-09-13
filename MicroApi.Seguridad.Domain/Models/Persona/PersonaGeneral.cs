@@ -23,14 +23,14 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         public string PeGe_PrimerNombre { get; set; }
 
         [MaxLength(50)]
-        public string PeGe_SegundoNombre { get; set; }
+        public string? PeGe_SegundoNombre { get; set; }
 
         [Required]
         [MaxLength(50)]
         public string PeGe_PrimerApellido { get; set; }
 
         [MaxLength(50)]
-        public string PeGe_SegundoApellido { get; set; }
+        public string? PeGe_SegundoApellido { get; set; }
 
         // Relación con Contrato
         public virtual ICollection<Contrato> Contratos { get; set; }

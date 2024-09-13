@@ -27,7 +27,7 @@ namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
         public DateTime InTr_FechaActualizacion { get; set; }
 
         [Required]
-        public int Usua_Id { get; set; }
+        public int? Usua_Id { get; set; }
 
         [Required]
         public bool InTr_Solucionado { get; set; }
@@ -37,13 +37,12 @@ namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
         [Required]
         public bool InTr_Escalable { get; set; }
 
-        public string InTr_MotivoRechazo { get; set; }
+        public string? InTr_MotivoRechazo { get; set; }
 
         [Required]
         public bool InTr_Revisado { get; set; }
 
-        [Required]
-        public string InTr_descripcion { get; set; }
+        public string? InTr_descripcion { get; set; }
 
         // Relaciones
         [ForeignKey("Inci_Id")]
