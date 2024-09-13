@@ -80,24 +80,6 @@
                     <button type="submit" class="assign-button" (click)="onSubmit()">Asignar</button>
                 </div>
             </div>
-            <div *ngIf="mostrarEscalar">
-                <div class="filter-container">
-                    <div class="buttons">
-                        <button (click)="mostrarSeccion('default')">Asignar</button>
-                        <button (click)="mostrarSeccion('rechazar')">Rechazar</button>
-                    </div>
-
-                    <div class="filter-role-escalar">
-                        <label for="role-select">Seleccionar Dependencia a Escalar:</label>
-                        <select id="role-select">
-                            <option>Seleccione</option>
-                            <option value="admin">Biblioteca</option>
-                            <option value="user">Registro y Control</option>
-                        </select>
-                    </div>
-                    <button type="button" class="assign-button">Enviar</button>
-                </div>
-            </div>
             <div *ngIf="mostrarRechazar">
                 <div class="filter-container">
                     <div class="buttons">
@@ -107,9 +89,10 @@
 
                     <div class="filter-role-escalar">
                         <label for="role-select">Escriba el Motivo del Rechazo:</label>
-                        <textarea id="Motivo" name="Motivo" rows="4"></textarea>
+                        <textarea id="Motivo" name="Motivo" rows="4" 
+                                  [(ngModel)]="RechazarIncidencia.inTr_MotivoRechazo"></textarea>
                     </div>
-                    <button type="button" class="assign-button">Enviar</button>
+                    <button type="submit" class="assign-button" (click)="onRechazar()">Enviar</button>
                 </div>
             </div>
         </div>

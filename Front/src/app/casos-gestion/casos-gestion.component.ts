@@ -1,15 +1,17 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ViewIncidencia } from '../interfaces/ViewIndicencia';
 import { CasoGestion } from '../core/services/caso-gestion';
 import { ViewPersonalAsignacion } from '../interfaces/ViewPersonalAsignacion';
 import { InsertAsignacion } from '../interfaces/Insert-Asignacion';
 import { ViewRoles } from '../interfaces/ViewRoles';
+import { RechazarIncidencia } from '../interfaces/RechazarIncidencia';
 
 @Component({
   selector: 'app-casos-gestion',
   standalone: true,
-  imports: [CommonModule], 
+  imports: [CommonModule, FormsModule], 
   templateUrl: './casos-gestion.component.html',
   styleUrls: ['./casos-gestion.component.css']
 })
@@ -33,6 +35,14 @@ export class CasosGestionComponent {
     inci_Id : 0,
     usua_Id : 0  
   }
+
+  RechazarIncidencia: RechazarIncidencia={
+
+    inci_Id: 0,
+    inTr_FechaActualizacion: new Date(),
+    inTr_MotivoRechazo: ''
+
+  }
   
   constructor(private casoGestion: CasoGestion) { }
 
@@ -40,6 +50,8 @@ export class CasosGestionComponent {
     this.loadDatosIncidencia();
     this.loadDatosPersonal(0);
     this.loadDatosRol();
+    this.cargarFechaHora();
+    
   }
 
 
@@ -94,6 +106,13 @@ export class CasosGestionComponent {
     });
   }
 
+  cargarFechaHora() {
+    const now = new Date();
+    this.RechazarIncidencia.inTr_FechaActualizacion = now;
+    console.log("Fecha de rechazo", this.RechazarIncidencia.inTr_FechaActualizacion)
+  }
+
+
   onSubmit() {
     
     console.log('Valores capturados:');
@@ -120,6 +139,49 @@ export class CasosGestionComponent {
     });
   }
 
+  onRechazar() {
+    if (this.RechazarIncidencia.inci_Id === 0) {
+      console.error('No se ha seleccionado ninguna incidencia');
+      this.showNotification = true;
+      this.notificationMessage = 'Por favor, seleccione una incidencia antes de rechazar';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 5000);
+      return;
+    }
+
+    if (!this.RechazarIncidencia.inTr_MotivoRechazo) {
+      console.error('No se ha proporcionado un motivo de rechazo');
+      this.showNotification = true;
+      this.notificationMessage = 'Por favor, proporcione un motivo de rechazo';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 5000);
+      return;
+    }
+
+    console.log("Datos de rechazo a enviar:", this.RechazarIncidencia);
+    
+    this.casoGestion.rechazarinciden(this.RechazarIncidencia).subscribe({
+      next: (response) => {
+        console.log('Incidencia rechazada con éxito:', response);
+        this.showNotification = true;
+        this.notificationMessage = 'Incidencia rechazada con éxito';
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 5000); 
+      },
+      error: (error) => {
+        console.error('Error al rechazar la incidencia:', error);
+        this.showNotification = true;
+        this.notificationMessage = `Error al rechazar la incidencia: ${error.message || 'Desconocido'}`;
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 5000);
+      }
+    });
+  }
+
   onRolSelected(event: any) {
     this.selectedRolId = parseInt(event.target.value) || 0;
     console.log('Categoría seleccionada:', this.selectedRolId);
@@ -131,9 +193,9 @@ export class CasosGestionComponent {
     console.log(`Fila seleccionada: ${index}`);
     console.log(`Id de la incidencia seleccionada: ${inci_Id}`);
     this.InsertAsignacion.inci_Id = inci_Id; 
+    this.RechazarIncidencia.inci_Id = inci_Id;
   }
   
-
 
   onRowSelectP(usua_Id: number, item: any): void {
   this.selectedRowIndexP = usua_Id; // Guarda el usua_Id seleccionado

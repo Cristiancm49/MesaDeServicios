@@ -6,7 +6,7 @@
 /* Menú lateral (sidenav) */
 .sidenav {
   width: 300px; /* Ajusta al ancho del diseño anterior */
-  background-color: #b1b3b1; /* Color de fondo del menú anterior */
+  background-color: #077D35; /* Color de fondo del menú anterior */
   padding: 10px;
 }
 
@@ -14,6 +14,8 @@
   background: inherit;
   justify-content: center;
   font-weight: bold;
+  color: white;
+  font-size: 1.8em;
 }
 
 /* Mantener la barra de herramientas fija */
@@ -26,7 +28,7 @@
 /* Estilo de los ítems del menú */
 .mat-nav-list a {
   text-decoration: none;
-  color: black;
+  color: rgb(255, 255, 255);
   font-weight: bold; /* Negrita para los enlaces de primer nivel */
   display: flex;
   align-items: center;

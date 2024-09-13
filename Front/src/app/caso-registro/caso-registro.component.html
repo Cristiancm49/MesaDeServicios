@@ -6,50 +6,33 @@
       <div class="section">
         <h3 class="section-header">SOLICITANTE</h3>
         <div class="form-group">
-          <div class="input-group">
+          <div class="input-group short">
             <label for="identificacion">Identificación:</label>
             @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
             <input type="text" id="identificacion" name="identificacion" [value]="Duser.peGe_DocumentoIdentidad" disabled>
             }
           </div>
-          <div class="input-group">
+          <div class="input-group nombre">
             <label for="nombre">Nombre del Solicitante:</label>
             @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
             <input [value]="Duser.nombreCompleto" disabled>
             }
           </div>
-          <div class="input-group">
+          <div class="input-group short">
             <label for="cargo">Cargo:</label>
             @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
             <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cont_Cargo" disabled>
             }
           </div>
-        </div>
-      </div>
-      <div class="section">
-        <h3 class="section-header">DEPENDENCIA</h3>
-        <div class="form-group">
-          <div class="input-group">
-            <label for="indicativo">Indicativo:</label>
-            @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
-            <input type="text" id="indicativo" name="indicativo" [value]="Duser.unid_ExtTelefono" disabled>
-            }
-          </div>
-          <div class="input-group">
+          <div class="input-group short">
             <label for="dependencia">Dependencia:</label>
             @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
             <input type="text" id="dependencia" name="dependencia" [value]="Duser.unid_Nombre" disabled>
             }
           </div>
-          <div class="input-group">
-            <label for="telefono">Teléfono:</label>
-            @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
-            <input type="text" id="telefono" name="telefono" class="short" [value]="Duser.unid_Telefono" disabled>
-            }
-          </div>
         </div>
       </div>
-      
+
       <div *ngIf="showNotification" class="notification">
         {{ notificationMessage }}
       </div>
@@ -58,30 +41,29 @@
         <div class="section">
           <h3 class="section-header">SOLICITUD</h3>
           <div class="form-group">
-            <div class="input-group">
-              <label for="fecha">Fecha y Hora:</label>
-              <input type="datetime-local" id="fecha" name="fecha" class="short" [ngModel]="fechaHoraString" 
-              (ngModelChange)="onFechaHoraChange($event)">
-            </div>
-            <div class="input-group">
-              <label for="categoria">Categoría:</label>
-              <select id="categoria" name="categoria" class="short" (change)="onCategoriaSelected($event)">
-                <option value="">Seleccionar</option>
-                @for (categoria of catego; track categoria.caAr_Id) {
+            <div class="form-row">
+              <div class="input-group short">
+                <label for="fecha">Fecha y Hora:</label>
+                <input type="datetime-local" id="fecha" name="fecha" [ngModel]="fechaHoraString" (ngModelChange)="onFechaHoraChange($event)">
+              </div>
+              <div class="input-group short">
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" name="categoria" (change)="onCategoriaSelected($event)">
+                  <option value="">Seleccionar</option>
+                  @for (categoria of catego; track categoria.caAr_Id) {
                   <option [value]="categoria.caAr_Id">{{ categoria.caAr_Nombre }}</option>
-                }
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="area-tecnica">Área técnica:</label>
-              <select id="area-tecnica" name="area-tecnica"  class="short"
-                      [(ngModel)]="incidencia.arTe_Id" 
-                      (change)="onAreaTecnicaSelected($event)">
-                <option [ngValue]="">Seleccionar</option>
-                @for (area of areasTec; track area.arTe_Id) {
+                  }
+                </select>
+              </div>
+              <div class="input-group short">
+                <label for="area-tecnica">Área técnica:</label>
+                <select id="area-tecnica" name="area-tecnica" [(ngModel)]="incidencia.arTe_Id" (change)="onAreaTecnicaSelected($event)">
+                  <option [ngValue]="">Seleccionar</option>
+                  @for (area of areasTec; track area.arTe_Id) {
                   <option [ngValue]="area.arTe_Id">{{area.arTe_Nombre }}</option>
-                }
-              </select>
+                  }
+                </select>
+              </div>
             </div>
           </div>
           <div class="form-group">

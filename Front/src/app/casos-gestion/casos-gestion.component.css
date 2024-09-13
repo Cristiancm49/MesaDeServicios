@@ -207,6 +207,12 @@
     font-size: 1.5em;
 }
 
+textarea#Motivo {
+  height: 150px;
+  width: 650px; /* Ajusta la altura según la preferencia */
+  resize: none; /* Elimina la posibilidad de cambiar el tamaño horizontalmente */
+}
+
 .filter-role select {
   padding: 10px;
   font-size: 1.3em;

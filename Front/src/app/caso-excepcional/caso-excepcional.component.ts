@@ -37,7 +37,6 @@ export class CasoExcepcionalComponent implements OnInit{
 
   incidencia: Incidencia = {
     cont_IdSolicitante: 0,
-    inci_EsExc: true,
     usua_IdAdminExc: 0,
     inci_FechaRegistro: new Date(),
     arTe_Id: 0,
@@ -191,7 +190,6 @@ export class CasoExcepcionalComponent implements OnInit{
 
     console.log('Valores capturados:');
     console.log('cont_IdSolicitante:', this.incidencia.cont_IdSolicitante);
-    console.log('inci_EsExc:', this.incidencia.inci_EsExc);
     console.log('usua_IdAdminExc:', this.incidencia.usua_IdAdminExc);
     console.log('inci_FechaRegistro:', this.incidencia.inci_FechaRegistro);
     console.log('arTe_Id:', this.incidencia.arTe_Id);
@@ -222,7 +220,6 @@ export class CasoExcepcionalComponent implements OnInit{
   private resetIncidencia() {
     this.incidencia = {
       cont_IdSolicitante: 0,
-      inci_EsExc: true,
       usua_IdAdminExc: 0,
       inci_FechaRegistro: new Date(),
       arTe_Id: 0,
