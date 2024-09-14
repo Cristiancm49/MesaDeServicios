@@ -20,10 +20,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             _context = context;
         }
 
-
-
-        [HttpGet("VistaTrazabilidadFuncionario")]
-        public async Task<IActionResult> VistaTrazabilidadFuncionario([FromQuery] int documento)
+        [HttpGet("VistaIncidenciasFuncionario")]
+        public async Task<IActionResult> VistaIncidenciasFuncionario([FromQuery] int documento)
         {
             var incidencias = await _context.Incidencias
                 .Where(i => i.Solicitante.PersonaGeneral.PeGe_DocumentoIdentidad == documento)
@@ -51,5 +49,36 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             return Ok(incidencias);
         }
 
+        [HttpGet("VistaTrazabilidadFuncionario")]
+        public async Task<IActionResult> VistaTrazabilidadFuncionario([FromQuery] int inci_id)
+        {
+            if (inci_id <= 0)
+            {
+                return BadRequest("ID de incidencia inválido.");
+            }
+
+            var trazabilidad = await _context.IncidenciasTrazabilidad
+                .Where(it => it.Inci_Id == inci_id)
+                .Select(it => new
+                {
+                    it.InTr_FechaActualizacion,
+                    Estado = _context.IncidenciasTrazabilidadEstado
+                        .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
+                        .Select(ite => ite.InTrEs_Nombre)
+                        .FirstOrDefault(),
+                    Descripcion = _context.IncidenciasTrazabilidadEstado
+                        .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
+                        .Select(ite => ite.InTrEs_Descripcion)
+                        .FirstOrDefault(),
+                })
+                .ToListAsync();
+
+            if (trazabilidad == null || !trazabilidad.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(trazabilidad);
+        }
     }
 }
