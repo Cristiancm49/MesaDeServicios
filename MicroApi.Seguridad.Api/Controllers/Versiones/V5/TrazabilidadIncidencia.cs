@@ -71,38 +71,5 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(trazabilidad);
         }
-
-        [HttpGet("VistaTrazabilidadFuncionario")]
-        public async Task<IActionResult> VistaTrazabilidadFuncionario([FromQuery] int inci_id)
-        {
-            if (inci_id <= 0)
-            {
-                return BadRequest("ID de incidencia inválido.");
-            }
-
-            var trazabilidad = await _context.IncidenciasTrazabilidad
-                .Where(it => it.Inci_Id == inci_id)
-                .Select(it => new
-                {
-                    it.InTr_FechaActualizacion,
-                    Estado = _context.IncidenciasTrazabilidadEstado
-                        .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
-                        .Select(ite => ite.InTrEs_Nombre)
-                        .FirstOrDefault(),
-                    Descripcion = _context.IncidenciasTrazabilidadEstado
-                        .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
-                        .Select(ite => ite.InTrEs_Descripcion)
-                        .FirstOrDefault(),
-                })
-                .ToListAsync();
-
-            if (trazabilidad == null || !trazabilidad.Any())
-            {
-                return NotFound();
-            }
-
-            return Ok(trazabilidad);
-        }
-
     }
 }
