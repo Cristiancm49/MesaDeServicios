@@ -57,28 +57,60 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 return BadRequest("ID de incidencia inválido.");
             }
 
-            var trazabilidad = await _context.IncidenciasTrazabilidad
-                .Where(it => it.Inci_Id == inci_id)
+            var ultimoEstado4 = await _context.IncidenciasTrazabilidad
+                .Where(it => it.Inci_Id == inci_id && it.InTrEs_Id == 4)
+                .OrderByDescending(it => it.InTr_FechaActualizacion)
                 .Select(it => new
                 {
                     it.InTr_FechaActualizacion,
+                    it.InTrEs_Id
+                })
+                .FirstOrDefaultAsync();
+
+                        var estados = await _context.IncidenciasTrazabilidad
+                            .Where(it => it.Inci_Id == inci_id)
+                            .Select(it => new
+                            {
+                                it.InTr_FechaActualizacion,
+                                Estado = _context.IncidenciasTrazabilidadEstado
+                                    .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
+                                    .Select(ite => ite.InTrEs_Nombre)
+                                    .FirstOrDefault(),
+                                Descripcion = _context.IncidenciasTrazabilidadEstado
+                                    .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
+                                    .Select(ite => ite.InTrEs_Descripcion)
+                                    .FirstOrDefault(),
+                            })
+                .ToListAsync();
+
+            // Verifica si ultimoEstado4 es nulo antes de usarlo
+            var resultadoFinal = estados
+                .Where(t => t.Estado != "En proceso" || t.InTr_FechaActualizacion == ultimoEstado4?.InTr_FechaActualizacion)
+                .ToList();
+
+            // Agrega el último estado "En proceso" si es necesario
+            if (ultimoEstado4 != null)
+            {
+                var ultimoEstado4Detalle = new
+                {
+                    InTr_FechaActualizacion = ultimoEstado4.InTr_FechaActualizacion,
                     Estado = _context.IncidenciasTrazabilidadEstado
-                        .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
+                        .Where(ite => ite.InTrEs_Id == ultimoEstado4.InTrEs_Id)
                         .Select(ite => ite.InTrEs_Nombre)
                         .FirstOrDefault(),
                     Descripcion = _context.IncidenciasTrazabilidadEstado
-                        .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
+                        .Where(ite => ite.InTrEs_Id == ultimoEstado4.InTrEs_Id)
                         .Select(ite => ite.InTrEs_Descripcion)
                         .FirstOrDefault(),
-                })
-                .ToListAsync();
+                };
 
-            if (trazabilidad == null || !trazabilidad.Any())
-            {
-                return NotFound();
+                // Solo agrega si el detalle no está ya en los resultados
+                if (!resultadoFinal.Any(r => r.InTr_FechaActualizacion == ultimoEstado4Detalle.InTr_FechaActualizacion && r.Estado == "En proceso"))
+                {
+                    resultadoFinal.Add(ultimoEstado4Detalle);
+                }
             }
-
-            return Ok(trazabilidad);
+            return Ok(resultadoFinal);
         }
     }
 }

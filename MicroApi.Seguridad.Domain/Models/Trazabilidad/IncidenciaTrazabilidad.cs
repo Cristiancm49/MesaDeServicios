@@ -44,6 +44,8 @@ namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
 
         public string? InTr_descripcion { get; set; }
 
+        public string? InTr_ObservacionAdmin { get; set; }
+
         // Relaciones
         [ForeignKey("Inci_Id")]
         public virtual Incidencia.Incidencia Incidencia { get; set; }
