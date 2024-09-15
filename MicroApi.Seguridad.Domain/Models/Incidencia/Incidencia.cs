@@ -36,7 +36,7 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
         [Required]
         public string Inci_Descripcion { get; set; }
 
-        public byte[] Inci_Evidencia { get; set; }
+        public byte[]? Inci_Evidencia { get; set; }
 
         [Required]
         public int Inci_ValorTotal { get; set; }

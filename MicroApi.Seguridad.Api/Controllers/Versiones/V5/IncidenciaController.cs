@@ -149,48 +149,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return CreatedAtAction(nameof(CreateIncidencia), new { id = incidencia.Inci_Id }, incidencia);
         }
-        /*
-        // GET api/incidencia
-        [HttpGet("SelectIncidencias")]
-        public async Task<IActionResult> GetIncidencias()
-        {
-            var incidencias = await _context.IncidenciasTrazabilidad
-                .Include(it => it.Incidencia)
-                    .ThenInclude(i => i.Solicitante)
-                        .ThenInclude(c => c.PersonaGeneral)
-                .Include(it => it.Incidencia)
-                    .ThenInclude(i => i.Solicitante)
-                        .ThenInclude(c => c.Unidad)
-                .Include(it => it.Incidencia)
-                    .ThenInclude(i => i.AdminExc)
-                        .ThenInclude(u => u.Contrato)
-                            .ThenInclude(c => c.PersonaGeneral)
-                .Include(it => it.Incidencia)
-                    .ThenInclude(i => i.AreaTecnica)
-                        .ThenInclude(at => at.Categoria)
-                .Include(it => it.Incidencia)
-                    .ThenInclude(i => i.Prioridad)
-                .Where(it => it.InTrEs_Id == 1) // Filtra por el estado de la trazabilidad
-                .Select(it => new
-                {
-                    it.Incidencia.Inci_Id,
-                    Solicitante_NombreCompleto = $"{it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerNombre} {it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre ?? ""} {it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerApellido} {it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoApellido ?? ""}",
-                    Solicitante_Cargo = it.Incidencia.Solicitante.Cont_Cargo,
-                    Solicitante_Unid_Nombre = it.Incidencia.Solicitante.Unidad.Unid_Nombre,
-                    Solicitante_Telefono = it.Incidencia.Solicitante.Unidad.Unid_Telefono,
-                    CategoriaAreaTecnica_Nombre = it.Incidencia.AreaTecnica.Categoria.CaAr_Nombre,
-                    AreaTecnica_Nombre = it.Incidencia.AreaTecnica.ArTe_Nombre,
-                    it.Incidencia.Inci_Descripcion,
-                    it.Incidencia.Inci_FechaRegistro,
-                    Admin_NombreCompleto = it.Incidencia.AdminExc == null ? "No es excepcional": 
-                    $"{it.Incidencia.AdminExc.Contrato.PersonaGeneral.PeGe_PrimerNombre} {it.Incidencia.AdminExc.Contrato.PersonaGeneral.PeGe_SegundoNombre ?? ""} {it.Incidencia.AdminExc.Contrato.PersonaGeneral.PeGe_PrimerApellido} {it.Incidencia.AdminExc.Contrato.PersonaGeneral.PeGe_SegundoApellido ?? ""}",
-                    Prioridad_Tipo = it.Incidencia.Prioridad.InPr_Tipo
-                })
-                .ToListAsync();
 
-            return Ok(incidencias);
-        }
-        */
         [HttpGet("SelectIncidenciasRegistradas")]
         public async Task<IActionResult> GetIncidenciasRegistradas()
         {
@@ -215,86 +174,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 .ToListAsync();
 
             return Ok(incidencias);
-        }        /*
-        [HttpGet("SelectSolicitante")]
-        public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
-        {
-            var result = await (from c in _context.ChairaLogins
-                                join p in _context.Personals on c.Id_ChaLog equals p.Id_ChaLog into cp
-                                from p in cp.DefaultIfEmpty()
-                                join d in _context.DependenciaLogins on c.Id_DepenLog equals d.Id_DepenLog into cd
-                                from d in cd.DefaultIfEmpty()
-                                join r in _context.RolModulos on p.Id_RolModulo equals r.Id_rolModulo into pr
-                                from r in pr.DefaultIfEmpty()
-                                where c.Doc_ChaLog == docChaLog
-                                select new
-                                {
-                                    c.Doc_ChaLog,
-                                    c.Nom_ChaLog,
-                                    c.Ape_ChaLog,
-                                    c.Cargo_ChaLog,
-                                    d.IndiTel_DepenLog,
-                                    d.Nom_DepenLog,
-                                    d.Tel_DepenLog,
-                                    d.Val_DepenLog,
-                                    Nom_RolModulo = r != null ? r.Nom_rolModulo : null,
-
-                                    //Id para enviar al insert de incidencias
-                                    c.Id_ChaLog,
-
-                                }).ToListAsync();
-
-            if (result == null || !result.Any())
-            {
-                return NotFound();
-            }
-
-            return Ok(result);
-
         }
-
-
-        [HttpGet("SelectIncidenciasXEstado")]
-        public async Task<IActionResult> GetIncidenciasPorEstado([FromQuery] string estado)
-        {
-            if (string.IsNullOrWhiteSpace(estado))
-            {
-                return BadRequest("El parámetro de estado no puede estar vacío.");
-            }
-
-            var result = await _context.Incidencias
-                .Include(i => i.ChairaLoginSolicitante)
-                .Include(i => i.AreaTecnica)
-                .ThenInclude(at => at.CategoriaAreaTec)
-                .Include(i => i.EstadoIncidencia)
-                .Include(i => i.Prioridad)
-                .Where(i => i.EstadoIncidencia.Tipo_Estado == estado)
-                .Select(i => new
-                {
-                    i.Id_Incidencias,
-                    Nom_Solicitante = i.ChairaLoginSolicitante.Nom_ChaLog,
-                    Ape_Solicitante = i.ChairaLoginSolicitante.Ape_ChaLog,
-                    Doc_Solicitante = i.ChairaLoginSolicitante.Doc_ChaLog,
-                    Cargo_Solicitante = i.ChairaLoginSolicitante.Cargo_ChaLog,
-                    i.EsExc_Incidencias,
-                    i.FechaHora_Incidencias,
-                    Nom_AreaTec = i.AreaTecnica.Nom_AreaTec,
-                    Nom_CatAre = i.AreaTecnica.CategoriaAreaTec.Nom_CatAre,
-                    i.Descrip_Incidencias,
-                    i.ValTotal_Incidencias,
-                    Tipo_Estado = i.EstadoIncidencia.Tipo_Estado,
-                    Tipo_Priori = i.Prioridad.Tipo_Priori,
-                    i.Id_Perso
-                })
-                .OrderBy(i => i.Id_Incidencias)
-                .ToListAsync();
-
-            if (result == null || !result.Any())
-            {
-                return NotFound($"No se encontraron Incidencias con el estado '{estado}'.");
-            }
-
-            return Ok(result);
-        }*/
     }
 }

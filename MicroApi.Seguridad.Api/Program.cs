@@ -39,11 +39,11 @@ builder.Services.AddSwaggerGen(c =>
         {
             Title = "ChairaAPI SQL",
             Version = "Pruebas",
-            Description = "Versión de pruebas de la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Description = "Versiï¿½n de pruebas de la API para la OTI de la UDLA para pruebas de la mesa de servicios",
             Contact = new OpenApiContact
             {
                 Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebastián Mosquera Munar"
+                Name = "Johan Sebastiï¿½n Mosquera Munar"
             },
             License = new OpenApiLicense
             {
@@ -55,11 +55,11 @@ builder.Services.AddSwaggerGen(c =>
         {
             Title = "EndPoints de Roles",
             Version = "VersionFinal",
-            Description = "Versión final de los roles en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Description = "Versiï¿½n final de los roles en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
             Contact = new OpenApiContact
             {
                 Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebastián Mosquera Munar"
+                Name = "Johan Sebastiï¿½n Mosquera Munar"
             },
             License = new OpenApiLicense
             {
@@ -71,11 +71,11 @@ builder.Services.AddSwaggerGen(c =>
         {
             Title = "EndPoints de Inventario",
             Version = "VersionFinal",
-            Description = "Versión final del inventario en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Description = "Versiï¿½n final del inventario en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
             Contact = new OpenApiContact
             {
                 Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebastián Mosquera Munar"
+                Name = "Johan Sebastiï¿½n Mosquera Munar"
             },
             License = new OpenApiLicense
             {
@@ -87,11 +87,11 @@ builder.Services.AddSwaggerGen(c =>
         {
             Title = "EndPoints de Incidencias",
             Version = "VersionFinal",
-            Description = "Versión final de las incidencias en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Description = "Versiï¿½n final de las incidencias en la API para la OTI de la UDLA para pruebas de la mesa de servicios",
             Contact = new OpenApiContact
             {
                 Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebastián Mosquera Munar"
+                Name = "Johan Sebastiï¿½n Mosquera Munar"
             },
             License = new OpenApiLicense
             {
@@ -156,7 +156,7 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("Connec
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsProduction())
+if (!app.Environment.IsProduction() || !app.Environment.IsDevelopment())//Development para MacOs, Production para Windows
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>

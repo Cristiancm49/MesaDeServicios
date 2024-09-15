@@ -60,7 +60,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                         .Where(ite => ite.InTrEs_Id == it.InTrEs_Id)
                         .Select(ite => ite.InTrEs_Nombre)
                         .FirstOrDefault(),
-                    it.InTr_Revisado
+                    it.InTr_Revisado,
+                    it.InTr_ObservacionAdmin
                 })
                 .ToListAsync();
 
@@ -71,6 +72,5 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(trazabilidad);
         }
-
     }
 }
