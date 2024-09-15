@@ -2,7 +2,7 @@ import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ViewIncidencia } from '../interfaces/ViewIndicencia';
-import { CasoGestion } from '../core/services/caso-gestion';
+import { CasoGestion } from '../core/services/caso-gestion.service';
 import { ViewPersonalAsignacion } from '../interfaces/ViewPersonalAsignacion';
 import { InsertAsignacion } from '../interfaces/Insert-Asignacion';
 import { ViewRoles } from '../interfaces/ViewRoles';

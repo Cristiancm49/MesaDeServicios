@@ -44,7 +44,7 @@
             <div class="form-row">
               <div class="input-group short">
                 <label for="fecha">Fecha y Hora:</label>
-                <input type="datetime-local" id="fecha" name="fecha" [ngModel]="fechaHoraString" (ngModelChange)="onFechaHoraChange($event)">
+                <input type="datetime-local" id="fecha" name="fecha" [ngModel]="fechaHoraString" (ngModelChange)="onFechaHoraChange($event)" disabled="">
               </div>
               <div class="input-group short">
                 <label for="categoria">Categoría:</label>
