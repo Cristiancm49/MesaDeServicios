@@ -1,88 +1,49 @@
 <div class="container">
+  <div *ngIf="showNotification" class="notification">
+    {{ notificationMessage }}
+  </div>
   <div class="main-content">
     <h2 class="header">CASOS DELEGADOS</h2>
     <div class="section">
       <h3 class="section-header">CASOS</h3>
-      <table class="cases-table">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Prioridad</th>
-            <th>Estado Actual</th>
-            <th>Solicitud</th>
-            <th>Dependencia</th>
-            <th>Categorización</th>
-            <th>Iniciación</th>
-            <th>Tipo de Caso</th>
-            <th>Evaluación</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td></td>
-            <td>Finalizado</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>5.0</td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>4</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>5</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table class="cases-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Solicitante</th>
+              <th>Documento Identidad</th>
+              <th>Cargo</th>
+              <th>Dependencia</th>
+              <th>Teléfono Dependencia</th>
+              <th>Categoría Técnica</th>
+              <th>Área Técnica</th>
+              <th>Descripción</th>
+              <th>Fecha Registro</th>
+              <th>Admin Responsable</th>
+              <th>Prioridad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let asignada of vistaasignada; let i = index"
+              [class.selected-row]="selectedRowIndexP === asignada.inci_Id"
+              (click)="onRowSelectP(asignada.inci_Id, asignada)">
+              <td>{{ asignada.inci_Id }}</td>
+              <td>{{ asignada.solicitante_NombreCompleto }}</td>
+              <td>{{ asignada.solicitante_DocumentoIdentidad }}</td>
+              <td>{{ asignada.cont_Cargo }}</td>
+              <td>{{ asignada.unid_Nombre }}</td>
+              <td>{{ asignada.unid_Telefono }}</td>
+              <td>{{ asignada.categoriaAreaTecnica_Nombre }}</td>
+              <td>{{ asignada.areaTecnica_Nombre }}</td>
+              <td>{{ asignada.inci_Descripcion }}</td>
+              <td>{{ asignada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ asignada.admin_NombreCompleto || 'Sin asignar' }}</td>
+              <td>{{ asignada.prioridad_Tipo }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="section-diagnostico">
       <h3 class="section-header">DIAGNÓSTICO</h3>
@@ -107,7 +68,7 @@
               <label><input type="radio" name="escalable" value="no"> No</label>
             </div>
           </div>
-          
+
         </div>
         <div class="right-column">
           <div class="form-group">

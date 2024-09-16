@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CasoRegistroService } from '../core/services/caso-registro.service';
@@ -15,7 +15,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   templateUrl: './caso-registro.component.html',
   styleUrls: ['./caso-registro.component.css']
 })
-export class CasoRegistroComponent implements OnInit {
+export class CasoRegistroComponent implements OnInit, OnDestroy {
   areasTec: AreaTec[] = [];
   DatosUsuario: DatosUser[] = [];
   catego: Categorias[] = [];
@@ -26,6 +26,7 @@ export class CasoRegistroComponent implements OnInit {
   notificationMessage = '';
   DatosLogin = 1004446325;
   valorprioridad: number = 0;
+  intervalo: any;
 
   incidencia: Incidencia = {
     cont_IdSolicitante: 0,
@@ -38,11 +39,21 @@ export class CasoRegistroComponent implements OnInit {
 
   constructor(private casoRegistroService: CasoRegistroService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadAreasTec(0);
     this.loadDatosUser();
     this.loadCategorias();
     this.cargarFechaHora();
+
+    this.intervalo = setInterval(() => {
+      this.cargarFechaHora();
+    }, 10000); 
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalo) {
+      clearInterval(this.intervalo);
+    }
   }
 
   loadAreasTec(selectedCategoriaId: number) {
@@ -106,8 +117,15 @@ export class CasoRegistroComponent implements OnInit {
   cargarFechaHora() {
     const now = new Date();
     this.incidencia.inci_FechaRegistro = now;
-    this.fechaHoraString = now.toISOString().slice(0, 16);
-  }
+
+    // Reducimos las 5 horas para ajustar a la zona horaria local
+    const adjustedDate = new Date(now.getTime() - (5 * 60 * 60 * 1000));
+
+    // Convertimos la fecha ajustada a ISO string sin la diferencia horaria
+    this.fechaHoraString = adjustedDate.toISOString().slice(0, 16);
+
+    console.log("Fecha actual registro actualizada");
+}
 
   calcularPrioridad(): void {
     if (this.DatosUsuario.length > 0 && this.catego.length > 0 && this.areasTec.length > 0) {
