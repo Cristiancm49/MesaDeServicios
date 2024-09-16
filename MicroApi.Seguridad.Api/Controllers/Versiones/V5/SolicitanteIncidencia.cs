@@ -112,5 +112,48 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
             return Ok(resultadoFinal);
         }
+
+        [HttpGet("ValidarEstadoResuelto")]
+        public async Task<IActionResult> ValidarEstadoResuelto([FromQuery] int inci_id)
+        {
+            if (inci_id <= 0)
+                return BadRequest("ID de incidencia no válido.");
+
+            bool esEstadoResuelto = await _context.Incidencias
+                .Where(i => i.Inci_Id == inci_id)
+                .Select(i => i.Inci_UltimoEstado == 6)
+                .FirstOrDefaultAsync();
+
+            return Ok(esEstadoResuelto);
+        }
+
+        [HttpPost("CerrarIncidencia(SinActualizarPromedioUsuario)")]
+        public async Task<IActionResult> CerrarIncidencia([FromBody] CerrarIncidenciaDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Datos no válidos.");
+            }
+
+            try
+            {
+                // Llamar al procedimiento almacenado
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.CerrarIncidencia @Inci_Id, @EnCa_Preg1, @EnCa_Preg2, @EnCa_Preg3, @EnCa_Preg4, @EnCa_Preg5",
+                    new SqlParameter("@Inci_Id", dto.Inci_Id),
+                    new SqlParameter("@EnCa_Preg1", dto.EnCa_Preg1),
+                    new SqlParameter("@EnCa_Preg2", dto.EnCa_Preg2),
+                    new SqlParameter("@EnCa_Preg3", dto.EnCa_Preg3),
+                    new SqlParameter("@EnCa_Preg4", dto.EnCa_Preg4),
+                    new SqlParameter("@EnCa_Preg5", dto.EnCa_Preg5)
+                );
+
+                return Ok("Incidencia cerrada con éxito.");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar excepciones relacionadas con la base de datos
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }
