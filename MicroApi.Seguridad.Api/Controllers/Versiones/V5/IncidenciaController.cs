@@ -175,5 +175,87 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
 
             return Ok(incidencias);
         }
+
+        [HttpGet("SeguimientoIncidencias")]
+        public async Task<IActionResult> SeguimientoIncidencias()
+        {
+            var excludedStates = new[] { 1, 2, 6, 7 };
+
+            var incidencias = await _context.IncidenciasTrazabilidad
+                .Where(it => it.Incidencia.Inci_UltimoEstado.HasValue && !excludedStates.Contains(it.Incidencia.Inci_UltimoEstado.Value))
+                .GroupBy(it => it.Incidencia.Inci_Id)
+                .Select(g => new
+                {
+                    Inci_Id = g.Key,
+                    NombreCompleto = g.FirstOrDefault().Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerNombre + " " +
+                                     (g.FirstOrDefault().Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre != null ? g.FirstOrDefault().Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre + " " : "") +
+                                     g.FirstOrDefault().Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerApellido + " " +
+                                     (g.FirstOrDefault().Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoApellido ?? ""),
+                    Cargo = g.FirstOrDefault().Incidencia.Solicitante.Cont_Cargo,
+                    NombreUnidad = g.FirstOrDefault().Incidencia.Solicitante.Unidad.Unid_Nombre,
+                    TelefonoUnidad = g.FirstOrDefault().Incidencia.Solicitante.Unidad.Unid_Telefono,
+                    NombreCategoriaAreaTecnica = g.FirstOrDefault().Incidencia.AreaTecnica.Categoria.CaAr_Nombre,
+                    NombreAreaTecnica = g.FirstOrDefault().Incidencia.AreaTecnica.ArTe_Nombre,
+                    DescripcionIncidencia = g.FirstOrDefault().Incidencia.Inci_Descripcion,
+                    FechaSolicitudIncidencia = g.FirstOrDefault().Incidencia.Inci_FechaRegistro,
+                    Prioridad = g.FirstOrDefault().Incidencia.Prioridad.InPr_Tipo,
+                    g.FirstOrDefault().Incidencia.Inci_UltimoEstado
+                })
+                .ToListAsync();
+
+            return Ok(incidencias);
+        }
+
+        [HttpPost("RevisarDiagnostico")]
+        public async Task<IActionResult> RevisarDiagnostico([FromBody] RevisarDiagnosticoDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Datos no válidos.");
+            }
+
+            try
+            {
+                // Llamar al procedimiento almacenado
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.RevisarDiagnostico @InTr_Id, @InTr_ObservacionAdmin, @DocumentoAdmin",
+                    new SqlParameter("@InTr_Id", dto.InTr_Id),
+                    new SqlParameter("@InTr_ObservacionAdmin", (object)dto.InTr_ObservacionAdmin ?? DBNull.Value),
+                    new SqlParameter("@DocumentoAdmin", dto.DocumentoAdmin)
+                );
+
+                return Ok("Diagnóstico revisado con éxito.");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar excepciones relacionadas con la base de datos
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpPost("IncidenciaResuelta")]
+        public async Task<IActionResult> IncidenciaResuelta([FromBody] IncidenciaResueltaDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Datos no válidos.");
+            }
+
+            try
+            {
+                // Llamar al procedimiento almacenado
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.IncidenciaResuelta @Inci_Id",
+                    new SqlParameter("@Inci_Id", dto.Inci_Id)
+                );
+
+                return Ok("Incidencia marcada como resuelta con éxito.");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar excepciones relacionadas con la base de datos
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+
     }
 }
