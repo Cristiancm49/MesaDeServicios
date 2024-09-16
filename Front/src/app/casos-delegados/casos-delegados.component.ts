@@ -1,7 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Casoactivo } from '../core/services/caso-activo.service';
+import { Casodelegado} from '../core/services/caso-delegados.service';
 import { ViewIncidenciaAsignada } from '../interfaces/ViewIncidenciaAsignada';
 
 @Component({
@@ -20,7 +20,7 @@ export class CasosDelegadosComponent {
   loginusuario = 1004446325
   selectedRowIndexP: number | null = null;
 
-  constructor(private casoActivo: Casoactivo) { }
+  constructor(private casoActivo: Casodelegado) { }
 
   ngOnInit() {
     this.loadDatosIncidencia();

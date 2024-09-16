@@ -3,86 +3,36 @@
     <h2 class="header">CASOS ACTIVOS</h2>
     <div class="section">
       <h3 class="section-header">CASOS</h3>
-      <table class="cases-table">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Prioridad</th>
-            <th>Estado Actual</th>
-            <th>Solicitud</th>
-            <th>Dependencia</th>
-            <th>Categorización</th>
-            <th>Iniciación</th>
-            <th>Tipo de Caso</th>
-            <th>Teléfono</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>4</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-        <tbody>
-          <tr>
-            <td>5</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table class="cases-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Fecha de Registro</th>
+              <th>Descripción</th>
+              <th>Evidencia</th>
+              <th>Solicitante</th>
+              <th>Categoría Técnica</th>
+              <th>Área Técnica</th>
+              <th>Fecha de Cierre</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let solicitada of vistasolicitud; let i = index"
+              [class.selected-row]="selectedRowIndexP === solicitada.inci_Id"
+              (click)="onRowSelectP(solicitada.inci_Id, solicitada)">
+              <td>{{ i + 1 }}</td>
+              <td>{{ solicitada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ solicitada.inci_Descripcion }}</td>
+              <td>{{ solicitada.inci_Evidencia }}</td>
+              <td>{{ solicitada.nombreCompleto }}</td>
+              <td>{{ solicitada.nombreCategoriaAreaTecnica }}</td>
+              <td>{{ solicitada.nombreAreaTecnica }}</td>
+              <td>{{ solicitada.fechaCierre }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="section-container">
       <div class="section trazabilidad-section">
@@ -93,13 +43,15 @@
               <th>No.</th>
               <th>Fecha</th>
               <th>Estado</th>
+              <th>Descripción</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td></td>
-              <td></td>
+            <tr *ngFor="let traza of vistatrazabilidad; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ traza.inTr_FechaActualizacion }}</td>
+              <td>{{ traza.estado }}</td>
+              <td>{{ traza.descripcion }}</td>
             </tr>
           </tbody>
         </table>

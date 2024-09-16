@@ -11,6 +11,7 @@
     max-height: calc(8 * 50px); /* Altura para mostrar las primeras 8 filas (ajusta el valor según la altura de las filas) */
     overflow-y: auto; /* Scroll vertical */
     overflow-x: auto; /* Scroll horizontal */
+    justify-content: center;
 }
 
 .header {
