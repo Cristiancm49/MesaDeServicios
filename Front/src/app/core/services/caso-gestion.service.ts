@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ViewIncidencia } from '../../interfaces/ViewIndicencia';
-import { ViewPersonalAsignacion } from '../../interfaces/ViewPersonalAsignacion';
-import { InsertAsignacion } from '../../interfaces/Insert-Asignacion';
-import { ViewRoles } from '../../interfaces/ViewRoles';
-import { RechazarIncidencia } from '../../interfaces/RechazarIncidencia';
+import { ViewIncidencia } from '../../interfaces/CasoGestión/ViewIndicencia';
+import { ViewPersonalAsignacion } from '../../interfaces/CasoGestión/ViewPersonalAsignacion';
+import { InsertAsignacion } from '../../interfaces/CasoGestión/Insert-Asignacion';
+import { ViewRoles } from '../../interfaces/CasoGestión/ViewRoles';
+import { RechazarIncidencia } from '../../interfaces/CasoGestión/RechazarIncidencia';
 
 
 @Injectable({

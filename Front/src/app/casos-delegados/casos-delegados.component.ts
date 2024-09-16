@@ -2,7 +2,7 @@ import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Casodelegado} from '../core/services/caso-delegados.service';
-import { ViewIncidenciaAsignada } from '../interfaces/ViewIncidenciaAsignada';
+import { ViewIncidenciaAsignada } from '../interfaces/CasoDelegado/ViewIncidenciaAsignada';
 
 @Component({
   selector: 'app-casos-delegados',

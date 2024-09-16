@@ -1,12 +1,12 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ViewIncidencia } from '../interfaces/ViewIndicencia';
+import { ViewIncidencia } from '../interfaces/CasoGestión/ViewIndicencia';
 import { CasoGestion } from '../core/services/caso-gestion.service';
-import { ViewPersonalAsignacion } from '../interfaces/ViewPersonalAsignacion';
-import { InsertAsignacion } from '../interfaces/Insert-Asignacion';
-import { ViewRoles } from '../interfaces/ViewRoles';
-import { RechazarIncidencia } from '../interfaces/RechazarIncidencia';
+import { ViewPersonalAsignacion } from '../interfaces/CasoGestión/ViewPersonalAsignacion';
+import { InsertAsignacion } from '../interfaces/CasoGestión/Insert-Asignacion';
+import { ViewRoles } from '../interfaces/CasoGestión/ViewRoles';
+import { RechazarIncidencia } from '../interfaces/CasoGestión/RechazarIncidencia';
 
 @Component({
   selector: 'app-casos-gestion',

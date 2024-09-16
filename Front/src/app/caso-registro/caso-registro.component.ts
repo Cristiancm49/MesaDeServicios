@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CasoRegistroService } from '../core/services/caso-registro.service';
-import { AreaTec } from '../interfaces/area-tec';
-import { DatosUser } from '../interfaces/DatosUser';
-import { Categorias } from '../interfaces/Interfaz-categoria';
-import { Incidencia } from '../interfaces/Insert-Incidencia';
+import { AreaTec } from '../interfaces/CasoRegistro/area-tec';
+import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
+import { Categorias } from '../interfaces/CasoRegistro/Interfaz-categoria';
+import { Incidencia } from '../interfaces/CasoRegistro/Insert-Incidencia';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({

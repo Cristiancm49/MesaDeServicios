@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ViewIncidenciaAsignada } from '../../interfaces/ViewIncidenciaAsignada';
+import { ViewIncidenciaAsignada } from '../../interfaces/CasoDelegado/ViewIncidenciaAsignada';
 
 
 @Injectable({

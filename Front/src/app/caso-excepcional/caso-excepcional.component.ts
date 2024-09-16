@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CasoRegistroService } from '../core/services/caso-registro.service';
-import { AreaTec } from '../interfaces/area-tec';
-import { DatosUser } from '../interfaces/DatosUser';
-import { Categorias } from '../interfaces/Interfaz-categoria';
-import { Incidencia } from '../interfaces/Insert-Incidencia';
+import { AreaTec } from '../interfaces/CasoRegistro/area-tec';
+import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
+import { Categorias } from '../interfaces/CasoRegistro/Interfaz-categoria';
+import { Incidencia } from '../interfaces/CasoRegistro/Insert-Incidencia';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { DatosAdmin } from '../interfaces/DatosAdmin';
+import { DatosAdmin } from '../interfaces/CasoRegistro/DatosAdmin';
 
 @Component({
   selector: 'app-caso-excepcional',
@@ -26,14 +26,11 @@ export class CasoExcepcionalComponent implements OnInit{
   selectedCategoriaId = 0;
   fechaHoraString: string = '';
   identificacionUsuario: string = '';
-  nombreSolicitante: string = '';
-  cargo: string = '';
-  indicativo: string = '';
-  dependencia: string = '';
-  telefono: string = '';
   valorprioridad: number = 0;
   notificationMessage = '';
   showNotification = false;
+  intervalo: any;
+
 
   incidencia: Incidencia = {
     cont_IdSolicitante: 0,
@@ -44,14 +41,29 @@ export class CasoExcepcionalComponent implements OnInit{
     inci_ValorTotal: 0
   };
 
-  constructor(private casoRegistroService: CasoRegistroService) { }
+
+  constructor(private casoRegistroService: CasoRegistroService) { 
+  this.DatosUsuario = [];
+
+  }
+
 
   ngOnInit() {
     this.loadAreasTec(0);
     this.loadDatosUser(0);
     this.loadCategorias();
-    this.cargarFechaHora();
     this.loadDatosAdmin();
+    this.cargarFechaHora();
+
+    this.intervalo = setInterval(() => {
+      this.cargarFechaHora();
+    }, 10000); 
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalo) {
+      clearInterval(this.intervalo);
+    }
   }
 
   loadAreasTec(selectedCategoriaId: number) {
@@ -83,6 +95,18 @@ export class CasoExcepcionalComponent implements OnInit{
     }
   }
 
+  getNombreSolicitante(): string {
+    return this.DatosUsuario[0]?.nombreCompleto || '';
+  }
+  
+  getCargo(): string {
+    return this.DatosUsuario[0]?.cont_Cargo || '';
+  }
+  
+  getDependencia(): string {
+    return this.DatosUsuario[0]?.unid_Nombre || '';
+  }
+
   loadDatosUser(identificacion: number) {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
@@ -95,6 +119,7 @@ export class CasoExcepcionalComponent implements OnInit{
       },
       error: (error) => {
         console.error('Error fetching Datos User:', error);
+        this.DatosUsuario = []; // Reiniciar a un array vacío en caso de error
         this.isLoading = false;
       }
     });
@@ -141,8 +166,15 @@ export class CasoExcepcionalComponent implements OnInit{
   cargarFechaHora() {
     const now = new Date();
     this.incidencia.inci_FechaRegistro = now;
-    this.fechaHoraString = now.toISOString().slice(0, 16);
-  }
+
+    // Reducimos las 5 horas para ajustar a la zona horaria local
+    const adjustedDate = new Date(now.getTime() - (5 * 60 * 60 * 1000));
+
+    // Convertimos la fecha ajustada a ISO string sin la diferencia horaria
+    this.fechaHoraString = adjustedDate.toISOString().slice(0, 16);
+
+    console.log("Fecha actual registro actualizada");
+}
 
   calcularPrioridad(): void {
     if (this.DatosUsuario.length > 0 && this.catego.length > 0 && this.areasTec.length > 0) {
@@ -229,5 +261,7 @@ export class CasoExcepcionalComponent implements OnInit{
     this.cargarFechaHora();
     this.selectedCategoriaId = 0;
     this.loadAreasTec(0);
+    this.DatosUsuario = [];
+    this.identificacionUsuario = '';
   }
 }

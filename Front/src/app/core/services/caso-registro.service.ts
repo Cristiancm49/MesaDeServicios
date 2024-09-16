@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AreaTec } from '../../interfaces/area-tec';
-import { DatosUser } from '../../interfaces/DatosUser';
-import { DatosAdmin } from '../../interfaces/DatosAdmin';
-import { Categorias } from '../../interfaces/Interfaz-categoria';
-import {Incidencia} from '../../interfaces/Insert-Incidencia';
+import { AreaTec } from '../../interfaces/CasoRegistro/area-tec';
+import { DatosUser } from '../../interfaces/CasoRegistro/DatosUser';
+import { DatosAdmin } from '../../interfaces/CasoRegistro/DatosAdmin';
+import { Categorias } from '../../interfaces/CasoRegistro/Interfaz-categoria';
+import {Incidencia} from '../../interfaces/CasoRegistro/Insert-Incidencia';
 
 
 @Injectable({
