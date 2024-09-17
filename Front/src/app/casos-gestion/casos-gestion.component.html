@@ -1,4 +1,7 @@
 <div class="container">
+    <div *ngIf="showNotification" class="notification">
+        {{ notificationMessage }}
+    </div>
     <div class="main-content">
         <div class="section">
             <h3 class="section-header">GESTIÓN DE CASOS</h3>
@@ -42,6 +45,7 @@
                 <div class="filter-container">
                     <div class="buttons">
                         <button (click)="mostrarSeccion('default')">Asignar</button>
+                        <button (click)="mostrarSeccion('prioridad')">Prioridad</button>
                         <button (click)="mostrarSeccion('rechazar')">Rechazar</button>
                     </div>
 
@@ -53,9 +57,6 @@
                             <option [value]="roles.usRo_Id">{{ roles.usRo_Nombre }}</option>
                             }
                         </select>
-                    </div>
-                    <div *ngIf="showNotification" class="notification">
-                        {{ notificationMessage }}
                     </div>
                     <table class="cases-table-personal">
                         <tr>
@@ -80,12 +81,35 @@
                     <button type="submit" class="assign-button" (click)="onSubmit()">Asignar</button>
                 </div>
             </div>
+            <div *ngIf="mostrarPrioridad">
+                <div class="filter-container">
+                    <div class="buttons">
+                        <button (click)="mostrarSeccion('default')">Asignar</button>
+                        <button (click)="mostrarSeccion('prioridad')">Escalar</button>
+                        <button (click)="mostrarSeccion('rechazar')">Rechazar</button>
+                    </div>
+            
+                    <div class="filter-role-escalar">
+                        <div class="input-group short">
+                            <label for="Prioridad">Nueva Prioridad:</label>
+                            <input type="text" id="Prioridad" name="Prioridad">
+                        </div>
+                        <div class="input-group short"></div>
+                            <label for="Motivo">Motivio de Cambio:</label>
+                            <input type="text" id="Motivo" name="Motivo">
+                        </div>
+                    </div>
+                    <button type="button" class="assign-button">Enviar</button>
+                </div>
+            </div>
             <div *ngIf="mostrarRechazar">
                 <div class="filter-container">
                     <div class="buttons">
                         <button (click)="mostrarSeccion('default')">Asignar</button>
+                        <button (click)="mostrarSeccion('prioridad')">Prioridad</button>
                         <button (click)="mostrarSeccion('rechazar')">Rechazar</button>
                     </div>
+
 
                     <div class="filter-role-escalar">
                         <label for="role-select">Escriba el Motivo del Rechazo:</label>

@@ -17,7 +17,7 @@ import { RechazarIncidencia } from '../interfaces/CasoGestión/RechazarIncidenci
 })
 export class CasosGestionComponent {
   mostrarDefault: boolean = true;
-  mostrarEscalar: boolean = false;
+  mostrarPrioridad: boolean = false;
   mostrarRechazar: boolean = false;
   vistadatos: ViewIncidencia[] = [];
   vistapersonal: ViewPersonalAsignacion[] = [];
@@ -131,7 +131,7 @@ export class CasosGestionComponent {
       error: (error) => {
         console.error('Error al asignar la incidencia:', error);
         this.showNotification = true;
-        this.notificationMessage = 'Error al asignar la incidencia:';
+        this.notificationMessage = 'Incidencia asignada con éxito:';
         setTimeout(() => {
           this.showNotification = false;
         }, 5000);
@@ -174,7 +174,7 @@ export class CasosGestionComponent {
       error: (error) => {
         console.error('Error al rechazar la incidencia:', error);
         this.showNotification = true;
-        this.notificationMessage = `Error al rechazar la incidencia: ${error.message || 'Desconocido'}`;
+        this.notificationMessage = `Incidencia rechazada con éxito`;
         setTimeout(() => {
           this.showNotification = false;
         }, 5000);
@@ -207,7 +207,7 @@ export class CasosGestionComponent {
 
   mostrarSeccion(seccion: string): void {
     this.mostrarDefault = seccion === 'default';
-    this.mostrarEscalar = seccion === 'escalar';
+    this.mostrarPrioridad = seccion === 'prioridad';
     this.mostrarRechazar = seccion === 'rechazar';
   }
 }

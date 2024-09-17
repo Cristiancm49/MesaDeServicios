@@ -12,6 +12,8 @@ import { CasosHistorialComponent } from './casos-historial/casos-historial.compo
 import { AdministrarRolComponent } from './administrar-rol/administrar-rol.component';
 import { CasoFinalizadoComponent } from './caso-finalizado/caso-finalizado.component';
 import { CasosDelegadosComponent } from './casos-delegados/casos-delegados.component';
+import { DisponibilidadSalasComponent } from './disponibilidad-salas/disponibilidad-salas.component';
+import { ReservasSalasComponent } from './reservas-salas/reservas-salas.component';
 export const routes: Routes = [
   {
     path: '',
@@ -24,11 +26,11 @@ export const routes: Routes = [
   },
   {
     path: 'DisponibilidadSalas',
-    canActivate: [RedirectGuard],
-    component: RedirectGuard,
-    data: {
-      externalUrl: 'https://chaira.uniamazonia.edu.co/Reservas/Views/Public/Salas.aspx?tipo=Sistemas'
-    }
+    component: DisponibilidadSalasComponent
+  },
+  {
+    path: 'ReservaSalas',
+    component: ReservasSalasComponent
   },
   {
     path: 'seguimiento-casos',
