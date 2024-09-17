@@ -165,5 +165,19 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+        [HttpGet("SelectPrioridad")]
+        public async Task<IActionResult> ObtenerPrioridades()
+        {
+            var prioridades = await _context.IncidenciasPrioridad
+                .Select(ip => new
+                {
+                    ip.InPr_Id,
+                    ip.InPr_Tipo
+                })
+                .ToListAsync();
+
+            return Ok(prioridades);
+        }
     }
 }
