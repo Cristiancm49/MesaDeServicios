@@ -256,6 +256,28 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
         }
 
+        [HttpPost("ActualizarPromedio")]
+        public async Task<IActionResult> ActualizarPromedio([FromBody] ActualizarPromedioDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Datos no válidos.");
+            }
 
+            try
+            {
+                // Llamar al procedimiento almacenado
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.ActualizarPromedio @Usua_IdActualizar",
+                    new SqlParameter("@Usua_IdActualizar", dto.Usua_IdActualizar)
+                );
+
+                return Ok("Promedio del usuario actualizado con éxito.");
+            }
+            catch (DbUpdateException ex)
+            {
+                // Manejar excepciones relacionadas con la base de datos
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }
