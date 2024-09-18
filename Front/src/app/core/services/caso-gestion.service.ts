@@ -6,6 +6,8 @@ import { ViewPersonalAsignacion } from '../../interfaces/CasoGestión/ViewPerson
 import { InsertAsignacion } from '../../interfaces/CasoGestión/Insert-Asignacion';
 import { ViewRoles } from '../../interfaces/CasoGestión/ViewRoles';
 import { RechazarIncidencia } from '../../interfaces/CasoGestión/RechazarIncidencia';
+import { SelectPrioridad } from '../../interfaces/CasoGestión/SelectPrioridad';
+import { CambioPrioridad } from '../../interfaces/CasoGestión/CambioPrioridad';
 
 
 @Injectable({
@@ -17,6 +19,8 @@ export class CasoGestion {
   private insertarasignacion = 'https://localhost:44346/api/v5/GestionIncidencia/AsignarUsuario';
   private selectroles = 'https://localhost:44346/api/v2/Roles/RolesModulo';
   private rechazar = 'https://localhost:44346/api/v5/GestionIncidencia/RechazarIncidencia';
+  private prioridad = 'https://localhost:44346/api/v5/GestionIncidencia/SelectPrioridad';
+  private cambioprioridad = 'https://localhost:44346/api/v5/GestionIncidencia/CambioPrioridad';
 
   constructor(private http: HttpClient) { }
 
@@ -39,5 +43,13 @@ export class CasoGestion {
 
   rechazarinciden(rechazo: RechazarIncidencia): Observable<any> {
     return this.http.post(this.rechazar, rechazo)
+  }
+
+  getPrioridad(): Observable<SelectPrioridad[]> {
+    return this.http.get<SelectPrioridad[]>(`${this.prioridad}`);
+  }
+
+  cambiarprioridad(nuevapri: CambioPrioridad): Observable<any> {
+    return this.http.post(this.cambioprioridad, nuevapri);
   }
 }

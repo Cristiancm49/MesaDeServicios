@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ViewIncidencia } from '../interfaces/CasoGestión/ViewIndicencia';
@@ -7,6 +7,8 @@ import { ViewPersonalAsignacion } from '../interfaces/CasoGestión/ViewPersonalA
 import { InsertAsignacion } from '../interfaces/CasoGestión/Insert-Asignacion';
 import { ViewRoles } from '../interfaces/CasoGestión/ViewRoles';
 import { RechazarIncidencia } from '../interfaces/CasoGestión/RechazarIncidencia';
+import { SelectPrioridad } from '../interfaces/CasoGestión/SelectPrioridad';
+import { CambioPrioridad } from '../interfaces/CasoGestión/CambioPrioridad';
 
 @Component({
   selector: 'app-casos-gestion',
@@ -15,7 +17,7 @@ import { RechazarIncidencia } from '../interfaces/CasoGestión/RechazarIncidenci
   templateUrl: './casos-gestion.component.html',
   styleUrls: ['./casos-gestion.component.css']
 })
-export class CasosGestionComponent {
+export class CasosGestionComponent implements OnInit{
   mostrarDefault: boolean = true;
   mostrarPrioridad: boolean = false;
   mostrarRechazar: boolean = false;
@@ -23,6 +25,9 @@ export class CasosGestionComponent {
   vistapersonal: ViewPersonalAsignacion[] = [];
   insertarpersonal: InsertAsignacion[] = [];
   vistaroles: ViewRoles[] = [];
+  vistraprioridad: SelectPrioridad[] = [];
+  selectedPrioridadId = 0;
+  cambioprioridad: CambioPrioridad[] = [];
   isLoading = true;
   selectedRowIndex: number | null = null;
   selectedRowIndexP: number | null = null;
@@ -43,6 +48,12 @@ export class CasosGestionComponent {
     inTr_MotivoRechazo: ''
 
   }
+
+  prioriadcambio: CambioPrioridad={
+    inci_Id: 0,
+    new_Prioridad: 0,
+    motivoCambio: ''
+  }
   
   constructor(private casoGestion: CasoGestion) { }
 
@@ -51,7 +62,7 @@ export class CasosGestionComponent {
     this.loadDatosPersonal(0);
     this.loadDatosRol();
     this.cargarFechaHora();
-    
+    this.loadPrioridades();
   }
 
 
@@ -104,6 +115,27 @@ export class CasosGestionComponent {
         this.isLoading = false;
       }
     });
+  }
+
+  loadPrioridades() {
+    this.isLoading = true;
+    this.casoGestion.getPrioridad().subscribe({
+      next: (data) => {
+        this.vistraprioridad = data;
+        this.isLoading = false;
+        console.log('Good Prioridades:', this.vistraprioridad);
+      },
+      error: (error) => {
+        console.error('Error al traer prioridades:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onPrioridadSelected(event: any) {
+    this.selectedPrioridadId = parseInt(event.target.value) || 0;
+    console.log('Prioridad seleccionada:', this.selectedPrioridadId);
+    this.prioriadcambio.new_Prioridad = this.selectedPrioridadId;
   }
 
   cargarFechaHora() {
@@ -182,6 +214,56 @@ export class CasosGestionComponent {
     });
   }
 
+  onPrioridad() {
+    console.log('Estado actual de prioriadcambio al iniciar onPrioridad:', this.prioriadcambio);
+
+    if (this.prioriadcambio.inci_Id === 0) {
+      console.error('No se ha seleccionado ninguna incidencia');
+      this.showNotification = true;
+      this.notificationMessage = 'Por favor, seleccione una incidencia antes de cambiar la prioridad';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 5000);
+      return;
+    }
+
+    if (!this.prioriadcambio.motivoCambio || this.prioriadcambio.motivoCambio.trim() === '') {
+      console.error('No se ha proporcionado un motivo de cambio');
+      this.showNotification = true;
+      this.notificationMessage = 'Por favor, proporcione un motivo de cambio';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 5000);
+      return;
+    }
+
+    console.log("Datos de prioridad a enviar:", this.prioriadcambio);
+    
+    this.casoGestion.cambiarprioridad(this.prioriadcambio).subscribe({
+      next: (response) => {
+        console.log('Prioridad cambiada con éxito:', response);
+        this.showNotification = true;
+        this.notificationMessage = 'Prioridad cambiada con éxito';
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 5000); 
+      },
+      error: (error) => {
+        console.error('Error al cambiar la prioridad:', error);
+        this.showNotification = true;
+        this.notificationMessage = 'Error al cambiar la prioridad';
+        setTimeout(() => {
+          this.showNotification = false;
+        }, 5000);
+      }
+    });
+  }
+
+  onMotivoCambioChange(value: string) {
+    console.log('Motivo de cambio actualizado:', value);
+    this.prioriadcambio.motivoCambio = value;
+  }
+
   onRolSelected(event: any) {
     this.selectedRolId = parseInt(event.target.value) || 0;
     console.log('Categoría seleccionada:', this.selectedRolId);
@@ -194,6 +276,7 @@ export class CasosGestionComponent {
     console.log(`Id de la incidencia seleccionada: ${inci_Id}`);
     this.InsertAsignacion.inci_Id = inci_Id; 
     this.RechazarIncidencia.inci_Id = inci_Id;
+    this.prioriadcambio.inci_Id = inci_Id;
   }
   
 

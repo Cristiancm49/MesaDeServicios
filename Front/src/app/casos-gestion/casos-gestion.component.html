@@ -24,21 +24,20 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let incidencia of vistadatos; let i = index"
-                            [class.selected-row]="selectedRowIndex === i" 
-                            (click)="onRowSelect(i, incidencia.inci_Id)">
-                          <td>{{ incidencia.inci_Id }}</td>
-                          <td>{{ incidencia.nombreCompleto }}</td>
-                          <td>{{ incidencia.cargo }}</td>
-                          <td>{{ incidencia.nombreUnidad }}</td>
-                          <td>{{ incidencia.telefonoUnidad }}</td>
-                          <td>{{ incidencia.nombreCategoriaAreaTecnica }}</td>
-                          <td>{{ incidencia.nombreAreaTecnica }}</td>
-                          <td>{{ incidencia.nombreCategoriaAreaTecnica }}</td>
-                          <td>{{ incidencia.descripcionIncidencia }}</td>
-                          <td>{{ incidencia.fechaSolicitudIncidencia | date:'dd/MM/yyyy HH:mm' }}</td>
-                          <td>{{ incidencia.prioridad }}</td>
+                            [class.selected-row]="selectedRowIndex === i" (click)="onRowSelect(i, incidencia.inci_Id)">
+                            <td>{{ incidencia.inci_Id }}</td>
+                            <td>{{ incidencia.nombreCompleto }}</td>
+                            <td>{{ incidencia.cargo }}</td>
+                            <td>{{ incidencia.nombreUnidad }}</td>
+                            <td>{{ incidencia.telefonoUnidad }}</td>
+                            <td>{{ incidencia.nombreCategoriaAreaTecnica }}</td>
+                            <td>{{ incidencia.nombreAreaTecnica }}</td>
+                            <td>{{ incidencia.nombreCategoriaAreaTecnica }}</td>
+                            <td>{{ incidencia.descripcionIncidencia }}</td>
+                            <td>{{ incidencia.fechaSolicitudIncidencia | date:'dd/MM/yyyy HH:mm' }}</td>
+                            <td>{{ incidencia.prioridad }}</td>
                         </tr>
-                      </tbody>                      
+                    </tbody>
                 </table>
             </div>
             <div *ngIf="mostrarDefault">
@@ -70,13 +69,13 @@
                             <tr *ngFor="let persona of vistapersonal; let i = index"
                                 [class.selected-row]="selectedRowIndexP === persona.usua_Id"
                                 (click)="onRowSelectP(persona.usua_Id, persona)">
-                              <td>{{ persona.usua_Id }}</td>
-                              <td>{{ persona.nombreCompleto }}</td>
-                              <td>{{ persona.rolNombre }}</td>
-                              <td>{{ persona.incidenciasActivas }}</td>
-                              <td>{{ persona.usua_PromedioEvaluacion }}</td>
+                                <td>{{ persona.usua_Id }}</td>
+                                <td>{{ persona.nombreCompleto }}</td>
+                                <td>{{ persona.rolNombre }}</td>
+                                <td>{{ persona.incidenciasActivas }}</td>
+                                <td>{{ persona.usua_PromedioEvaluacion }}</td>
                             </tr>
-                          </tbody>
+                        </tbody>
                     </table>
                     <button type="submit" class="assign-button" (click)="onSubmit()">Asignar</button>
                 </div>
@@ -88,36 +87,44 @@
                         <button (click)="mostrarSeccion('prioridad')">Escalar</button>
                         <button (click)="mostrarSeccion('rechazar')">Rechazar</button>
                     </div>
-            
+
                     <div class="filter-role-escalar">
                         <div class="input-group short">
                             <label for="Prioridad">Nueva Prioridad:</label>
-                            <input type="text" id="Prioridad" name="Prioridad">
+                            <select id="Prioridad" name="Prioridad" (change)="onPrioridadSelected($event)">
+                                <option value="">Seleccionar</option>
+                                @for (prio of vistraprioridad; track prio.inPr_Id) {
+                                <option [value]="prio.inPr_Id">{{ prio.inPr_Tipo }}</option>
+                                }
+                            </select>
                         </div>
-                        <div class="input-group short"></div>
-                            <label for="Motivo">Motivio de Cambio:</label>
-                            <input type="text" id="Motivo" name="Motivo">
-                        </div>
+                        <label for="role-select">Motivo del cambio:</label>
+                        <textarea id="Motivo" name="Motivo" rows="4"
+                            [(ngModel)]="RechazarIncidencia.inTr_MotivoRechazo">
+                        </textarea>
                     </div>
-                    <button type="button" class="assign-button">Enviar</button>
-                </div>
-            </div>
-            <div *ngIf="mostrarRechazar">
-                <div class="filter-container">
-                    <div class="buttons">
-                        <button (click)="mostrarSeccion('default')">Asignar</button>
-                        <button (click)="mostrarSeccion('prioridad')">Prioridad</button>
-                        <button (click)="mostrarSeccion('rechazar')">Rechazar</button>
-                    </div>
-
-
-                    <div class="filter-role-escalar">
-                        <label for="role-select">Escriba el Motivo del Rechazo:</label>
-                        <textarea id="Motivo" name="Motivo" rows="4" 
-                                  [(ngModel)]="RechazarIncidencia.inTr_MotivoRechazo"></textarea>
-                    </div>
-                    <button type="submit" class="assign-button" (click)="onRechazar()">Enviar</button>
+                    <button type="button" class="assign-button" (click)="onPrioridad()">Enviar</button>
                 </div>
             </div>
         </div>
+        <div *ngIf="mostrarRechazar">
+            <div class="filter-container">
+                <div class="buttons">
+                    <button (click)="mostrarSeccion('default')">Asignar</button>
+                    <button (click)="mostrarSeccion('prioridad')">Prioridad</button>
+                    <button (click)="mostrarSeccion('rechazar')">Rechazar</button>
+                </div>
+
+
+                <div class="filter-role-escalar">
+                    <label for="role-select">Escriba el Motivo del Rechazo:</label>
+                    <textarea id="Motivo" name="Motivo" rows="4"
+                        [ngModel]="prioriadcambio.motivoCambio"
+                        (ngModelChange)="onMotivoCambioChange($event)">
+                    </textarea>
+                </div>
+                <button type="submit" class="assign-button" (click)="onRechazar()">Enviar</button>
+            </div>
+        </div>
     </div>
+</div>
