@@ -279,5 +279,33 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+        [HttpGet("GetIncidenciasEnProceso")]
+        public async Task<IActionResult> GetIncidenciasEnProceso()
+        {
+            var excludedStates = new[] { 3, 4, 5 };
+
+            var incidencias = await _context.IncidenciasTrazabilidad
+                .Where(it => it.Incidencia.Inci_UltimoEstado.HasValue && !excludedStates.Contains(it.Incidencia.Inci_UltimoEstado.Value))
+                .Select(it => new
+                {
+                    it.Incidencia.Inci_Id,
+                    NombreCompleto = it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerNombre + " " +
+                                     (it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre != null ? it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoNombre + " " : "") +
+                                     it.Incidencia.Solicitante.PersonaGeneral.PeGe_PrimerApellido + " " +
+                                     (it.Incidencia.Solicitante.PersonaGeneral.PeGe_SegundoApellido ?? ""),
+                    Cargo = it.Incidencia.Solicitante.Cont_Cargo,
+                    NombreUnidad = it.Incidencia.Solicitante.Unidad.Unid_Nombre,
+                    TelefonoUnidad = it.Incidencia.Solicitante.Unidad.Unid_Telefono,
+                    NombreCategoriaAreaTecnica = it.Incidencia.AreaTecnica.Categoria.CaAr_Nombre,
+                    NombreAreaTecnica = it.Incidencia.AreaTecnica.ArTe_Nombre,
+                    DescripcionIncidencia = it.Incidencia.Inci_Descripcion,
+                    FechaSolicitudIncidencia = it.Incidencia.Inci_FechaRegistro,
+                    Prioridad = it.Incidencia.Prioridad.InPr_Tipo
+                })
+                .ToListAsync();
+
+            return Ok(incidencias);
+        }
     }
 }
