@@ -3,15 +3,15 @@
 }
 
 .selected-row {
-  background-color: #077D35; /* Color de fondo para la fila seleccionada */
-  color: white; /* Color del texto para la fila seleccionada */
+  background-color: #077D35;
+  color: white;
 }
 
 .table-container {
-    max-height: calc(8 * 50px); /* Altura para mostrar las primeras 8 filas (ajusta el valor según la altura de las filas) */
-    overflow-y: auto; /* Scroll vertical */
-    overflow-x: auto; /* Scroll horizontal */
-    justify-content: center;
+  max-height: calc(8 * 50px);
+  overflow-y: auto;
+  overflow-x: auto;
+  justify-content: center;
 }
 
 .header {
@@ -48,7 +48,6 @@
   margin-left: 380px;
 }
 
-
 .section-header {
   background-color: #077D35;
   color: white;
@@ -66,39 +65,47 @@
   justify-content: space-between;
 }
 
-
-
-.left-column{
+.left-column {
   flex: 3;
 }
 
-.right-column{
+.right-column {
   flex: 5;
 }
 
-.form-group label {
-  display: block; /* Asegura que cada grupo de etiquetas se muestre en bloques separados */
-  margin-bottom: 5px; /* Espacio entre preguntas */
+/* Estilos corregidos para los grupos de formulario */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group > label {
+  display: block;
+  margin-bottom: 5px;
   font-size: 1.2em;
 }
 
-/* Estilo para los labels que contienen los inputs */
-.form-group div label {
-  display: inline-block; /* Muestra los labels de los inputs en línea */
-  margin-right: 15px; /* Espacio entre los botones de radio */
-  font-size: 1em; /* Tamaño de fuente para los labels de los inputs */
+.form-group > div {
+  display: flex;
+  align-items: center;
 }
 
-/* Ajustes generales para inputs para mejorar la alineación */
+.form-group > div label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
+  font-size: 1em;
+}
+
 .form-group input[type="radio"] {
+  margin: 0;
   margin-right: 5px;
-  margin-top: 5%;
+  vertical-align: middle;
 }
 
-.form-group div {
-  margin-bottom: 10px;
+.form-group > div label span {
+  display: inline-block;
+  vertical-align: middle;
 }
-
 
 .form-group input, .form-group textarea {
   padding: 10px;
@@ -110,7 +117,7 @@
   margin-top: 5px;
 }
 
-.form-group textarea{
+.form-group textarea {
   height: 75px;
 }
 
@@ -129,12 +136,9 @@
   cursor: pointer;
 }
 
-
 #fecha {
-  width: 70%; /* O el ancho que prefieras */
+  width: 70%;
 }
-
-
 
 .cases-table, .trazabilidad-table {
   width: 100%;

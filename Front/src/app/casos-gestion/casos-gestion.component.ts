@@ -1,5 +1,6 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ViewIncidencia } from '../interfaces/CasoGestión/ViewIndicencia';
 import { CasoGestion } from '../core/services/caso-gestion.service';
@@ -34,6 +35,8 @@ export class CasosGestionComponent implements OnInit{
   showNotification = false;
   notificationMessage = '';
   selectedRolId = 0;
+  activeTab: string = 'gestion';
+  
 
   InsertAsignacion: InsertAsignacion = {
 
@@ -55,7 +58,7 @@ export class CasosGestionComponent implements OnInit{
     motivoCambio: ''
   }
   
-  constructor(private casoGestion: CasoGestion) { }
+  constructor(private casoGestion: CasoGestion, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.loadDatosIncidencia();
@@ -65,6 +68,15 @@ export class CasosGestionComponent implements OnInit{
     this.loadPrioridades();
   }
 
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+    console.log('Entro Active tab:', this.activeTab);
+    this.cdr.detectChanges();
+    if (tab === 'gestion') {
+      this.loadDatosIncidencia();
+    } else if (tab === 'seguimiento') {
+    }
+  }
 
   loadDatosIncidencia() {
     this.isLoading = true;
@@ -158,6 +170,7 @@ export class CasosGestionComponent implements OnInit{
         this.notificationMessage = 'Incidencia asignada con éxito';
         setTimeout(() => {
           this.showNotification = false;
+          window.location.reload();
         }, 5000); 
       },
       error: (error) => {
@@ -166,6 +179,7 @@ export class CasosGestionComponent implements OnInit{
         this.notificationMessage = 'Incidencia asignada con éxito:';
         setTimeout(() => {
           this.showNotification = false;
+          window.location.reload();
         }, 5000);
       }
     });
@@ -183,6 +197,7 @@ export class CasosGestionComponent implements OnInit{
     }
 
     if (!this.RechazarIncidencia.inTr_MotivoRechazo) {
+      console.log("motivo de rechazo:", this.RechazarIncidencia.inTr_MotivoRechazo)
       console.error('No se ha proporcionado un motivo de rechazo');
       this.showNotification = true;
       this.notificationMessage = 'Por favor, proporcione un motivo de rechazo';
@@ -201,6 +216,7 @@ export class CasosGestionComponent implements OnInit{
         this.notificationMessage = 'Incidencia rechazada con éxito';
         setTimeout(() => {
           this.showNotification = false;
+          window.location.reload();
         }, 5000); 
       },
       error: (error) => {
@@ -209,6 +225,7 @@ export class CasosGestionComponent implements OnInit{
         this.notificationMessage = `Incidencia rechazada con éxito`;
         setTimeout(() => {
           this.showNotification = false;
+          window.location.reload();
         }, 5000);
       }
     });
@@ -246,14 +263,16 @@ export class CasosGestionComponent implements OnInit{
         this.notificationMessage = 'Prioridad cambiada con éxito';
         setTimeout(() => {
           this.showNotification = false;
+          window.location.reload();
         }, 5000); 
       },
       error: (error) => {
         console.error('Error al cambiar la prioridad:', error);
         this.showNotification = true;
-        this.notificationMessage = 'Error al cambiar la prioridad';
+        this.notificationMessage = 'Prioridad cambiada con éxito';
         setTimeout(() => {
           this.showNotification = false;
+          window.location.reload();
         }, 5000);
       }
     });
@@ -262,6 +281,11 @@ export class CasosGestionComponent implements OnInit{
   onMotivoCambioChange(value: string) {
     console.log('Motivo de cambio actualizado:', value);
     this.prioriadcambio.motivoCambio = value;
+  }
+
+  onMotivoRechazoChange(value: string) {
+    console.log('Motivo de rechazo actualizado:', value);
+    this.RechazarIncidencia.inTr_MotivoRechazo = value;
   }
 
   onRolSelected(event: any) {
