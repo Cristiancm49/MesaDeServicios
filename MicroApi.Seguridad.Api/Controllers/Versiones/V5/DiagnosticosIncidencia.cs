@@ -21,6 +21,28 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             _context = context;
         }
 
+        [HttpGet("TipoSolucionDiagnosticos")]
+        public async Task<IActionResult> TipoSolucionDiagnosticos()
+        {
+            try
+            {
+                var soluciones = await _context.IncidenciasTrazabilidadTipoSolucion
+                    .Select(s => new
+                    {
+                        s.InTrTiSo_Id,
+                        s.InTrTiSo_Nombre,
+                        s.InTrTiSo_Descripcion
+                    })
+                    .ToListAsync();
+
+                return Ok(soluciones);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
         [HttpPost("GenerarDiagnosticos")]
         public async Task<IActionResult> GenerarDiagnosticos([FromBody] DiagnosticosDTO dto)
         {

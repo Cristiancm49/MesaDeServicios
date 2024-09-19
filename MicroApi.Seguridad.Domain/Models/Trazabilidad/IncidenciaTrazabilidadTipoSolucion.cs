@@ -19,6 +19,9 @@ namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
         [MaxLength(50)]
         public string InTrTiSo_Nombre { get; set; }
 
+        [Required]
+        [MaxLength(50)]
+        public string InTrTiSo_Descripcion { get; set; }
         // Relación con IncidenciaTrazabilidad
         public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
     }
