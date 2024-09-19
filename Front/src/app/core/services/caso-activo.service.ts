@@ -14,7 +14,7 @@ export class Casoactivo{
   private selectincidenciasolicitada = 'https://localhost:44346/api/v5/SolicitanteIncidencia/VistaIncidenciasFuncionario';
   private selecttrazabilidad = 'https://localhost:44346/api/v5/SolicitanteIncidencia/VistaTrazabilidadFuncionario';
   private Validar = 'https://localhost:44346/api/v5/SolicitanteIncidencia/ValidarEstadoResuelto';
-  private Evaluación = 'https://localhost:44346/api/v5/SolicitanteIncidencia/CerrarIncidencia(SinActualizarPromedioUsuario)';
+  private Evaluación = 'https://localhost:44346/api/v5/SolicitanteIncidencia';
   
   constructor(private http: HttpClient) { }
 

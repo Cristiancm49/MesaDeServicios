@@ -58,7 +58,7 @@
               <div class="input-group short">
                 <label for="area-tecnica">Área técnica:</label>
                 <select id="area-tecnica" name="area-tecnica" [(ngModel)]="incidencia.arTe_Id" (change)="onAreaTecnicaSelected($event)">
-                  <option [ngValue]="">Seleccionar</option>
+                  <option [ngValue]="0">Seleccionar</option>
                   @for (area of areasTec; track area.arTe_Id) {
                   <option [ngValue]="area.arTe_Id">{{area.arTe_Nombre }}</option>
                   }

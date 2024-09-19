@@ -199,12 +199,11 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     this.incidencia = {
       cont_IdSolicitante: 0,
       usua_IdAdminExc: 0,
-      inci_FechaRegistro: new Date(),
+      inci_FechaRegistro: this.incidencia.inci_FechaRegistro,
       arTe_Id: 0,
       inci_Descripcion: '',
       inci_ValorTotal: 0
     };
-    this.cargarFechaHora();
     this.selectedCategoriaId = 0;
     this.loadAreasTec(0);
   }
