@@ -54,9 +54,9 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             try
             {
                 // Llamar al procedimiento almacenado
-                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.GenerarDiagnosticos @Inci_Id, @Usua_Id, @InTr_Solucionado, @InTrTiSo_Id, @InTr_Escalable, @InTr_descripcion",
+                await _context.Database.ExecuteSqlRawAsync("EXEC dbo.GenerarDiagnosticos @Inci_Id, @NumeroDocumento, @InTr_Solucionado, @InTrTiSo_Id, @InTr_Escalable, @InTr_descripcion",
                     new SqlParameter("@Inci_Id", dto.Inci_Id),
-                    new SqlParameter("@Usua_Id", dto.Usua_Id),
+                    new SqlParameter("@NumeroDocumento", dto.PeGe_DocumentoIdentidad),
                     new SqlParameter("@InTr_Solucionado", dto.InTr_Solucionado),
                     new SqlParameter("@InTrTiSo_Id", (object)dto.InTrTiSo_Id ?? DBNull.Value),
                     new SqlParameter("@InTr_Escalable", dto.InTr_Escalable),
