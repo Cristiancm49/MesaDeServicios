@@ -86,6 +86,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                         j.i.Inci_UltimoEstado
                     })
                 .Where(c => c.Inci_UltimoEstado == 3 && c.Solicitante_DocumentoIdentidad == documentoIdentidad)
+                .OrderBy(c => c.Inci_FechaRegistro)
                 .ToListAsync();
 
             if (casos == null || !casos.Any())
@@ -164,7 +165,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                         j.i.Inci_UltimoEstado
                     })
                 .Where(c => c.Solicitante_DocumentoIdentidad == documentoIdentidad)
-                .OrderBy(c => c.Inci_FechaRegistro)
+                .OrderByDescending(c => c.Inci_Id)
+                .Distinct()
                 .ToListAsync();
 
             if (casos == null || !casos.Any())

@@ -23,7 +23,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         [HttpGet("HistoricoIncidencias")]
         public async Task<IActionResult> HistoricoIncidencias()
         {
+            var estadosPermitidos = new[] { 6, 7 };
+
             var casos = await _context.IncidenciasTrazabilidad
+                .Where(it => estadosPermitidos.Contains(it.Incidencia.Inci_UltimoEstado ?? 0)) // Filtrar por estados 6 o 7
                 .Join(_context.Incidencias,
                     it => it.Inci_Id,
                     i => i.Inci_Id,
@@ -79,6 +82,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                         Prioridad_Tipo = j.ip.InPr_Tipo,
                         j.i.Inci_UltimoEstado
                     })
+                .OrderByDescending(c => c.Inci_Id)
+                .Distinct()
                 .ToListAsync();
 
             if (casos == null || !casos.Any())
