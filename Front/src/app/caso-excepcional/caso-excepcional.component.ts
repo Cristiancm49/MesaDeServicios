@@ -8,6 +8,7 @@ import { Categorias } from '../interfaces/CasoRegistro/Interfaz-categoria';
 import { Incidencia } from '../interfaces/CasoRegistro/Insert-Incidencia';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { DatosAdmin } from '../interfaces/CasoRegistro/DatosAdmin';
+import { Documento } from '../DatosLogin/User';
 
 @Component({
   selector: 'app-caso-excepcional',
@@ -128,7 +129,7 @@ export class CasoExcepcionalComponent implements OnInit{
   loadDatosAdmin() {
     this.isLoading = true;
     console.log('Requesting DatosAdministrador...');
-    this.casoRegistroService.getDatosAdministrador(1004446325).subscribe({
+    this.casoRegistroService.getDatosAdministrador(Documento).subscribe({
       next: (data) => {
         this.DatosAdministrador = data;
         this.isLoading = false;

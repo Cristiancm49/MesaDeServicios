@@ -3,9 +3,9 @@
     {{ notificationMessage }}
   </div>
   <div class="main-content">
-    <h2 class="header">CASOS DELEGADOS</h2>
+    <h2 class="header">INCIDENCIAS DELEGADAS</h2>
     <div class="section">
-      <h3 class="section-header">CASOS</h3>
+      <h3 class="section-header">INCIDENCIAS</h3>
       <div class="table-container">
         <table class="cases-table">
           <thead>
@@ -51,39 +51,50 @@
         <div class="left-column">
           <div class="form-group">
             <label for="fecha">Fecha y Hora:</label>
-            <input type="text" id="fecha" name="fecha" class="input-fecha">
+            <input type="text" id="fecha" name="fecha" class="input-fecha" [ngModel]="fechaHoraString" (ngModelChange)="onFechaHoraChange($event)" disabled="">
           </div>
           <br>
           <div class="form-group">
-            <label>¿Caso Solucionado?</label>
+            <label>¿Incidencia Solucionada?</label>
             <div>
-              <label><input type="radio" name="solucionado" value="si"><span>Sí</span></label>
-              <label><input type="radio" name="solucionado" value="no"><span>No</span></label>
+              <label>
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="true"><span>Sí</span>
+              </label>
+              <label>
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="false"><span>No</span>
+              </label>
             </div>
+          </div>
+          <div class="input-group short">
+            <label for="Tipo">Tipo de solución:</label>
+            <select id="Tipo" name="Tipo" (change)="onTipoSolucionSelected($event)">
+              <option value="">Seleccionar</option>
+              @for (tipo of Tiposolucion; track tipo.inTrTiSo_Id) {
+              <option [value]="tipo.inTrTiSo_Id">{{ tipo.inTrTiSo_Nombre}}</option>
+              }
+          </select>
           </div>
           <div class="form-group">
             <label>¿Escalable?</label>
             <div>
-              <label><input type="radio" name="escalable" value="si"><span>Sí</span></label>
-              <label><input type="radio" name="escalable" value="no"><span>No</span></label>
+              <label>
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="true"><span>Sí</span>
+              </label>
+              <label>
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="false"><span>No</span>
+              </label>
             </div>
           </div>
-
         </div>
         <div class="right-column">
           <div class="form-group">
-            <label for="diagnostico-inicial">Diagnóstico Inicial:</label>
-            <textarea id="diagnostico-inicial" name="diagnostico-inicial"></textarea>
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="resolucion-caso">Resolución del caso:</label>
-            <textarea id="resolucion-caso" name="resolucion-caso"></textarea>
+            <label for="resolucion-caso">Resolución de la incidencia:</label>
+            <textarea id="resolucion-caso" name="resolucion-caso" [(ngModel)]="diagnotico.inTr_descripcion"></textarea>
           </div>
         </div>
       </div>
       <div class="form-actions">
-        <button type="submit">Enviar</button>
+        <button type="button" (click)="onSubmit()">Enviar</button>
       </div>
     </div>
   </div>

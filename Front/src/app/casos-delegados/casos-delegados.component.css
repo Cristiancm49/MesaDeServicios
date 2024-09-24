@@ -118,7 +118,8 @@
 }
 
 .form-group textarea {
-  height: 75px;
+  height: 200px;
+  font-size: 1.3em;
 }
 
 .form-actions {

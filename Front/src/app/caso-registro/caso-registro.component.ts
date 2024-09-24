@@ -7,6 +7,7 @@ import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
 import { Categorias } from '../interfaces/CasoRegistro/Interfaz-categoria';
 import { Incidencia } from '../interfaces/CasoRegistro/Insert-Incidencia';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { Documento } from '../DatosLogin/User';
 
 @Component({
   selector: 'app-caso-registro',
@@ -24,7 +25,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   fechaHoraString: string = '';
   showNotification = false;
   notificationMessage = '';
-  DatosLogin = 1004446325;
   valorprioridad: number = 0;
   intervalo: any;
 
@@ -75,7 +75,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   loadDatosUser() {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
-    this.casoRegistroService.getDatosUsuario(this.DatosLogin).subscribe({
+    this.casoRegistroService.getDatosUsuario(Documento).subscribe({
       next: (data) => {
         this.DatosUsuario = data;
         this.isLoading = false;
@@ -179,7 +179,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
         console.log('Incidencia insertada con éxito:', response);
         this.showNotification = true;
         this.notificationMessage = 'Incidencia insertada con éxito';
-        this.resetIncidencia();
+        this.Reset();
         setTimeout(() => {
           this.showNotification = false;
         }, 5000); 
@@ -195,16 +195,11 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resetIncidencia() {
-    this.incidencia = {
-      cont_IdSolicitante: 0,
-      usua_IdAdminExc: 0,
-      inci_FechaRegistro: this.incidencia.inci_FechaRegistro,
-      arTe_Id: 0,
-      inci_Descripcion: '',
-      inci_ValorTotal: 0
-    };
+  Reset() {
+    this.incidencia.inci_Descripcion = '';
     this.selectedCategoriaId = 0;
     this.loadAreasTec(0);
+    this.loadCategorias();
   }
+  
 }

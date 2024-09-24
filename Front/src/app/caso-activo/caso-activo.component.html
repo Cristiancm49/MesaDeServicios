@@ -1,8 +1,8 @@
 <div class="container">
   <div class="main-content">
-    <h2 class="header">CASOS ACTIVOS</h2>
+    <h2 class="header">INCIDENCIAS ACTIVAS</h2>
     <div class="section">
-      <h3 class="section-header">CASOS</h3>
+      <h3 class="section-header">INCIDENCIAS</h3>
       <div class="table-container">
         <table class="cases-table">
           <thead>
@@ -60,7 +60,7 @@
         </table>
       </div>
       <div class="section evaluacion-section">
-        <h3 class="section-header-evaluacion">EVALUACIÓN DEL CASO</h3>
+        <h3 class="section-header-evaluacion">EVALUACIÓN DE LA INCIDENCIA</h3>
         <div class="evaluation-form">
           <div class="form-group" *ngFor="let pregunta of preguntas; let i = index">
             <label [for]="'pregunta' + i">{{i + 1}}. {{pregunta}}</label>

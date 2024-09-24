@@ -8,6 +8,7 @@ import { ValidarEstado } from '../interfaces/CasoActivo/ValidarEstado';
 import { EvaluarIncidencia } from '../interfaces/CasoActivo/EvaluarIndicencia';
 import { HttpResponse } from '@angular/common/http';
 import { ViewEncapsulation } from '@angular/core';
+import { Documento } from '../DatosLogin/User';
 
 @Component({
   selector: 'app-caso-activo',
@@ -25,7 +26,6 @@ export class CasoActivoComponent {
   showNotification = false;
   notificationMessage = '';
   isLoading = true;
-  loginusuario = 1004446325
   selectedRowIndexP: number | null = null;
   evaluacionHabilitada: boolean = false;
   notas = [1, 2, 3, 4, 5];
@@ -90,7 +90,7 @@ export class CasoActivoComponent {
     this.isLoading = true;
     console.log('Requesting Datos Incidencia...');
     
-    this.casoactivo.selectIncidenciaSolicitada(this.loginusuario).subscribe({
+    this.casoactivo.selectIncidenciaSolicitada(Documento).subscribe({
       next: (data) => {
         this.vistasolicitud = data;
         this.isLoading = false;
