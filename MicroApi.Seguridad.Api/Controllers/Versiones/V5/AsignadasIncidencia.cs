@@ -159,6 +159,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                         AreaTecnica_Nombre = j.at.ArTe_Nombre,
                         j.i.Inci_Descripcion,
                         j.i.Inci_FechaRegistro,
+                        j.i.Inci_FechaCierre,
                         Admin_NombreCompleto = uA != null ? $"{uA.Contrato.PersonaGeneral.PeGe_PrimerNombre} {uA.Contrato.PersonaGeneral.PeGe_SegundoNombre ?? ""} {uA.Contrato.PersonaGeneral.PeGe_PrimerApellido} {uA.Contrato.PersonaGeneral.PeGe_SegundoApellido ?? ""}" : null,
                         j.i.Inci_ValorTotal,
                         Prioridad_Tipo = j.ip.InPr_Tipo,

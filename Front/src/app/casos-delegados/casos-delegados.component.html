@@ -51,37 +51,41 @@
         <div class="left-column">
           <div class="form-group">
             <label for="fecha">Fecha y Hora:</label>
-            <input type="text" id="fecha" name="fecha" class="input-fecha" [ngModel]="fechaHoraString" (ngModelChange)="onFechaHoraChange($event)" disabled="">
+            <input type="text" id="fecha" name="fecha" [ngModel]="fechaHoraString" disabled>
           </div>
-          <br>
           <div class="form-group">
             <label>¿Incidencia Solucionada?</label>
-            <div>
+            <div class="radio-group">
               <label>
-                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="true"><span>Sí</span>
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="true">
+                <span>Sí</span>
               </label>
               <label>
-                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="false"><span>No</span>
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="false">
+                <span>No</span>
               </label>
             </div>
           </div>
-          <div class="input-group short">
+          <div class="form-group">
             <label for="Tipo">Tipo de solución:</label>
-            <select id="Tipo" name="Tipo" (change)="onTipoSolucionSelected($event)">
+            <select id="Tipo" name="Tipo" (change)="onTipoSolucionSelected($event)"
+              [disabled]="!diagnotico.inTr_Solucionado">
               <option value="">Seleccionar</option>
               @for (tipo of Tiposolucion; track tipo.inTrTiSo_Id) {
-              <option [value]="tipo.inTrTiSo_Id">{{ tipo.inTrTiSo_Nombre}}</option>
+              <option [value]="tipo.inTrTiSo_Id">{{ tipo.inTrTiSo_Nombre }}</option>
               }
-          </select>
+            </select>
           </div>
           <div class="form-group">
             <label>¿Escalable?</label>
-            <div>
+            <div class="radio-group">
               <label>
-                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="true"><span>Sí</span>
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="true">
+                <span>Sí</span>
               </label>
               <label>
-                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="false"><span>No</span>
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="false">
+                <span>No</span>
               </label>
             </div>
           </div>

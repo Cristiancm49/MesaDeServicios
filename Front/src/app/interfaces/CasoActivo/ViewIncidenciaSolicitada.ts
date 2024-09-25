@@ -7,6 +7,5 @@ export interface ViewIncidenciaSolicitada{
     nombreCompleto: string;
     nombreCategoriaAreaTecnica: string;
     nombreAreaTecnica: string;
-    fechaCierre: string;
 
 }

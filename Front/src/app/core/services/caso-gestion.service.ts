@@ -17,7 +17,7 @@ export class CasoGestion {
   private selectincidencia = 'https://localhost:44346/api/v5/Incidencia/SelectIncidenciasRegistradas';
   private selectpersonal = 'https://localhost:44346/api/v5/GestionIncidencia/UsuariosConIncidenciasAsignadas';
   private insertarasignacion = 'https://localhost:44346/api/v5/GestionIncidencia/AsignarUsuario';
-  private selectroles = 'https://localhost:44346/api/v2/Roles/RolesModulo';
+  private selectroles = 'https://localhost:44346/api/v2/Roles/SelectRolesUsuario';
   private rechazar = 'https://localhost:44346/api/v5/GestionIncidencia/RechazarIncidencia';
   private prioridad = 'https://localhost:44346/api/v5/GestionIncidencia/SelectPrioridad';
   private cambioprioridad = 'https://localhost:44346/api/v5/GestionIncidencia/CambioPrioridad';

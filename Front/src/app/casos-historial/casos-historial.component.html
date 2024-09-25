@@ -18,161 +18,63 @@
                 <thead>
                     <tr>
                         <th>No.</th>
+                        <th>Fecha de Registro</th>
+                        <th>Descripción</th>
+                        <th>Solicitante</th>
+                        <th>Categoría Técnica</th>
+                        <th>Área Técnica</th>
+                        <th>Valor Total</th>
                         <th>Prioridad</th>
-                        <th>Estado</th>
-                        <th>Fecha de Inicio</th>
-                        <th>Fecha de Fin</th>
-                        <th>Tipo de Incidencia</th>
-                        <th>Evaluación</th>
-                        <th>Acción</th>
+                        <th>Estado Actual</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                        <td><button type="button" class="report-button">Ver Reporte</button></td>
+                    <tr *ngFor="let historico of vistahistorico; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ historico.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ historico.inci_Descripcion }}</td>
+                        <td>{{ historico.solicitante_NombreCompleto }}</td>
+                        <td>{{ historico.categoriaAreaTecnica_Nombre }}</td>
+                        <td>{{ historico.areaTecnica_Nombre }}</td>
+                        <td>{{ historico.inci_ValorTotal | currency }}</td>
+                        <td>{{ historico.prioridad_Tipo }}</td>
+                        <td>{{ historico.inci_UltimoEstado }}</td>
+                        <td>
+                            <button type="button" class="report-button" (click)="verReporte(historico.inci_Id)">Ver Reporte</button>
+                        </td>
                     </tr>
                 </tbody>
-                <tbody>
-                    <tr>
-                        <td>2</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                        <td><button type="button" class="report-button">Ver Reporte</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>3</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                        <td><button type="button" class="report-button">Ver Reporte</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>4</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                        <td><button type="button" class="report-button">Ver Reporte</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>5</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                        <td><button type="button" class="report-button">Ver Reporte</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>6</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                        <td><button type="button" class="report-button">Ver Reporte</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>7</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                        <td><button type="button" class="report-button">Ver Reporte</button></td>
-                    </tr>
-                </tbody>
-            </table>
+            </table> 
         </div>
 
         <div class="section">
             <h3 class="section-header">REPORTES</h3>
             <table class="cases-table">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Fecha</th>
-                        <th>Diagnóstico</th>
-                        <th>Solucionado</th>
-                        <th>Resolución</th>
-                        <th>Escalable</th>
-                        <th>Rol</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>2</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>3</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>4</td>
-                        <td>Alta</td>
-                        <td>Finalizado</td>
-                        <td>01/01/2020</td>
-                        <td>01/02/2020</td>
-                        <td>Soporte Técnico</td>
-                        <td>Positiva</td>
-                    </tr>
-                </tbody>
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Fecha</th>
+                  <th>Diagnóstico</th>
+                  <th>Solucionado</th>
+                  <th>Resolución</th>
+                  <th>Escalable</th>
+                  <th>Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let trazabilidad of vistatrazabilidad; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ trazabilidad.inTr_FechaActualizacion | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ trazabilidad.inTr_Descripcion || 'Sin diagnóstico' }}</td>
+                  <td>{{ trazabilidad.inTr_Solucionado ? 'Sí' : 'No' }}</td>
+                  <td>{{ trazabilidad.inTr_ObservacionAdmin || 'Sin resolución' }}</td>
+                  <td>{{ trazabilidad.inTr_Escalable ? 'Sí' : 'No' }}</td>
+                  <td>{{ trazabilidad.rolNombre || 'N/A' }}</td>
+                </tr>
+              </tbody>
             </table>
-        </div>
+          </div>
+          
     </div>
 </div>

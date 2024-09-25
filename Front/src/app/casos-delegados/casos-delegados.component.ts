@@ -1,19 +1,25 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+import { Directive, ElementRef, AfterViewInit } from '@angular/core';
 import { Casodelegado } from '../core/services/caso-delegados.service';
 import { ViewIncidenciaAsignada } from '../interfaces/CasoDelegado/ViewIncidenciaAsignada';
 import { ViewTipoSoluciones } from '../interfaces/CasoDelegado/ViewTipoSoluciones';
 import { Documento } from '../DatosLogin/User';
 import { InsertDiagnostico } from '../interfaces/CasoDelegado/InsertDiagnostico';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-casos-delegados',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './casos-delegados.component.html',
-  styleUrl: './casos-delegados.component.css'
+  styleUrl: './casos-delegados.component.css',
+  encapsulation: ViewEncapsulation.None
 })
+
+
 export class CasosDelegadosComponent {
 
   vistaasignada: ViewIncidenciaAsignada[] = [];
@@ -32,14 +38,14 @@ export class CasosDelegadosComponent {
   diagnotico: InsertDiagnostico = {
     inci_Id: 0,
     peGe_DocumentoIdentidad: 0,
-    inTr_Solucionado: true,
+    inTr_Solucionado: null,
     inTrTiSo_Id: 0,
-    inTr_Escalable: true,
-    inTr_descripcion: "string"
+    inTr_Escalable: null,
+    inTr_descripcion: ""
   }
 
 
-  constructor(private casodelegado: Casodelegado) { }
+  constructor(private casodelegado: Casodelegado,  private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.loadDatosIncidencia();
@@ -128,6 +134,23 @@ export class CasosDelegadosComponent {
   }
 
   onSubmit() {
+    if (this.diagnotico.inTr_Solucionado === null) {
+      this.showNotification = true;
+      this.notificationMessage = 'Por favor, seleccione si la incidencia fue solucionada o no.';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 5000);
+      return;
+    }
+
+    if (this.diagnotico.inTr_Solucionado && this.diagnotico.inTrTiSo_Id === 0) {
+      this.showNotification = true;
+      this.notificationMessage = 'Por favor, seleccione un tipo de solución.';
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 5000);
+      return;
+    }
 
     console.log("Id_Incidencia", this.diagnotico.inci_Id);
     this.diagnotico.peGe_DocumentoIdentidad = Documento;
@@ -141,6 +164,7 @@ export class CasosDelegadosComponent {
         this.showNotification = true;
         this.notificationMessage = 'Diagnóstico insertado con éxito';
         setTimeout(() => {
+          window.location.reload();
           this.showNotification = false;
         }, 5000);
       },
