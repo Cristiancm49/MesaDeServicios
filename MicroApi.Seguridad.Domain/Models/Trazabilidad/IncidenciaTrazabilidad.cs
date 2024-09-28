@@ -13,54 +13,39 @@ namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
     [Table("IncidenciaTrazabilidad")]
     public class IncidenciaTrazabilidad
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // IDENTITY en SQL Server
         public int InTr_Id { get; set; }
 
+        [Key, Column(Order = 1)]
         [Required]
         public int Inci_Id { get; set; }
 
         [Required]
-        public int InTrEs_Id { get; set; }
+        [Column(TypeName = "int")]
+        public int TrEs_Id { get; set; } = 1; // Valor por defecto 1
 
-        [Required]
-        public DateTime InTr_FechaActualizacion { get; set; }
+        public int? Diag_Id { get; set; }
 
-        [Required]
-        public int? Usua_Id { get; set; }
-
-        [Required]
-        public bool InTr_Solucionado { get; set; }
-
-        public int? InTrTiSo_Id { get; set; }
-
-        [Required]
-        public bool InTr_Escalable { get; set; }
-
-        public string? InTr_MotivoRechazo { get; set; }
-
-        [Required]
-        public bool InTr_Revisado { get; set; }
-
-        public string? InTr_descripcion { get; set; }
-
+        [MaxLength(50)]
         public string? InTr_ObservacionAdmin { get; set; }
+
+        [Required]
+        [Column(TypeName = "datetime")]
+        public DateTime InTr_FechaGenerada { get; set; } = DateTime.UtcNow; // Default: Fecha actual en UTC
+
+        [Required]
+        [Column(TypeName = "bit")]
+        public bool InTr_Revisado { get; set; } = false; // Valor por defecto 0 (false)
 
         // Relaciones
         [ForeignKey("Inci_Id")]
         public virtual Incidencia.Incidencia Incidencia { get; set; }
 
-        [ForeignKey("InTrEs_Id")]
+        [ForeignKey("Diag_Id")]
+        public virtual IncidenciaDiagnostico? Diagnostico { get; set; }
+
+        [ForeignKey("TrEs_Id")]
         public virtual IncidenciaTrazabilidadEstado TrazabilidadEstado { get; set; }
-
-        [ForeignKey("InTrTiSo_Id")]
-        public virtual IncidenciaTrazabilidadTipoSolucion TrazabilidadTipoSolucion { get; set; }
-
-        [ForeignKey("Usua_Id")]
-        public virtual Usuario Usuario { get; set; }
-
-        public virtual ICollection<IncidenciaTrazabilidadTipoSolucion> IncidenciaTrazabilidadTipoSolucion { get; set; }
-        public virtual ICollection<IncidenciaTrazabilidadEstado> IncidenciaTrazabilidadEstado { get; set; }
-
     }
 }

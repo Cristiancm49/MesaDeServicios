@@ -12,13 +12,17 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
     [Table("Contrato")]
     public class Contrato
     {
-        [Key]
+        [Key, Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Cont_Id { get; set; }
 
+        [Key, Column(Order = 1)] // Segunda parte de la clave primaria
         [Required]
-        [MaxLength(50)]
-        public string Cont_Cargo { get; set; }
+        public int PeGe_Id { get; set; }
+
+        [Key, Column(Order = 2)] // Tercera parte de la clave primaria
+        [Required]
+        public int Unid_Id { get; set; }
 
         [Required]
         public DateTime Cont_FechaInicio { get; set; }
@@ -28,12 +32,6 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
 
         [Required]
         public bool Cont_Estado { get; set; }
-
-        [Required]
-        public int Unid_Id { get; set; }
-
-        [Required]
-        public int PeGe_Id { get; set; }
 
         // Relaciones
         [ForeignKey("PeGe_Id")]
@@ -45,6 +43,5 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         // Relación con Usuario
         public virtual ICollection<Usuario> Usuarios { get; set; }
         public virtual ICollection<Incidencia.Incidencia> Incidencia { get; set; }
-        public virtual ICollection<Responsable> Responsables{ get; set; }
     }
 }

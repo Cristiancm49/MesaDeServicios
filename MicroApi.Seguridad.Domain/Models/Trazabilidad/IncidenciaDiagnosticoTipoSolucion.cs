@@ -8,21 +8,22 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
 {
-    [Table("IncidenciaTrazabilidadTipoSolucion")]
-    public class IncidenciaTrazabilidadTipoSolucion
+    [Table("IncidenciaDiagnosticoTipoSolucion")]
+    public class IncidenciaDiagnosticoTipoSolucion
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int InTrTiSo_Id { get; set; }
+        public int TiSo_Id { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string InTrTiSo_Nombre { get; set; }
+        public string TiSo_Nombre { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string InTrTiSo_Descripcion { get; set; }
+        public string TiSo_Descripcion { get; set; }
+
         // Relación con IncidenciaTrazabilidad
-        public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
+        public virtual ICollection<IncidenciaDiagnostico> IncidenciasDiagnostico { get; set; }
     }
 }

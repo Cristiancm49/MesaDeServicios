@@ -28,6 +28,9 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         [Required]
         public double Unid_Valor { get; set; }
 
+        [Required]
+        public double Unid_Nivel { get; set; }
+
         // Relación con Contrato
         public virtual ICollection<Contrato> Contratos { get; set; }
     }
