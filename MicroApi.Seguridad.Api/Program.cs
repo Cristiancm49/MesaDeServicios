@@ -151,6 +151,9 @@ builder.Services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 
+builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
+builder.Services.AddScoped<IUnidadService, UnidadService>();
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 
 var app = builder.Build();

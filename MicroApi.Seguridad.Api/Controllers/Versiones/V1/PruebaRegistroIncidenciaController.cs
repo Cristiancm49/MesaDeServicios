@@ -18,7 +18,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             _context = context;
         }
 
-        // GET api/v3/persona?docChaLog=1004446325
+        /* GET api/v3/persona?docChaLog=1004446325
         [HttpGet]
         public async Task<IActionResult> GetPersonas([FromQuery] int docChaLog)
         {
@@ -66,7 +66,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 
             return Ok(personas);
         }
-
+        */
 
     }
 }

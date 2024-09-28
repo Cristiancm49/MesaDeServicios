@@ -20,7 +20,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("UsuariosConIncidenciasAsignadas")]
         public async Task<IActionResult> UsuariosConIncidenciasAsignadas([FromQuery] int? id_Rol = null)
         {
@@ -178,6 +178,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 .ToListAsync();
 
             return Ok(prioridades);
-        }
+        }*/
     }
 }

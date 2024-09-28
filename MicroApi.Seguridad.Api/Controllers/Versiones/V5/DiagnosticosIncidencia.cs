@@ -20,7 +20,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("TipoSolucionDiagnosticos")]
         public async Task<IActionResult> TipoSolucionDiagnosticos()
         {
@@ -75,6 +75,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 // Manejar otras excepciones
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
-        }
+        }*/
     }
 }
