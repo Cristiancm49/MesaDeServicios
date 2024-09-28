@@ -58,7 +58,7 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
         [ForeignKey("InPr_Id")]
         public virtual IncidenciaPrioridad Prioridad { get; set; }
 
-        public virtual ICollection<EncuestaCalidad> EncuestaCalidad { get; set; }
+        public virtual EncuestaCalidad EncuestaCalidad { get; set; }
         public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
     }
 }

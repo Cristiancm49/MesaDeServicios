@@ -19,218 +19,110 @@ namespace MicroApi.Seguridad.Data.Context
         public DbSet<IncidenciaAreaTecnica> IncidenciasAreaTecnica { get; set; }
         public DbSet<IncidenciaAreaTecnicaCategoria> IncidenciasAreaTecnicaCategoria { get; set; }
         public DbSet<IncidenciaPrioridad> IncidenciasPrioridad { get; set; }
-        public DbSet<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
-        public DbSet<IncidenciaTrazabilidadEstado> IncidenciasTrazabilidadEstado { get; set; }
-        public DbSet<IncidenciaTrazabilidadTipoSolucion> IncidenciasTrazabilidadTipoSolucion { get; set; }
-        public DbSet<HistorialCambios> HistorialesCambios { get; set; }
-        public DbSet<HistorialTipoCambio> HistorialesTipoCambio { get; set; }
-        public DbSet<InventarioBloqueEdificio> InventariosBloquesEdificio { get; set; }
-        public DbSet<InventarioGeneral> InventariosGenerales { get; set; }
-        public DbSet<InventarioPisoOficina> InventariosPisosOficina { get; set; }
-        public DbSet<InventarioTipo> InventariosTipos { get; set; }
-        public DbSet<Responsable> Responsables { get; set; }
         public DbSet<Contrato> Contratos { get; set; }
         public DbSet<PersonaGeneral> PersonasGenerales { get; set; }
         public DbSet<Unidad> Unidades { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<UsuarioRol> UsuariosRoles { get; set; }
-
-
+        public DbSet<IncidenciaDiagnostico> IncidenciasDiagnostico { get; set; }
+        public DbSet<IncidenciaDiagnosticoTipoSolucion> IncidenciasDiagnosticoTipoSolucion { get; set; }
+        public DbSet<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
+        public DbSet<IncidenciaTrazabilidadEstado> IncidenciasTrazabilidadEstado { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuración para EncuestaCalidad
-            modelBuilder.Entity<EncuestaCalidad>(entity =>
-            {
-                entity.HasKey(e => e.EnCa_Id);
+            // Configuración de la clave primaria compuesta para Contrato
+            modelBuilder.Entity<Contrato>()
+                .HasKey(c => new { c.Cont_Id, c.PeGe_Id, c.Unid_Id });
 
-                entity.Property(e => e.EnCa_PromedioEvaluacion)
-                    .HasColumnType("decimal(5, 2)");
+            // Configuración de las relaciones para Contrato
+            modelBuilder.Entity<Contrato>()
+                .HasOne(c => c.PersonaGeneral)
+                .WithMany(pg => pg.Contratos)
+                .HasForeignKey(c => c.PeGe_Id);
 
-                entity.HasOne(e => e.Incidencia)
-                    .WithMany(i => i.EncuestaCalidad)
-                    .HasForeignKey(e => e.Inci_Id)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+            modelBuilder.Entity<Contrato>()
+                .HasOne(c => c.Unidad)
+                .WithMany(u => u.Contratos)
+                .HasForeignKey(c => c.Unid_Id);
 
-            // Configuración para Incidencia
-            modelBuilder.Entity<Incidencia>(entity =>
-            {
-                entity.HasKey(e => e.Inci_Id);
+            // Configuración de la clave primaria compuesta para IncidenciaTrazabilidad
+            modelBuilder.Entity<IncidenciaTrazabilidad>()
+                .HasKey(it => new { it.InTr_Id, it.Inci_Id });
 
-                entity.Property(e => e.Inci_Descripcion)
-                    .HasMaxLength(500);
+            // Configuración de la relación para IncidenciaTrazabilidad
+            modelBuilder.Entity<IncidenciaTrazabilidad>()
+                .HasOne(it => it.Incidencia)
+                .WithMany(i => i.IncidenciasTrazabilidad)
+                .HasForeignKey(it => it.Inci_Id);
 
-                entity.HasOne(e => e.AreaTecnica)
-                    .WithMany(a => a.Incidencia)
-                    .HasForeignKey(e => e.ArTe_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
+            // Configuración de relación 1:1 entre EncuestaCalidad e Incidencia
+            modelBuilder.Entity<EncuestaCalidad>()
+                .HasOne(ec => ec.Incidencia)
+                .WithOne(i => i.EncuestaCalidad)
+                .HasForeignKey<EncuestaCalidad>(ec => ec.Inci_Id);
 
-                entity.HasOne(e => e.Solicitante)
-                    .WithMany(s => s.Incidencia)
-                    .HasForeignKey(e => e.Cont_IdSolicitante)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.Prioridad)
-                    .WithMany(p => p.Incidencia)
-                    .HasForeignKey(e => e.InPr_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configuración para IncidenciaAreaTecnica
-            modelBuilder.Entity<IncidenciaAreaTecnica>(entity =>
-            {
-                entity.HasKey(e => e.ArTe_Id);
-
-                entity.Property(e => e.ArTe_Nombre)
-                    .HasMaxLength(50);
-
-                entity.HasOne(e => e.Categoria)
-                    .WithMany(c => c.IncidenciasAreaTecnica)
-                    .HasForeignKey(e => e.CaAr_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configuración para IncidenciaAreaTecnicaCategoria
-            modelBuilder.Entity<IncidenciaAreaTecnicaCategoria>(entity =>
-            {
-                entity.HasKey(e => e.CaAr_Id);
-
-                entity.Property(e => e.CaAr_Nombre)
-                    .HasMaxLength(50);
-            });
-
-            // Configuración para HistorialCambios
-            modelBuilder.Entity<HistorialCambios>(entity =>
-            {
-                entity.HasKey(e => e.HiCa_Id);
-
-                entity.HasOne(e => e.InventarioGeneral)
-                    .WithMany(i => i.HistorialesCambios)
-                    .HasForeignKey(e => e.InGe_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.TipoCambio)
-                    .WithMany(tc => tc.HistorialesCambios)
-                    .HasForeignKey(e => e.HiTiCa_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configuración para HistorialTipoCambio
-            modelBuilder.Entity<HistorialTipoCambio>(entity =>
-            {
-                entity.HasKey(e => e.HiTiCa_id);
-
-                entity.Property(e => e.HiTiCa_Nombre)
-                    .HasMaxLength(50);
-            });
-
-            // Configuración para InventarioGeneral
-            modelBuilder.Entity<InventarioGeneral>(entity =>
-            {
-                entity.HasKey(e => e.InGe_Id);
-
-                entity.Property(e => e.InGe_Serial)
-                    .HasMaxLength(50);
-
-                entity.HasOne(e => e.PisoOficina)
-                    .WithMany(p => p.InventariosGenerales)
-                    .HasForeignKey(e => e.PiOf_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.Tipo)
-                    .WithMany(t => t.InventariosGenerales)
-                    .HasForeignKey(e => e.InTi_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.Usuario)
-                    .WithMany(u => u.InventariosGenerales)
-                    .HasForeignKey(e => e.Usua_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configuración para InventarioPisoOficina
-            modelBuilder.Entity<InventarioPisoOficina>(entity =>
-            {
-                entity.HasKey(e => e.PiOf_Id);
-
-                entity.Property(e => e.PiOf_Nombre)
-                    .HasMaxLength(50);
-
-                entity.HasOne(e => e.BloqueEdificio)
-                    .WithMany(b => b.PisosOficina)
-                    .HasForeignKey(e => e.BlEd_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configuración para InventarioBloqueEdificio
-            modelBuilder.Entity<InventarioBloqueEdificio>(entity =>
-            {
-                entity.HasKey(e => e.BlEd_Id);
-
-                entity.Property(e => e.BlEd_Nombre)
-                    .HasMaxLength(50);
-            });
-
-            // Configuración para Usuario
-            modelBuilder.Entity<Usuario>(entity =>
-            {
-                entity.HasKey(e => e.Usua_Id);
-
-                entity.HasOne(e => e.Contrato)
-                    .WithMany(c => c.Usuarios)
-                    .HasForeignKey(e => e.Cont_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.UsuarioRol)
-                    .WithMany(r => r.Usuarios)
-                    .HasForeignKey(e => e.UsRo_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configuración para IncidenciaTrazabilidad
-            modelBuilder.Entity<IncidenciaTrazabilidad>(entity =>
-            {
-                entity.HasKey(e => e.InTr_Id);
-
-                entity.Property(e => e.InTr_descripcion)
-                    .HasMaxLength(500);
-
-                entity.HasOne(e => e.Incidencia)
-                    .WithMany(i => i.IncidenciasTrazabilidad)
-                    .HasForeignKey(e => e.Inci_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.Usuario)
-                    .WithMany(u => u.IncidenciasTrazabilidad)
-                    .HasForeignKey(e => e.Usua_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.TrazabilidadEstado)
-                    .WithMany(te => te.IncidenciasTrazabilidad)
-                    .HasForeignKey(e => e.InTrEs_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(e => e.TrazabilidadTipoSolucion)
-                    .WithMany(ts => ts.IncidenciasTrazabilidad)
-                    .HasForeignKey(e => e.InTrTiSo_Id)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Configuración para UsuarioRol
-            modelBuilder.Entity<UsuarioRol>(entity =>
-            {
-                entity.HasKey(e => e.UsRo_Id);
-
-                entity.Property(e => e.UsRo_Nombre)
-                    .HasMaxLength(50);
-            });
-
-            //Trigger de incidencia
+            // Configuración de relaciones para Incidencia
             modelBuilder.Entity<Incidencia>()
-                .ToTable(tb => tb.HasTrigger("trg_UpdateIncidencia"));
+                .HasOne(i => i.Solicitante)
+                .WithMany(c => c.Incidencia)
+                .HasForeignKey(i => new { i.Cont_IdSolicitante, i.PeGe_IdSolicitante, i.Unid_IdSolicitante });
+
+            modelBuilder.Entity<Incidencia>()
+                .HasOne(i => i.AdminExc)
+                .WithMany(u => u.Incidencia)
+                .HasForeignKey(i => i.Usua_IdAdminExc);
+
+            modelBuilder.Entity<Incidencia>()
+                .HasOne(i => i.AreaTecnica)
+                .WithMany(at => at.Incidencia)
+                .HasForeignKey(i => i.ArTe_Id);
+
+            modelBuilder.Entity<Incidencia>()
+                .HasOne(i => i.Prioridad)
+                .WithMany(p => p.Incidencia)
+                .HasForeignKey(i => i.InPr_Id);
+
+            // Configuración de relaciones para IncidenciaAreaTecnica
+            modelBuilder.Entity<IncidenciaAreaTecnica>()
+                .HasOne(iat => iat.Categoria)
+                .WithMany(c => c.IncidenciasAreaTecnica)
+                .HasForeignKey(iat => iat.CaAr_Id);
+
+            // Configuración de relaciones para Usuario
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Contrato)
+                .WithMany(c => c.Usuarios)
+                .HasForeignKey(u => new { u.Cont_Id, u.PeGe_Id, u.Unid_Id });
+
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.UsuarioRol)
+                .WithMany(ur => ur.Usuarios)
+                .HasForeignKey(u => u.UsRo_Id);
+
+            // Configuración de relaciones para IncidenciaDiagnostico
+            modelBuilder.Entity<IncidenciaDiagnostico>()
+                .HasOne(id => id.Usuario)
+                .WithMany(u => u.IncidenciasDiagnostico)
+                .HasForeignKey(id => id.Usua_Id);
+
+            modelBuilder.Entity<IncidenciaDiagnostico>()
+                .HasOne(id => id.TipoSolucion)
+                .WithMany(ts => ts.IncidenciasDiagnostico)
+                .HasForeignKey(id => id.TiSo_Id);
+
+            // Configuración adicional para IncidenciaTrazabilidad
+            modelBuilder.Entity<IncidenciaTrazabilidad>()
+                .HasOne(it => it.Diagnostico)
+                .WithMany(d => d.IncidenciaTrazabilidads)
+                .HasForeignKey(it => it.Diag_Id);
+
+            modelBuilder.Entity<IncidenciaTrazabilidad>()
+                .HasOne(it => it.TrazabilidadEstado)
+                .WithMany(te => te.IncidenciasTrazabilidad)
+                .HasForeignKey(it => it.TrEs_Id);
         }
     }
 }
