@@ -1,0 +1,24 @@
+<div class="modal-container">
+    <h2 class="modal-title">Cambio de Prioridad</h2>
+    <div class="modal-content">
+      <div class="form-container">
+        <div class="input-group">
+          <label for="Prioridad">Nueva Prioridad:</label>
+          <select id="Prioridad" name="Prioridad" (change)="onPrioridadSelected($event)">
+            <option value="">Seleccionar</option>
+            @for (prio of vistraprioridad; track prio.inPr_Id) {
+              <option [value]="prio.inPr_Id">{{ prio.inPr_Tipo }}</option>
+            }
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="Motivo">Motivo del cambio:</label>
+          <textarea id="Motivo" name="Motivo" rows="4" [(ngModel)]="prioriadcambio.motivoCambio"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="button-cancel" (click)="onCancel()">Cancelar</button>
+      <button type="button" class="button-assign" (click)="onPrioridad()">Enviar</button>
+    </div>
+  </div>

@@ -16,6 +16,7 @@ import { MenulateralComponent } from "./menulateral/menulateral.component";
 
 
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,4 +28,5 @@ import { MenulateralComponent } from "./menulateral/menulateral.component";
 
 export class AppComponent {
   title = 'mesadeservicios';
+
 }
