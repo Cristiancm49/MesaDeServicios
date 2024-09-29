@@ -17,16 +17,9 @@ import { MatDialogActions } from '@angular/material/dialog';
   styleUrl: './modal-asignacion.component.css'
 })
 export class ModalAsignacionComponent {
-  mostrarDefault: boolean = true;
-  mostrarPrioridad: boolean = false;
-  mostrarRechazar: boolean = false;
-  //vistadatos: ViewIncidencia[] = [];
   vistapersonal: ViewPersonalAsignacion[] = [];
   insertarpersonal: InsertAsignacion[] = [];
   vistaroles: ViewRoles[] = [];
-  //vistraprioridad: SelectPrioridad[] = [];
-  selectedPrioridadId = 0;
-  //cambioprioridad: CambioPrioridad[] = [];
   isLoading = true;
   selectedRowIndex: number | null = null;
   selectedRowIndexP: number | null = null;
@@ -55,9 +48,6 @@ export class ModalAsignacionComponent {
   ngOnInit() {
     this.loadDatosPersonal(0);
     this.loadDatosRol();
-    
-    //this.cargarFechaHora();
-    //this.loadPrioridades();
   }
 
   onSubmit() {
