@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MicroApi.Seguridad.Domain.Models.Encuesta;
+using MicroApi.Seguridad.Domain.Models.Trazabilidad;
 
-namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
+namespace MicroApi.Seguridad.Domain.Models.Diagnostico
 {
     [Table("IncidenciaDiagnostico")]
     public class IncidenciaDiagnostico

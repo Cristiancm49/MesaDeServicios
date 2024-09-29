@@ -154,6 +154,9 @@ builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
 builder.Services.AddScoped<IUnidadService, UnidadService>();
 
+builder.Services.AddScoped<IIncidenciaRepository, IncidenciaRepository>();
+builder.Services.AddScoped<IIncidenciaService, IncidenciaService>();
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 
 var app = builder.Build();

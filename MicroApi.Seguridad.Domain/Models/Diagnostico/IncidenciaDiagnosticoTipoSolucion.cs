@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
+namespace MicroApi.Seguridad.Domain.Models.Diagnostico
 {
     [Table("IncidenciaDiagnosticoTipoSolucion")]
     public class IncidenciaDiagnosticoTipoSolucion

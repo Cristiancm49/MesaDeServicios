@@ -4,6 +4,7 @@ using MicroApi.Seguridad.Domain.Models.Incidencia;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using MicroApi.Seguridad.Domain.Models.Encuesta;
 using MicroApi.Seguridad.Domain.Models.Trazabilidad;
+using MicroApi.Seguridad.Domain.Models.Diagnostico;
 
 namespace MicroApi.Seguridad.Data.Context
 {

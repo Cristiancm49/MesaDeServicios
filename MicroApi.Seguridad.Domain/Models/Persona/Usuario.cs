@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MicroApi.Seguridad.Domain.Models.Trazabilidad;
 using MicroApi.Seguridad.Domain.Models.Inventario;
+using MicroApi.Seguridad.Domain.Models.Diagnostico;
 
 namespace MicroApi.Seguridad.Domain.Models.Persona
 {
