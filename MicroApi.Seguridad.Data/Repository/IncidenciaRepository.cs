@@ -71,19 +71,60 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
-        public async Task<RespuestaGeneral> ConsultarAreaTecnicaYCategoriaAsync()
+        public async Task<RespuestaGeneral> ConsultarCategoriaAreaTecnicaAsync()
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var areasTecnicas = await (from cat in modelContext.IncidenciasAreaTecnicaCategoria
+                                           select new
+                                           {
+                                               cat.CaAr_Id,
+                                               cat.CaAr_Nombre
+                                           }).ToListAsync();
+
+                if (areasTecnicas.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = areasTecnicas; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron áreas técnicas.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando las áreas técnicas: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.Timestamp = DateTime.UtcNow;
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> ConsultarAreaTecnicaAsync(int CategoriaId)
         {
             var respuesta = new RespuestaGeneral();
 
             try
             {
                 var areasTecnicas = await (from at in modelContext.IncidenciasAreaTecnica
-                                           join cat in modelContext.IncidenciasAreaTecnicaCategoria on at.CaAr_Id equals cat.CaAr_Id
+                                           where at.CaAr_Id == CategoriaId
                                            select new
                                            {
                                                at.ArTe_Id,
-                                               at.ArTe_Nombre,
-                                               CategoriaNombre = cat.CaAr_Nombre
+                                               at.ArTe_Nombre
                                            }).ToListAsync();
 
                 if (areasTecnicas.Any())
