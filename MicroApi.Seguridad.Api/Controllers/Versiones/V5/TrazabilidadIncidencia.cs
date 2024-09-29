@@ -19,7 +19,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("VistaTrazabilidadAdmin")]
         public async Task<IActionResult> GetVistaTrazabilidadAdmin([FromQuery] int inci_id)
         {
@@ -71,6 +71,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
 
             return Ok(trazabilidad);
-        }
+        }*/
     }
 }

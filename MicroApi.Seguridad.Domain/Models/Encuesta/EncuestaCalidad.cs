@@ -13,14 +13,7 @@ namespace MicroApi.Seguridad.Domain.Models.Encuesta
     public class EncuestaCalidad
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int EnCa_Id { get; set; }
-
-        [Required]
         public int Inci_Id { get; set; }
-
-        [Required]
-        public DateTime EnCa_FechaRespuesta { get; set; }
 
         [Required]
         public int EnCa_Preg1 { get; set; }
@@ -39,6 +32,9 @@ namespace MicroApi.Seguridad.Domain.Models.Encuesta
 
         [Required]
         public double EnCa_PromedioEvaluacion { get; set; }
+
+        [Required]
+        public DateTime EnCa_FechaRespuesta { get; set; }
 
         // Relación
         [ForeignKey("Inci_Id")]

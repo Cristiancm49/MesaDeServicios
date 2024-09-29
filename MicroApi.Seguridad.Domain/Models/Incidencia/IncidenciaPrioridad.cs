@@ -11,9 +11,15 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InPr_Id { get; set; }
 
+        [Required] // Campo obligatorio
+        public int InPr_RangoMin { get; set; }
+
+        [Required] // Campo obligatorio
+        public int InPr_RangoMax { get; set; }
+
         [Required]
-        [MaxLength(50)]
-        public string InPr_Tipo { get; set; }
+        [MaxLength(50)] // VARCHAR(50) en SQL Server
+        public string InPr_Nombre { get; set; }
 
         // Relación con Incidencia
         public virtual ICollection<Incidencia> Incidencia { get; set; }

@@ -21,7 +21,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
             _context = context;
         }
 
-        // GET: api/usuarios/contratos-activos
+        /* GET: api/usuarios/contratos-activos
         [HttpGet("PersonasConContratosActivos")]
         public async Task<IActionResult> GetPersonasConContratosActivos()
         {
@@ -140,7 +140,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
             }
 
             return Ok(roles);
-        }
+        }*/
     }
 }
 

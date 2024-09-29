@@ -19,7 +19,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("MisIncidenciasAsignadas")]
         public async Task<IActionResult> MisIncidenciasAsignadas([FromQuery] int documentoIdentidad)
         {
@@ -176,6 +176,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
 
             return Ok(casos);
-        }
+        }*/
     }
 }

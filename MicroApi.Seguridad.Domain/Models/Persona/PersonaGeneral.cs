@@ -16,7 +16,7 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         public int PeGe_Id { get; set; }
 
         [Required]
-        public int PeGe_DocumentoIdentidad { get; set; }
+        public long PeGe_DocumentoIdentidad { get; set; }
 
         [Required]
         [MaxLength(50)]

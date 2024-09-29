@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Domain.DTOs
+namespace MicroApi.Seguridad.Domain.DTOs.zNO
 {
-    public class InsertarUsuarioDTO
+    public class ActualizarRolUsuarioDto
     {
         public int NumeroDocumento { get; set; }
-        public int UsRo_Id { get; set; }
+        public int NuevoRolId { get; set; }
     }
 }

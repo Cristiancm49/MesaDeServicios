@@ -19,7 +19,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("HistoricoIncidencias")]
         public async Task<IActionResult> HistoricoIncidencias()
         {
@@ -92,6 +92,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
             }
 
             return Ok(casos);
-        }
+        }*/
     }
 }

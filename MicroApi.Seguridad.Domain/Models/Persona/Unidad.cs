@@ -26,7 +26,10 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         public int Unid_ExtTelefono { get; set; }
 
         [Required]
-        public double Unid_Valor { get; set; }
+        public int Unid_Valor { get; set; }
+
+        [Required]
+        public int Unid_Nivel { get; set; }
 
         // Relación con Contrato
         public virtual ICollection<Contrato> Contratos { get; set; }

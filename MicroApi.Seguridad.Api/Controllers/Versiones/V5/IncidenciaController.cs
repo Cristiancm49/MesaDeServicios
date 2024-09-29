@@ -19,7 +19,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("SolicitarIncidencias/{documentoIdentidad}")]
         public async Task<IActionResult> GetContratosPorDocumento(int documentoIdentidad)
         {
@@ -306,6 +306,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 .ToListAsync();
 
             return Ok(incidencias);
-        }
+        }*/
     }
 }

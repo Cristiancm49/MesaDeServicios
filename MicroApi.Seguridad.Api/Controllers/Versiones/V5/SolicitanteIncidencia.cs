@@ -19,7 +19,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
         {
             _context = context;
         }
-
+        /*
         [HttpGet("VistaIncidenciasFuncionario")]
         public async Task<IActionResult> VistaIncidenciasFuncionario([FromQuery] int documento)
         {
@@ -154,6 +154,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V5
                 // Manejar excepciones relacionadas con la base de datos
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
-        }
+        }*/
     }
 }

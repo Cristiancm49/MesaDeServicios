@@ -37,13 +37,13 @@ builder.Services.AddSwaggerGen(c =>
     {
         c.SwaggerDoc("v1", new OpenApiInfo
         {
-            Title = "ChairaAPI SQL",
-            Version = "Pruebas",
-            Description = "Versi�n de pruebas de la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Title = "EndPoints de Incidencias",
+            Version = "Final",
+            Description = "Funcionamiento de todo el proceso de gestión de incidencias para la mesa de servicios",
             Contact = new OpenApiContact
             {
                 Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebasti�n Mosquera Munar"
+                Name = "Johan Sebastián Mosquera Munar"
             },
             License = new OpenApiLicense
             {
@@ -151,6 +151,15 @@ builder.Services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 
+builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
+builder.Services.AddScoped<IUnidadService, UnidadService>();
+
+builder.Services.AddScoped<IIncidenciaRepository, IncidenciaRepository>();
+builder.Services.AddScoped<IIncidenciaService, IncidenciaService>();
+
+builder.Services.AddScoped<ITrazabilidadRepository, TrazabilidadRepository>();
+builder.Services.AddScoped<ITrazabilidadService, TrazabilidadService>();
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 
 var app = builder.Build();
@@ -161,10 +170,10 @@ if (!app.Environment.IsProduction() || !app.Environment.IsDevelopment())//Develo
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pruebas");
-        c.SwaggerEndpoint("/swagger/v2/swagger.json", "Roles");
-        c.SwaggerEndpoint("/swagger/v4/swagger.json", "Inventario");
-        c.SwaggerEndpoint("/swagger/v5/swagger.json", "Incidencias");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Incidencia");
+        c.SwaggerEndpoint("/swagger/v2/swagger.json", "NO-Roles");
+        c.SwaggerEndpoint("/swagger/v4/swagger.json", "No-Inventario");
+        c.SwaggerEndpoint("/swagger/v5/swagger.json", "NO-Incidencias");
     });
 }
 

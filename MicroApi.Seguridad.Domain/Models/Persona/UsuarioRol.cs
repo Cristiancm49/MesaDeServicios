@@ -19,6 +19,9 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         [MaxLength(50)]
         public string UsRo_Nombre { get; set; }
 
+        [Required]
+        public int UsRo_Nivel { get; set; }
+
         // Relación con Usuario
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }
