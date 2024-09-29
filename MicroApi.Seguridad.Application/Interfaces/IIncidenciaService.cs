@@ -12,6 +12,7 @@ namespace MicroApi.Seguridad.Application.Interfaces
         Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona);
         Task<RespuestaGeneral> ConsultarAreaTecnicaYCategoriaAsync();
         Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto);
+        Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync();
         Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto);
         Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
     }

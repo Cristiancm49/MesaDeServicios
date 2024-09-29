@@ -13,10 +13,12 @@ namespace MicroApi.Seguridad.Application.Services
         {
             this.incidenciaRepository = incidenciaRepository;
         }
+
         public async Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona)
         {
             return await incidenciaRepository.ConsultarContratoAsync(documentoPersona);
         }
+
         public async Task<RespuestaGeneral> ConsultarAreaTecnicaYCategoriaAsync()
         {
             return await incidenciaRepository.ConsultarAreaTecnicaYCategoriaAsync();
@@ -27,10 +29,16 @@ namespace MicroApi.Seguridad.Application.Services
             return await incidenciaRepository.InsertarIncidenciaAsync(dto);
         }
 
+        public async Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync()
+        {
+            return await incidenciaRepository.ConsultarIncidenciasRegistradasAsync();
+        }
+
         public async Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto)
         {
             return await incidenciaRepository.RechazarIncidenciaAsync(dto);
         }
+
         public async Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto)
         {
             return await incidenciaRepository.AsignarIncidenciaAsync(dto);

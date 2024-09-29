@@ -167,6 +167,74 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
+        public async Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync()
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var incidencias = await (from i in modelContext.Incidencias
+                                         join it in modelContext.IncidenciasTrazabilidad on i.Inci_Id equals it.Inci_Id into trazabilidadGroup
+                                         from it in trazabilidadGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join c in modelContext.Contratos on i.Cont_IdSolicitante equals c.Cont_Id into contratoGroup
+                                         from c in contratoGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id into personaGroup
+                                         from pg in personaGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join u in modelContext.Unidades on c.Unid_Id equals u.Unid_Id into unidadGroup
+                                         from u in unidadGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join ar in modelContext.IncidenciasAreaTecnica on i.ArTe_Id equals ar.ArTe_Id into areaTecnicaGroup
+                                         from ar in areaTecnicaGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join ca in modelContext.IncidenciasAreaTecnicaCategoria on ar.CaAr_Id equals ca.CaAr_Id into categoriaGroup
+                                         from ca in categoriaGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join p in modelContext.IncidenciasPrioridad on i.InPr_Id equals p.InPr_Id into prioridadGroup
+                                         from p in prioridadGroup.DefaultIfEmpty() // LEFT JOIN
+                                         where it.InTr_FechaGenerada == (from itSub in modelContext.IncidenciasTrazabilidad
+                                                                         where itSub.Inci_Id == i.Inci_Id
+                                                                         select itSub.InTr_FechaGenerada).Max()
+                                               && it.TrEs_Id == 1
+                                         select new
+                                         {
+                                             i.Inci_Id,
+                                             NombreCompleto = $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}",
+                                             c.Cont_Cargo,
+                                             u.Unid_Nombre,
+                                             u.Unid_Telefono,
+                                             ca.CaAr_Nombre,
+                                             ar.ArTe_Nombre,
+                                             i.Inci_Descripcion,
+                                             it.InTr_FechaGenerada,
+                                             NombrePrioridad = p.InPr_Nombre
+                                         }).ToListAsync();
+
+                if (incidencias.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = incidencias; // Asignar los resultados a Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron incidencias.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando las incidencias: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.Timestamp = DateTime.UtcNow;
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
+
         public async Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto)
         {
             var respuesta = new RespuestaGeneral();

@@ -51,6 +51,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
+        [HttpGet("consultar-IncidenciasResgistradas")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarIncidenciasRegistradas()
+        {
+            var respuesta = await incidenciaService.ConsultarIncidenciasRegistradasAsync();
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
         [HttpPost("rechazar-Incidencia")]
         public async Task<ActionResult<RespuestaGeneral>> RechazarIncidencia([FromBody] RechazarIncidenciaDTO dto)
         {
