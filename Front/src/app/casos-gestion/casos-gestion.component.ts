@@ -71,8 +71,8 @@ export class CasosGestionComponent implements OnInit{
     console.log('Requesting DatosUsuario...');
     
     this.casoGestion.insertIncidencia().subscribe({
-      next: (data) => {
-        this.vistadatos = data;
+      next: (response) => {
+        this.vistadatos = response.data || [];;
         this.isLoading = false;
         console.log('Datos Incidencia:', this.vistadatos);
       },

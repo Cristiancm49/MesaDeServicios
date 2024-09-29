@@ -5,7 +5,7 @@ import { AreaTec } from '../../interfaces/CasoRegistro/area-tec';
 import { DatosUser } from '../../interfaces/CasoRegistro/DatosUser';
 import { Categorias } from '../../interfaces/CasoRegistro/Interfaz-categoria';
 import { Incidencia } from '../../interfaces/CasoRegistro/Insert-Incidencia';
-import { ApiResponse } from '../../interfaces/CasoRegistro/ApiResponse';
+import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 
 @Injectable({
   providedIn: 'root'

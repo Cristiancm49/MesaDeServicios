@@ -8,13 +8,13 @@ import { ViewRoles } from '../../interfaces/CasoGestión/ViewRoles';
 import { RechazarIncidencia } from '../../interfaces/CasoGestión/RechazarIncidencia';
 import { SelectPrioridad } from '../../interfaces/CasoGestión/SelectPrioridad';
 import { CambioPrioridad } from '../../interfaces/CasoGestión/CambioPrioridad';
-
+import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CasoGestion {
-  private selectincidencia = 'https://localhost:44346/api/v5/Incidencia/SelectIncidenciasRegistradas';
+  private selectincidencia = 'https://localhost:44346/api/Incidencia/Gestion/consultar-IncidenciasResgistradas';
   private selectpersonal = 'https://localhost:44346/api/v5/GestionIncidencia/UsuariosConIncidenciasAsignadas';
   private insertarasignacion = 'https://localhost:44346/api/v5/GestionIncidencia';
   private selectroles = 'https://localhost:44346/api/v2/Roles/SelectRolesUsuario';
@@ -25,8 +25,8 @@ export class CasoGestion {
   constructor(private http: HttpClient) { }
 
 
-  insertIncidencia(): Observable<ViewIncidencia[]> {
-    return this.http.get<ViewIncidencia[]>(`${this.selectincidencia}`);
+  insertIncidencia(): Observable<ApiResponse<ViewIncidencia>> {
+    return this.http.get<ApiResponse<ViewIncidencia>>(`${this.selectincidencia}`);
   }
 
   mostrarpersonal(id_Rol: number): Observable<ViewPersonalAsignacion[]> {
