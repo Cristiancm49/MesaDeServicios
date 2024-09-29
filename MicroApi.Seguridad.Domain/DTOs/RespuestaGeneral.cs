@@ -10,7 +10,7 @@ namespace MicroApi.Seguridad.Domain.DTOs
         public int StatusCode { get; set; }
         public List<string> Errors { get; set; } = new List<string>();
         public object Data { get; set; }
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+        public DateTime Timestamp { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("America/Bogota"));
         public string RequestId { get; set; }
         public string LocalizedMessage { get; set; }
     }
