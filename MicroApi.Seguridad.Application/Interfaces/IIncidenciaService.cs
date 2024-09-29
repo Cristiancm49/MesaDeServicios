@@ -10,5 +10,7 @@ namespace MicroApi.Seguridad.Application.Interfaces
     public interface IIncidenciaService
     {
         Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto);
+        Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto);
+        Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
     }
 }

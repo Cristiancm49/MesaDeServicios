@@ -18,5 +18,14 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await incidenciaRepository.InsertarIncidenciaAsync(dto);
         }
+
+        public async Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto)
+        {
+            return await incidenciaRepository.RechazarIncidenciaAsync(dto);
+        }
+        public async Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto)
+        {
+            return await incidenciaRepository.AsignarIncidenciaAsync(dto);
+        }
     }
 }

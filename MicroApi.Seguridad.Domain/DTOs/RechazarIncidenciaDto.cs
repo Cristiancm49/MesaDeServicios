@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.DTOs
 {
-    public class RechazarIncidenciaDto
+    public class RechazarIncidenciaDTO
     {
         public int Inci_Id { get; set; }
-        public DateTime InTr_FechaActualizacion { get; set; }
         public string InTr_MotivoRechazo { get; set; }
     }
 }

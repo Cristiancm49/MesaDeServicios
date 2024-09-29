@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.DTOs
 {
-    public class AsignarIncidenciaDto
+    public class AsignarIncidenciaDTO
     {
         public int Inci_Id { get; set; }
         public int Usua_Id { get; set; }
