@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ViewIncidencia } from '../../interfaces/CasoGestión/ViewIndicencia';
 import { ViewPersonalAsignacion } from '../../interfaces/CasoGestión/ViewPersonalAsignacion';
@@ -16,11 +16,11 @@ import { CambioPrioridad } from '../../interfaces/CasoGestión/CambioPrioridad';
 export class CasoGestion {
   private selectincidencia = 'https://localhost:44346/api/v5/Incidencia/SelectIncidenciasRegistradas';
   private selectpersonal = 'https://localhost:44346/api/v5/GestionIncidencia/UsuariosConIncidenciasAsignadas';
-  private insertarasignacion = 'https://localhost:44346/api/v5/GestionIncidencia/AsignarUsuario';
+  private insertarasignacion = 'https://localhost:44346/api/v5/GestionIncidencia';
   private selectroles = 'https://localhost:44346/api/v2/Roles/SelectRolesUsuario';
-  private rechazar = 'https://localhost:44346/api/v5/GestionIncidencia/RechazarIncidencia';
+  private rechazar = 'https://localhost:44346/api/v5/GestionIncidencia';
   private prioridad = 'https://localhost:44346/api/v5/GestionIncidencia/SelectPrioridad';
-  private cambioprioridad = 'https://localhost:44346/api/v5/GestionIncidencia/CambioPrioridad';
+  private cambioprioridad = 'https://localhost:44346/api/v5/GestionIncidencia';
 
   constructor(private http: HttpClient) { }
 
@@ -33,23 +33,48 @@ export class CasoGestion {
     return this.http.get<ViewPersonalAsignacion[]>(`${this.selectpersonal}?id_Rol=${id_Rol}`);
   }
 
-  insertasignacion(asignacion: InsertAsignacion): Observable<any> {
-    return this.http.post(this.insertarasignacion, asignacion);
+
+  insertasignacion(asignacion: InsertAsignacion): Observable<HttpResponse<any>> {
+    const url = `${this.insertarasignacion}/AsignarUsuario`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(url, asignacion, { 
+      headers: headers, 
+      observe: 'response', 
+      responseType: 'text' 
+    });
   }
 
   getRoles(): Observable<ViewRoles[]> {
     return this.http.get<ViewRoles[]>(`${this.selectroles}`);
   }
 
-  rechazarinciden(rechazo: RechazarIncidencia): Observable<any> {
-    return this.http.post(this.rechazar, rechazo)
+
+  rechazarinciden(rechazo: RechazarIncidencia): Observable<HttpResponse<any>> {
+    const url = `${this.rechazar}/RechazarIncidencia`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(url, rechazo, { 
+      headers: headers, 
+      observe: 'response', 
+      responseType: 'text' 
+    });
   }
 
   getPrioridad(): Observable<SelectPrioridad[]> {
     return this.http.get<SelectPrioridad[]>(`${this.prioridad}`);
   }
 
-  cambiarprioridad(nuevapri: CambioPrioridad): Observable<any> {
-    return this.http.post(this.cambioprioridad, nuevapri);
+
+  cambiarprioridad(nuevapri: CambioPrioridad): Observable<HttpResponse<any>> {
+    const url = `${this.cambioprioridad}/CambioPrioridad`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(url, nuevapri, { 
+      headers: headers, 
+      observe: 'response', 
+      responseType: 'text' 
+    });
   }
+
 }
