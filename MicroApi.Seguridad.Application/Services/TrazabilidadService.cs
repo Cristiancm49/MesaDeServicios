@@ -1,5 +1,6 @@
 ﻿using MicroApi.Seguridad.Application.Interfaces;
 using MicroApi.Seguridad.Domain.DTOs;
+using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
 using MicroApi.Seguridad.Domain.Interfaces;
 using System.Threading.Tasks;
 

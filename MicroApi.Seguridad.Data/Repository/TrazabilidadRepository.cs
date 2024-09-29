@@ -1,5 +1,6 @@
 ﻿using MicroApi.Seguridad.Data.Context;
 using MicroApi.Seguridad.Domain.DTOs;
+using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
 using MicroApi.Seguridad.Domain.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

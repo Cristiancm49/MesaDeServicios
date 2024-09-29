@@ -4,6 +4,7 @@ using MicroApi.Seguridad.Application.Interfaces;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using System.Threading.Tasks;
 using MicroApi.Seguridad.Application.Services;
+using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {

@@ -37,13 +37,13 @@ builder.Services.AddSwaggerGen(c =>
     {
         c.SwaggerDoc("v1", new OpenApiInfo
         {
-            Title = "ChairaAPI SQL",
-            Version = "Pruebas",
-            Description = "Versi�n de pruebas de la API para la OTI de la UDLA para pruebas de la mesa de servicios",
+            Title = "EndPoints de Incidencias",
+            Version = "Final",
+            Description = "Funcionamiento de todo el proceso de gestión de incidencias para la mesa de servicios",
             Contact = new OpenApiContact
             {
                 Email = "joh.mosquera@udla.edu.co",
-                Name = "Johan Sebasti�n Mosquera Munar"
+                Name = "Johan Sebastián Mosquera Munar"
             },
             License = new OpenApiLicense
             {

@@ -1,5 +1,6 @@
 ﻿using MicroApi.Seguridad.Application.Interfaces;
 using MicroApi.Seguridad.Domain.DTOs;
+using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using MicroApi.Seguridad.Domain.Interfaces;
 using System.Threading.Tasks;
 
@@ -42,6 +43,11 @@ namespace MicroApi.Seguridad.Application.Services
         public async Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto)
         {
             return await incidenciaRepository.AsignarIncidenciaAsync(dto);
+        }
+
+        public async Task<RespuestaGeneral> ResolverIncidenciaAsync(ResolverIncidenciaDTO dto)
+        {
+            return await incidenciaRepository.ResolverIncidenciaAsync(dto);
         }
     }
 }

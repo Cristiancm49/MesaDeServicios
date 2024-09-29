@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Domain.DTOs
+namespace MicroApi.Seguridad.Domain.DTOs.zNO
 {
-    public class RechazarIncidenciaDTO
+    public class CambioPrioridadDTO
     {
         public int Inci_Id { get; set; }
-        public string InTr_MotivoRechazo { get; set; }
+        public int New_Prioridad { get; set; }
+        public string MotivoCambio { get; set; }
     }
 }

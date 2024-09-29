@@ -4,6 +4,7 @@ using MicroApi.Seguridad.Application.Interfaces;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using System.Threading.Tasks;
 using MicroApi.Seguridad.Application.Services;
+using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
@@ -44,6 +45,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         public async Task<ActionResult<RespuestaGeneral>> AsignarIncidencia([FromBody] AsignarIncidenciaDTO dto)
         {
             var respuesta = await incidenciaService.AsignarIncidenciaAsync(dto);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
+        [HttpPost("resolver-Incidencia")]
+        public async Task<ActionResult<RespuestaGeneral>> ResolverIncidencia([FromBody] ResolverIncidenciaDTO dto)
+        {
+            var respuesta = await incidenciaService.ResolverIncidenciaAsync(dto);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);

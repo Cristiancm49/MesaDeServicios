@@ -1,4 +1,5 @@
 ﻿using MicroApi.Seguridad.Domain.DTOs;
+using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace MicroApi.Seguridad.Application.Interfaces
         Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync();
         Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto);
         Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
+        Task<RespuestaGeneral> ResolverIncidenciaAsync(ResolverIncidenciaDTO dto);
     }
 }

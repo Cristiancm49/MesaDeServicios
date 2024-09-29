@@ -1,4 +1,5 @@
 ﻿using MicroApi.Seguridad.Domain.DTOs;
+using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
 using MicroApi.Seguridad.Domain.Models;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using Microsoft.AspNetCore.Mvc;

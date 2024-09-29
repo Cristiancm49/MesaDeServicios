@@ -1,4 +1,5 @@
 ﻿using MicroApi.Seguridad.Domain.DTOs;
+using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;

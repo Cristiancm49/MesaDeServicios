@@ -1,4 +1,5 @@
 ﻿using MicroApi.Seguridad.Domain.DTOs;
+using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using MicroApi.Seguridad.Domain.Models;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using Microsoft.AspNetCore.Mvc;
@@ -15,5 +16,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
         Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync();
         Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto);
         Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
+        Task<RespuestaGeneral> ResolverIncidenciaAsync(ResolverIncidenciaDTO dto);
     }
 }
