@@ -341,34 +341,69 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
-        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int? nivelRol = null)
+        public async Task<RespuestaGeneral> ConsultarRolesUsuariosAsync()
         {
             var respuesta = new RespuestaGeneral();
 
             try
             {
-                var usuariosQuery = from u in modelContext.Usuarios
-                                    join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
-                                    join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
-                                    join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
-                                    where u.Usua_Estado == true // Filtrar por usuarios activos
-                                    select new
-                                    {
-                                        u.Usua_Id,
-                                        NombreCompleto = $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}",
-                                        NumeroDocumento = pg.PeGe_DocumentoIdentidad,
-                                        Rol = ur.UsRo_Nombre,
-                                        PromedioEvaluacion = u.Usua_PromedioEvaluacion,
-                                        NivelRol = ur.UsRo_Nivel
-                                    };
+                var usuarioRoles = await (from ur in modelContext.UsuariosRoles
+                                          select new
+                                          {
+                                              ur.UsRo_Id,
+                                              ur.UsRo_Nombre
+                                          }).ToListAsync();
 
-                // Filtrar por UsRo_Nivel si se proporciona
-                if (nivelRol.HasValue)
+                if (usuarioRoles.Any())
                 {
-                    usuariosQuery = usuariosQuery.Where(u => u.NivelRol > nivelRol.Value);
+                    respuesta.Status = "Success";
+                    respuesta.Data = usuarioRoles; // Asignar los resultados a Data
+                    respuesta.StatusCode = 200; // Código de éxito
                 }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron roles de usuario.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando los roles de usuario: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.Timestamp = DateTime.UtcNow;
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
 
-                var usuarios = await usuariosQuery.ToListAsync();
+        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int? usRoId = null)
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var usuarios = await (from u in modelContext.Usuarios
+                                      join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
+                                      join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
+                                      join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
+                                      where u.Usua_Estado == true
+                                      && (!usRoId.HasValue || u.UsRo_Id == usRoId)
+                                      select new
+                                      {
+                                          u.Usua_Id,
+                                          NombreCompleto = $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}",
+                                          NumeroDocumento = pg.PeGe_DocumentoIdentidad,
+                                          Rol = ur.UsRo_Nombre,
+                                          PromedioEvaluacion = u.Usua_PromedioEvaluacion,
+                                          NivelRol = ur.UsRo_Nivel
+                                      }).ToListAsync();
 
                 if (usuarios.Any())
                 {
@@ -379,7 +414,7 @@ namespace MicroApi.Seguridad.Data.Repository
                 else
                 {
                     respuesta.Status = "NotFound";
-                    respuesta.Answer = "No hay niveles superiores para escalar disponibles.";
+                    respuesta.Answer = "No se encontraron personas con este rol activo.";
                     respuesta.StatusCode = 404; // Código de no encontrado
                 }
             }
@@ -396,7 +431,6 @@ namespace MicroApi.Seguridad.Data.Repository
                 respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
-
             return respuesta;
         }
 

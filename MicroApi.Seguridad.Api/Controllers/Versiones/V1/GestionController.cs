@@ -41,10 +41,23 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
-        [HttpGet("consultar-usuario")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarUsuarios(int? nivelRol = null)
+        [HttpGet("consultar-rolesUsuarios")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarRolesUsuarios()
         {
-            var respuesta = await incidenciaService.ConsultarUsuariosAsync(nivelRol);
+            var respuesta = await incidenciaService.ConsultarRolesUsuariosAsync();
+
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+
+            return Ok(respuesta);
+        }
+
+        [HttpGet("consultar-usuario")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarUsuarios(int? usRoId = null)
+        {
+            var respuesta = await incidenciaService.ConsultarUsuariosAsync(usRoId);
 
             if (respuesta.Status == "NotFound")
             {
