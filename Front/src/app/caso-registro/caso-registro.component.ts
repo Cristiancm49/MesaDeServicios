@@ -7,7 +7,7 @@ import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
 import { Categorias } from '../interfaces/CasoRegistro/Interfaz-categoria';
 import { Incidencia } from '../interfaces/CasoRegistro/Insert-Incidencia';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Documento } from '../DatosLogin/User';
+import { Documento } from '../DatosLogin/User';  // Asegúrate que Documento está correctamente definido
 
 @Component({
   selector: 'app-caso-registro',
@@ -29,12 +29,10 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   intervalo: any;
 
   incidencia: Incidencia = {
-    
-      documentoSolicitante: 0,
-      documentoAdmin: null,
-      areaTecnica: 0,
-      descripcion: ""
-    
+    documentoSolicitante: 0,
+    documentoAdmin: null,
+    areaTecnica: 0,
+    descripcion: ""
   };
 
   constructor(private casoRegistroService: CasoRegistroService) { }
@@ -59,8 +57,8 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   loadAreasTec(selectedCategoriaId: number) {
     this.isLoading = true;
     this.casoRegistroService.getAreasTec(selectedCategoriaId).subscribe({
-      next: (data) => {
-        this.areasTec = data;
+      next: (response) => {
+        this.areasTec = response.data || [];  
         this.isLoading = false;
         console.log('Areas Tec:', this.areasTec);
       },
@@ -75,8 +73,8 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
     this.casoRegistroService.getDatosUsuario(Documento).subscribe({
-      next: (data) => {
-        this.DatosUsuario = data;
+      next: (response) => {
+        this.DatosUsuario = response.data || [];  // Accede a 'data'
         this.isLoading = false;
         console.log('Datos Usuario:', this.DatosUsuario);
       },
@@ -90,8 +88,8 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   loadCategorias() {
     this.isLoading = true;
     this.casoRegistroService.getCategorias().subscribe({
-      next: (data) => {
-        this.catego = data;
+      next: (response) => {
+        this.catego = response.data || [];  // Accede a 'data'
         this.isLoading = false;
         console.log('Good Categorias:', this.catego);
       },
@@ -121,9 +119,8 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     this.fechaHoraString = adjustedDate.toISOString().slice(0, 16);
 
     console.log("Fecha actual registro actualizada");
-}
+  }
 
-  
   onFechaHoraChange(event: any) {
     const fechaHoraString = event.target.value;
   }
@@ -141,8 +138,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     }
 
     console.log('id_Incidencias:', this.incidencia.documentoSolicitante);
-    
-
 
     console.log('Valores capturados:');
     console.log('IdSolicitante:', this.incidencia.documentoSolicitante);
@@ -177,5 +172,4 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     this.loadAreasTec(0);
     this.loadCategorias();
   }
-  
 }

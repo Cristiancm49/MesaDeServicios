@@ -7,7 +7,6 @@ import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
 import { Categorias } from '../interfaces/CasoRegistro/Interfaz-categoria';
 import { Incidencia } from '../interfaces/CasoRegistro/Insert-Incidencia';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { DatosAdmin } from '../interfaces/CasoRegistro/DatosAdmin';
 import { Documento } from '../DatosLogin/User';
 
 @Component({
@@ -21,7 +20,7 @@ export class CasoExcepcionalComponent implements OnInit{
 
   areasTec: AreaTec[] = [];
   DatosUsuario: DatosUser[] = [];
-  DatosAdministrador: DatosAdmin[] = [];
+  DatosAdministrador: DatosUser[] = [];
   catego: Categorias[] = [];
   isLoading = true;
   selectedCategoriaId = 0;
@@ -34,12 +33,10 @@ export class CasoExcepcionalComponent implements OnInit{
 
 
   incidencia: Incidencia = {
-    cont_IdSolicitante: 0,
-    usua_IdAdminExc: 0,
-    inci_FechaRegistro: new Date(),
-    arTe_Id: 0,
-    inci_Descripcion: '',
-    inci_ValorTotal: 0
+    documentoSolicitante: 0,
+    documentoAdmin: null,
+    areaTecnica: 0,
+    descripcion: ""
   };
 
 
@@ -70,11 +67,10 @@ export class CasoExcepcionalComponent implements OnInit{
   loadAreasTec(selectedCategoriaId: number) {
     this.isLoading = true;
     this.casoRegistroService.getAreasTec(selectedCategoriaId).subscribe({
-      next: (data) => {
-        this.areasTec = data;
+      next: (response) => {
+        this.areasTec = response.data || [];  
         this.isLoading = false;
         console.log('Areas Tec:', this.areasTec);
-        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching areas tec:', error);
@@ -101,26 +97,24 @@ export class CasoExcepcionalComponent implements OnInit{
   }
   
   getCargo(): string {
-    return this.DatosUsuario[0]?.cont_Cargo || '';
+    return this.DatosUsuario[0]?.cargo|| '';
   }
   
   getDependencia(): string {
-    return this.DatosUsuario[0]?.unid_Nombre || '';
+    return this.DatosUsuario[0]?.nombreUnidad || '';
   }
 
   loadDatosUser(identificacion: number) {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
     this.casoRegistroService.getDatosUsuario(identificacion).subscribe({
-      next: (data) => {
-        this.DatosUsuario = data;
+      next: (response) => {
+        this.DatosUsuario = response.data || [];  // Accede a 'data'
         this.isLoading = false;
         console.log('Datos Usuario:', this.DatosUsuario);
-        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching Datos User:', error);
-        this.DatosUsuario = []; // Reiniciar a un array vacío en caso de error
         this.isLoading = false;
       }
     });
@@ -128,15 +122,15 @@ export class CasoExcepcionalComponent implements OnInit{
 
   loadDatosAdmin() {
     this.isLoading = true;
-    console.log('Requesting DatosAdministrador...');
-    this.casoRegistroService.getDatosAdministrador(Documento).subscribe({
-      next: (data) => {
-        this.DatosAdministrador = data;
+    console.log('Requesting DatosUsuario...');
+    this.casoRegistroService.getDatosUsuario(Documento).subscribe({
+      next: (response) => {
+        this.DatosAdministrador = response.data || [];  // Accede a 'data'
         this.isLoading = false;
-        console.log('Datos Administrador:', this.DatosAdministrador);
+        console.log('Datos Usuario:', this.DatosAdministrador);
       },
       error: (error) => {
-        console.error('Error fetching Datos Admin:', error);
+        console.error('Error fetching Datos User:', error);
         this.isLoading = false;
       }
     });
@@ -145,11 +139,10 @@ export class CasoExcepcionalComponent implements OnInit{
   loadCategorias() {
     this.isLoading = true;
     this.casoRegistroService.getCategorias().subscribe({
-      next: (data) => {
-        this.catego = data;
+      next: (response) => {
+        this.catego = response.data || [];  // Accede a 'data'
         this.isLoading = false;
-        console.log('Good Categorias:', this.areasTec);
-        this.calcularPrioridad();
+        console.log('Good Categorias:', this.catego);
       },
       error: (error) => {
         console.error('Error fetching categorias:', error);
@@ -166,7 +159,6 @@ export class CasoExcepcionalComponent implements OnInit{
 
   cargarFechaHora() {
     const now = new Date();
-    this.incidencia.inci_FechaRegistro = now;
 
     // Reducimos las 5 horas para ajustar a la zona horaria local
     const adjustedDate = new Date(now.getTime() - (5 * 60 * 60 * 1000));
@@ -177,57 +169,35 @@ export class CasoExcepcionalComponent implements OnInit{
     console.log("Fecha actual registro actualizada");
 }
 
-  calcularPrioridad(): void {
-    if (this.DatosUsuario.length > 0 && this.catego.length > 0 && this.areasTec.length > 0) {
-      const valorUsuario = this.DatosUsuario[0].unid_Valor || 0;
-      const valorCategoria = this.catego.find(c => c.caAr_Id === this.selectedCategoriaId)?.caAr_Valor || 0;
-      const valorAreaTec = this.areasTec.find(a => a.arTe_Id === this.incidencia.arTe_Id)?.arTe_Valor || 0;
-      
-      this.valorprioridad = valorUsuario + valorCategoria + valorAreaTec;
-      this.incidencia.inci_ValorTotal = this.valorprioridad;
-      console.log('Prioridad calculada:', this.valorprioridad);
-    } else {
-      console.log('No se puede calcular la prioridad aún, faltan datos');
-    }
-  }
   
-  onFechaHoraChange(event: any) {
-    const fechaHoraString = event.target.value;
-    this.incidencia.inci_FechaRegistro = new Date(fechaHoraString);
-  }
+onFechaHoraChange(event: any) {
+  const fechaHoraString = event.target.value;
+}
 
-  onAreaTecnicaSelected(event: any) {
-    const selectedValue = event.target.value;
-    const lastValue = selectedValue.split(':').pop();
-    this.incidencia.arTe_Id = lastValue ? parseInt(lastValue, 10) : 0;
-    console.log('Área técnica seleccionada:', this.incidencia.arTe_Id);
-    this.calcularPrioridad();
-  }
+onAreaTecnicaSelected(event: any) {
+  const selectedValue = event.target.value;
+  const lastValue = selectedValue.split(':').pop();
+  this.incidencia.areaTecnica = lastValue ? parseInt(lastValue, 10) : 0;
+  console.log('Área técnica seleccionada:', this.incidencia.areaTecnica);
+}
 
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.cont_IdSolicitante = this.DatosUsuario[0].cont_Id;
+      this.incidencia.documentoSolicitante = this.DatosUsuario[0].numeroDocumento;
     }
 
-    console.log('id_Incidencias:', this.incidencia.cont_IdSolicitante);
-    
-    if (!(this.incidencia.inci_FechaRegistro instanceof Date) || isNaN(this.incidencia.inci_FechaRegistro.getTime())) {
-      this.incidencia.inci_FechaRegistro = new Date();
-    }
+    console.log('id_Incidencias:', this.incidencia.documentoSolicitante);
+    console.log('Valores capturados:');
+    console.log('IdSolicitante:', this.incidencia.documentoSolicitante);
+    console.log('IdAdmin:', this.incidencia.documentoAdmin);
+    console.log('areatecnica:', this.incidencia.areaTecnica);
+    console.log('descripcion:', this.incidencia.descripcion);
 
     if (this.DatosAdministrador.length > 0) {
-      this.incidencia.usua_IdAdminExc = this.DatosAdministrador[0].usua_Id;
+      this.incidencia.documentoAdmin = this.DatosAdministrador[0].numeroDocumento;
     }
 
-
-    console.log('Valores capturados:');
-    console.log('cont_IdSolicitante:', this.incidencia.cont_IdSolicitante);
-    console.log('usua_IdAdminExc:', this.incidencia.usua_IdAdminExc);
-    console.log('inci_FechaRegistro:', this.incidencia.inci_FechaRegistro);
-    console.log('arTe_Id:', this.incidencia.arTe_Id);
-    console.log('inci_Descripcion:', this.incidencia.inci_Descripcion);
-    console.log('inci_ValorTotal:', this.incidencia.inci_ValorTotal);
     
     this.casoRegistroService.insertIncidencia(this.incidencia).subscribe({
       next: (response) => {
@@ -252,12 +222,10 @@ export class CasoExcepcionalComponent implements OnInit{
 
   private resetIncidencia() {
     this.incidencia = {
-      cont_IdSolicitante: 0,
-      usua_IdAdminExc: 0,
-      inci_FechaRegistro: new Date(),
-      arTe_Id: 0,
-      inci_Descripcion: '',
-      inci_ValorTotal: 0
+      documentoSolicitante: 0,
+      documentoAdmin: 0,
+      areaTecnica: 0,
+      descripcion: ''
     };
     this.cargarFechaHora();
     this.selectedCategoriaId = 0;

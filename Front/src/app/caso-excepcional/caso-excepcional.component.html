@@ -1,4 +1,3 @@
-ng serve
 <router-outlet></router-outlet>
 <div class="container">
   <div class="main-content">
@@ -7,7 +6,7 @@ ng serve
       <div class="form-group">
         <div class="input-group nombre2">
           <label for="nombre">Nombre del Solicitador:</label>
-          @for (Duser of DatosAdministrador; track Duser.peGe_DocumentoIdentidad) {
+          @for (Duser of DatosAdministrador; track Duser.numeroDocumento) {
           <input [value]="Duser.nombreCompleto" disabled>
           }
         </div>
@@ -58,7 +57,7 @@ ng serve
               </div>
               <div class="input-group short">
                 <label for="area-tecnica">Área técnica:</label>
-                <select id="area-tecnica" name="area-tecnica" class="short" [(ngModel)]="incidencia.arTe_Id"
+                <select id="area-tecnica" name="area-tecnica" class="short" [(ngModel)]="incidencia.areaTecnica"
                   (change)="onAreaTecnicaSelected($event)">
                   <option [ngValue]="0">Seleccionar</option>
                   @for (area of areasTec; track area.arTe_Id) {
@@ -70,7 +69,7 @@ ng serve
           </div>
           <div class="form-group">
             <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="incidencia.inci_Descripcion"></textarea>
+            <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="incidencia.descripcion"></textarea>
           </div>
         </div>
         <div class="form-actions">
