@@ -157,6 +157,9 @@ builder.Services.AddScoped<IUnidadService, UnidadService>();
 builder.Services.AddScoped<IIncidenciaRepository, IncidenciaRepository>();
 builder.Services.AddScoped<IIncidenciaService, IncidenciaService>();
 
+builder.Services.AddScoped<ITrazabilidadRepository, TrazabilidadRepository>();
+builder.Services.AddScoped<ITrazabilidadService, ITrazabilidadService>();
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 
 var app = builder.Build();
