@@ -11,7 +11,8 @@ namespace MicroApi.Seguridad.Application.Interfaces
     public interface IIncidenciaService
     {
         Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona);
-        Task<RespuestaGeneral> ConsultarAreaTecnicaYCategoriaAsync();
+        Task<RespuestaGeneral> ConsultarCategoriaAreaTecnicaAsync();
+        Task<RespuestaGeneral> ConsultarAreaTecnicaAsync(int CategoriaId);
         Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto);
         Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync();
         Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto);

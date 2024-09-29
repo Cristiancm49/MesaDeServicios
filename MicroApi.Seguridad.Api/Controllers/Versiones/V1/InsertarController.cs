@@ -5,6 +5,7 @@ using MicroApi.Seguridad.Domain.Models.Persona;
 using System.Threading.Tasks;
 using MicroApi.Seguridad.Application.Services;
 using MicroApi.Seguridad.Domain.DTOs.Incidencia;
+using MicroApi.Seguridad.Domain.Models.zEjemplos;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
@@ -30,10 +31,21 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
-        [HttpGet("consultar-AreaTecnicaYCategoria")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarAreaTecnicaYCategoria()
+        [HttpGet("consultar-CategoriaAreaTecnica")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarCategoriaAreaTecnicaAsync()
         {
-            var respuesta = await incidenciaService.ConsultarAreaTecnicaYCategoriaAsync();
+            var respuesta = await incidenciaService.ConsultarCategoriaAreaTecnicaAsync();
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
+        [HttpGet("consultar-AreaTecnica{CategoriaId}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarAreaTecnicaAsync(int CategoriaId)
+        {
+            var respuesta = await incidenciaService.ConsultarAreaTecnicaAsync(CategoriaId);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);

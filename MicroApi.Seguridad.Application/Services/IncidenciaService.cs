@@ -20,9 +20,14 @@ namespace MicroApi.Seguridad.Application.Services
             return await incidenciaRepository.ConsultarContratoAsync(documentoPersona);
         }
 
-        public async Task<RespuestaGeneral> ConsultarAreaTecnicaYCategoriaAsync()
+        public async Task<RespuestaGeneral> ConsultarCategoriaAreaTecnicaAsync()
         {
-            return await incidenciaRepository.ConsultarAreaTecnicaYCategoriaAsync();
+            return await incidenciaRepository.ConsultarCategoriaAreaTecnicaAsync();
+        }
+
+        public async Task<RespuestaGeneral> ConsultarAreaTecnicaAsync(int CategoriaId)
+        {
+            return await incidenciaRepository.ConsultarAreaTecnicaAsync(CategoriaId);
         }
 
         public async Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto)
