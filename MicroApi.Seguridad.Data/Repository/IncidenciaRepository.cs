@@ -230,14 +230,23 @@ namespace MicroApi.Seguridad.Data.Repository
                                          from ca in categoriaGroup.DefaultIfEmpty() // LEFT JOIN
                                          join p in modelContext.IncidenciasPrioridad on i.InPr_Id equals p.InPr_Id into prioridadGroup
                                          from p in prioridadGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join admin in modelContext.Usuarios on i.Usua_IdAdminExc equals admin.Usua_Id into adminGroup
+                                         from admin in adminGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join admin_c in modelContext.Contratos on new { admin.Cont_Id, admin.PeGe_Id, admin.Unid_Id } equals new { admin_c.Cont_Id, admin_c.PeGe_Id, admin_c.Unid_Id } into adminContratoGroup
+                                         from admin_c in adminContratoGroup.DefaultIfEmpty() // LEFT JOIN
+                                         join admin_pg in modelContext.PersonasGenerales on admin_c.PeGe_Id equals admin_pg.PeGe_Id into adminPersonaGroup
+                                         from admin_pg in adminPersonaGroup.DefaultIfEmpty() // LEFT JOIN
                                          where it.InTr_FechaGenerada == (from itSub in modelContext.IncidenciasTrazabilidad
                                                                          where itSub.Inci_Id == i.Inci_Id
                                                                          select itSub.InTr_FechaGenerada).Max()
-                                               && it.TrEs_Id == 1
+                                               && it.TrEs_Id == 1 // Solo incidencias con estado 1
                                          select new
                                          {
                                              i.Inci_Id,
-                                             NombreCompleto = $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}",
+                                             NombreCompletoSolicitante = pg.PeGe_PrimerNombre + " " +
+                                                                          (pg.PeGe_SegundoNombre ?? "") + " " +
+                                                                          pg.PeGe_PrimerApellido + " " +
+                                                                          (pg.PeGe_SegundoApellido ?? ""),
                                              c.Cont_Cargo,
                                              u.Unid_Nombre,
                                              u.Unid_Telefono,
@@ -245,9 +254,15 @@ namespace MicroApi.Seguridad.Data.Repository
                                              ar.ArTe_Nombre,
                                              i.Inci_Descripcion,
                                              it.InTr_FechaGenerada,
-                                             NombrePrioridad = p.InPr_Nombre
-                                         }).ToListAsync();
+                                             NombrePrioridad = p.InPr_Nombre,
+                                             NombreCompletoAdmin = admin_pg != null
+                                                 ? admin_pg.PeGe_PrimerNombre + " " +
+                                                   (admin_pg.PeGe_SegundoNombre ?? "") + " " +
+                                                   admin_pg.PeGe_PrimerApellido + " " +
+                                                   (admin_pg.PeGe_SegundoApellido ?? "")
+                                                 : null // Muestra "null" si no hay datos
 
+                                         }).ToListAsync();
                 if (incidencias.Any())
                 {
                     respuesta.Status = "Success";
@@ -386,7 +401,7 @@ namespace MicroApi.Seguridad.Data.Repository
             {
                 var inciIdParam = new SqlParameter("@Inci_Id", dto.Inci_Id);
 
-                await modelContext.Database.ExecuteSqlRawAsync("EXEC AsignarIncidencia @Inci_Id, @ErrorMessage OUTPUT",
+                await modelContext.Database.ExecuteSqlRawAsync("EXEC ResolverIncidencia @Inci_Id, @ErrorMessage OUTPUT",
                     inciIdParam,
                     errorMessage);
 
