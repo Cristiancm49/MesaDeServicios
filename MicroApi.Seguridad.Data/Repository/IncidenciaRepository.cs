@@ -341,6 +341,65 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
+        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int? nivelRol = null)
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var usuariosQuery = from u in modelContext.Usuarios
+                                    join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
+                                    join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
+                                    join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
+                                    where u.Usua_Estado == true // Filtrar por usuarios activos
+                                    select new
+                                    {
+                                        u.Usua_Id,
+                                        NombreCompleto = $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}",
+                                        NumeroDocumento = pg.PeGe_DocumentoIdentidad,
+                                        Rol = ur.UsRo_Nombre,
+                                        PromedioEvaluacion = u.Usua_PromedioEvaluacion,
+                                        NivelRol = ur.UsRo_Nivel
+                                    };
+
+                // Filtrar por UsRo_Nivel si se proporciona
+                if (nivelRol.HasValue)
+                {
+                    usuariosQuery = usuariosQuery.Where(u => u.NivelRol > nivelRol.Value);
+                }
+
+                var usuarios = await usuariosQuery.ToListAsync();
+
+                if (usuarios.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = usuarios; // Asignar los resultados a Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No hay niveles superiores para escalar disponibles.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando los usuarios: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.Timestamp = DateTime.UtcNow;
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+
+            return respuesta;
+        }
+
         public async Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto)
         {
             var respuesta = new RespuestaGeneral();
