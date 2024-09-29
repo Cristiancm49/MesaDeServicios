@@ -7,13 +7,13 @@ using MicroApi.Seguridad.Application.Services;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/Incidencia/[controller]")]
     [ApiController]
-    public class InsertarIncidenciaController : ControllerBase
+    public class InsertarController : ControllerBase
     {
         private readonly IIncidenciaService incidenciaService;
 
-        public InsertarIncidenciaController(IIncidenciaService incidenciaService)
+        public InsertarController(IIncidenciaService incidenciaService)
         {
             this.incidenciaService = incidenciaService;
         }
