@@ -29,12 +29,12 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   intervalo: any;
 
   incidencia: Incidencia = {
-    cont_IdSolicitante: 0,
-    usua_IdAdminExc: null,
-    inci_FechaRegistro: new Date(),
-    arTe_Id: 0,
-    inci_Descripcion: '',
-    inci_ValorTotal: 0
+    
+      documentoSolicitante: 0,
+      documentoAdmin: null,
+      areaTecnica: 0,
+      descripcion: ""
+    
   };
 
   constructor(private casoRegistroService: CasoRegistroService) { }
@@ -63,7 +63,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
         this.areasTec = data;
         this.isLoading = false;
         console.log('Areas Tec:', this.areasTec);
-        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching areas tec:', error);
@@ -80,7 +79,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
         this.DatosUsuario = data;
         this.isLoading = false;
         console.log('Datos Usuario:', this.DatosUsuario);
-        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching Datos User:', error);
@@ -96,7 +94,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
         this.catego = data;
         this.isLoading = false;
         console.log('Good Categorias:', this.catego);
-        this.calcularPrioridad();
       },
       error: (error) => {
         console.error('Error fetching categorias:', error);
@@ -108,15 +105,14 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   onCategoriaSelected(event: any) {
     this.selectedCategoriaId = parseInt(event.target.value) || 0;
     console.log('Categoría seleccionada:', this.selectedCategoriaId);
-    this.incidencia.arTe_Id = 0;
+    this.incidencia.areaTecnica = 0;
     this.areasTec = [];
-    console.log('dato restablecido', this.incidencia.arTe_Id);
+    console.log('dato restablecido', this.incidencia.areaTecnica);
     this.loadAreasTec(this.selectedCategoriaId);
   }
 
   cargarFechaHora() {
     const now = new Date();
-    this.incidencia.inci_FechaRegistro = now;
 
     // Reducimos las 5 horas para ajustar a la zona horaria local
     const adjustedDate = new Date(now.getTime() - (5 * 60 * 60 * 1000));
@@ -127,52 +123,32 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     console.log("Fecha actual registro actualizada");
 }
 
-  calcularPrioridad(): void {
-    if (this.DatosUsuario.length > 0 && this.catego.length > 0 && this.areasTec.length > 0) {
-      const valorUsuario = this.DatosUsuario[0].unid_Valor || 0;
-      const valorCategoria = this.catego.find(c => c.caAr_Id === this.selectedCategoriaId)?.caAr_Valor || 0;
-      const valorAreaTec = this.areasTec.find(a => a.arTe_Id === this.incidencia.arTe_Id)?.arTe_Valor || 0;
-      
-      this.valorprioridad = valorUsuario + valorCategoria + valorAreaTec;
-      this.incidencia.inci_ValorTotal = this.valorprioridad;
-      console.log('Prioridad calculada:', this.valorprioridad);
-    } else {
-      console.log('No se puede calcular la prioridad aún, faltan datos');
-    }
-  }
   
   onFechaHoraChange(event: any) {
     const fechaHoraString = event.target.value;
-    this.incidencia.inci_FechaRegistro = new Date(fechaHoraString);
   }
 
   onAreaTecnicaSelected(event: any) {
     const selectedValue = event.target.value;
     const lastValue = selectedValue.split(':').pop();
-    this.incidencia.arTe_Id = lastValue ? parseInt(lastValue, 10) : 0;
-    console.log('Área técnica seleccionada:', this.incidencia.arTe_Id);
-    this.calcularPrioridad();
+    this.incidencia.areaTecnica = lastValue ? parseInt(lastValue, 10) : 0;
+    console.log('Área técnica seleccionada:', this.incidencia.areaTecnica);
   }
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.cont_IdSolicitante = this.DatosUsuario[0].cont_Id;
+      this.incidencia.documentoSolicitante = this.DatosUsuario[0].numeroDocumento;
     }
 
-    console.log('id_Incidencias:', this.incidencia.cont_IdSolicitante);
+    console.log('id_Incidencias:', this.incidencia.documentoSolicitante);
     
-    if (!(this.incidencia.inci_FechaRegistro instanceof Date) || isNaN(this.incidencia.inci_FechaRegistro.getTime())) {
-      this.incidencia.inci_FechaRegistro = new Date();
-    }
 
 
     console.log('Valores capturados:');
-    console.log('cont_IdSolicitante:', this.incidencia.cont_IdSolicitante);
-    console.log('usua_IdAdminExc:', this.incidencia.usua_IdAdminExc);
-    console.log('inci_FechaRegistro:', this.incidencia.inci_FechaRegistro);
-    console.log('arTe_Id:', this.incidencia.arTe_Id);
-    console.log('inci_Descripcion:', this.incidencia.inci_Descripcion);
-    console.log('inci_ValorTotal:', this.incidencia.inci_ValorTotal);
+    console.log('IdSolicitante:', this.incidencia.documentoSolicitante);
+    console.log('IdAdmin:', this.incidencia.documentoAdmin);
+    console.log('areatecnica:', this.incidencia.areaTecnica);
+    console.log('descripcion:', this.incidencia.descripcion);
     
     this.casoRegistroService.insertIncidencia(this.incidencia).subscribe({
       next: (response) => {
@@ -196,7 +172,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   }
 
   Reset() {
-    this.incidencia.inci_Descripcion = '';
+    this.incidencia.descripcion = '';
     this.selectedCategoriaId = 0;
     this.loadAreasTec(0);
     this.loadCategorias();

@@ -1,12 +1,20 @@
 export interface DatosUser {
-  cont_Id: number;
-  peGe_DocumentoIdentidad: number;
+  numeroDocumento: number;
   nombreCompleto: string;
-  cont_Cargo: string;
-  unid_ExtTelefono: number;
-  unid_Nombre: string;
-  unid_Telefono: number;
-  unid_Valor: number;
-  cont_Estado: boolean;
+  cargo: string;
+  nombreUnidad: string;
+  usuarioId: number;
+  usuarioRolId: number;
 }
-  
+
+export interface ApiResponse<T> {
+  status: string;
+  answer: any;
+  statusCode: number;
+  errors: any[];
+  data: T[];
+  timestamp: string;
+  requestId: string;
+  localizedMessage: string | null;
+}
+
