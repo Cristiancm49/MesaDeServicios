@@ -3,41 +3,38 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AreaTec } from '../../interfaces/CasoRegistro/area-tec';
 import { DatosUser } from '../../interfaces/CasoRegistro/DatosUser';
-import { DatosAdmin } from '../../interfaces/CasoRegistro/DatosAdmin';
 import { Categorias } from '../../interfaces/CasoRegistro/Interfaz-categoria';
 import { Incidencia } from '../../interfaces/CasoRegistro/Insert-Incidencia';
-
+import { ApiResponse } from '../../interfaces/CasoRegistro/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CasoRegistroService {
-  private apiUrl = 'https://localhost:44346/api/v5/Incidencia/AreasTec';
+  private apiUrl = 'https://localhost:44346/api/Incidencia/Insertar/consultar-AreaTecnica';
   private apiDatosUsurio = 'https://localhost:44346/api/Incidencia/Insertar/consultar-Contrato';
-  private apiCategorias ="https://localhost:44346/api/v5/Incidencia/CatAreasTec"
-  private apiInsertIncidencia = 'https://localhost:44346/api/v5/Incidencia/InsertIncidencias(Normal&Excepcional)';
-  private apiDatosAdmin= 'https://localhost:44346/api/v5/Incidencia/InscribirAdmin';
+  private apiCategorias ="https://localhost:44346/api/Incidencia/Insertar/consultar-CategoriaAreaTecnica"
+  private apiInsertIncidencia = 'https://localhost:44346/api/Incidencia/Insertar/insertar-Incidencia';
 
   constructor(private http: HttpClient) { }
 
-  getAreasTec(Id_CatAre: number): Observable<AreaTec[]> {
-    return this.http.get<AreaTec[]>(`${this.apiUrl}?Id_CatAre=${Id_CatAre}`);
+  getAreasTec(Id_CatAre: number): Observable<ApiResponse<AreaTec>> {
+    return this.http.get<ApiResponse<AreaTec>>(`${this.apiUrl}/${Id_CatAre}`);
   }
 
-  getDatosUsuario(peGe_DocumentoIdentidad: number): Observable<DatosUser[]> {
-    return this.http.get<DatosUser[]>(`${this.apiDatosUsurio}/${peGe_DocumentoIdentidad}`);
+  getDatosUsuario(peGe_DocumentoIdentidad: number): Observable<ApiResponse<DatosUser>> {
+    return this.http.get<ApiResponse<DatosUser>>(`${this.apiDatosUsurio}/${peGe_DocumentoIdentidad}`);
   }
 
-  getDatosAdministrador(peGe_DocumentoIdentidad: number): Observable<DatosAdmin[]> {
-    return this.http.get<DatosAdmin[]>(`${this.apiDatosAdmin}/${peGe_DocumentoIdentidad}`);
+  getDatosAdministrador(peGe_DocumentoIdentidad: number): Observable<ApiResponse<DatosUser>> {
+    return this.http.get<ApiResponse<DatosUser>>(`${this.apiDatosUsurio}/${peGe_DocumentoIdentidad}`);
   }
 
-  getCategorias(): Observable<Categorias[]> {
-    return this.http.get<Categorias[]>(`${this.apiCategorias}`);
+  getCategorias(): Observable<ApiResponse<Categorias>> {
+    return this.http.get<ApiResponse<Categorias>>(`${this.apiCategorias}`);
   }
 
   insertIncidencia(incidencia: Incidencia): Observable<any> {
     return this.http.post(this.apiInsertIncidencia, incidencia);
   }
-  
 }
