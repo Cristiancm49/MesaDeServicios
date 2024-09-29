@@ -93,14 +93,14 @@ namespace MicroApi.Seguridad.Data.Repository
                 else
                 {
                     respuesta.Status = "NotFound";
-                    respuesta.Answer = "No se encontraron áreas técnicas.";
+                    respuesta.Answer = "No se encontraron categorias de áreas técnicas.";
                     respuesta.StatusCode = 404; // Código de no encontrado
                 }
             }
             catch (Exception ex)
             {
                 respuesta.Status = "Error";
-                respuesta.Answer = $"Error consultando las áreas técnicas: {ex.Message}";
+                respuesta.Answer = $"Error consultando las categorias de áreas técnicas: {ex.Message}";
                 respuesta.StatusCode = 500; // Código de error interno del servidor
                 respuesta.Errors.Add(ex.Message);
                 respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe

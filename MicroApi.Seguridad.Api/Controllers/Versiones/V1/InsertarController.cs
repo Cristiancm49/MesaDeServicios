@@ -42,7 +42,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
-        [HttpGet("consultar-AreaTecnica{CategoriaId}")]
+        [HttpGet("consultar-AreaTecnica/{CategoriaId}")]
         public async Task<ActionResult<RespuestaGeneral>> ConsultarAreaTecnicaAsync(int CategoriaId)
         {
             var respuesta = await incidenciaService.ConsultarAreaTecnicaAsync(CategoriaId);
