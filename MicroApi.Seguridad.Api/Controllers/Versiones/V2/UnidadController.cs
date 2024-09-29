@@ -4,9 +4,9 @@ using MicroApi.Seguridad.Application.Interfaces;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
+namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     [ApiController]
     public class UnidadController : ControllerBase
     {

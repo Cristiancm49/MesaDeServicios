@@ -9,11 +9,11 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class TrazabilidadController : ControllerBase
+    public class TrazabilidadIncidenciaController : ControllerBase
     {
         private readonly ITrazabilidadService trazabilidadService;
 
-        public TrazabilidadController(ITrazabilidadService trazabilidadService)
+        public TrazabilidadIncidenciaController(ITrazabilidadService trazabilidadService)
         {
             this.trazabilidadService = trazabilidadService;
         }

@@ -170,10 +170,10 @@ if (!app.Environment.IsProduction() || !app.Environment.IsDevelopment())//Develo
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pruebas");
-        c.SwaggerEndpoint("/swagger/v2/swagger.json", "Roles");
-        c.SwaggerEndpoint("/swagger/v4/swagger.json", "Inventario");
-        c.SwaggerEndpoint("/swagger/v5/swagger.json", "Incidencias");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Incidencia");
+        c.SwaggerEndpoint("/swagger/v2/swagger.json", "NO-Roles");
+        c.SwaggerEndpoint("/swagger/v4/swagger.json", "No-Inventario");
+        c.SwaggerEndpoint("/swagger/v5/swagger.json", "NO-Incidencias");
     });
 }
 
