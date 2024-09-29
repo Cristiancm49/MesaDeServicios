@@ -18,6 +18,101 @@ namespace MicroApi.Seguridad.Data.Repository
         {
             this.modelContext = modelContext;
         }
+        public async Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona)
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var contratos = await (from c in modelContext.Contratos
+                                       join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
+                                       join u in modelContext.Unidades on c.Unid_Id equals u.Unid_Id
+                                       join us in modelContext.Usuarios on new { c.Cont_Id, c.PeGe_Id, c.Unid_Id } equals new { us.Cont_Id, us.PeGe_Id, us.Unid_Id } into usuarioJoin
+                                       from us in usuarioJoin.DefaultIfEmpty() // LEFT JOIN
+                                       where pg.PeGe_DocumentoIdentidad == documentoPersona && c.Cont_Estado == true
+                                       select new
+                                       {
+                                           NumeroDocumento = pg.PeGe_DocumentoIdentidad,
+                                           NombreCompleto = $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}",
+                                           Cargo = c.Cont_Cargo,
+                                           NombreUnidad = u.Unid_Nombre,
+                                           UsuarioId = (long?)us.Usua_Id,
+                                           UsuarioRolId = (int?)us.UsRo_Id
+                                       }).ToListAsync();
+
+                if (contratos.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = contratos; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron contratos activos para el documento proporcionado.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando el contrato: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.Timestamp = DateTime.UtcNow;
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> ConsultarAreaTecnicaYCategoriaAsync()
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var areasTecnicas = await (from at in modelContext.IncidenciasAreaTecnica
+                                           join cat in modelContext.IncidenciasAreaTecnicaCategoria on at.CaAr_Id equals cat.CaAr_Id
+                                           select new
+                                           {
+                                               at.ArTe_Id,
+                                               at.ArTe_Nombre,
+                                               CategoriaNombre = cat.CaAr_Nombre
+                                           }).ToListAsync();
+
+                if (areasTecnicas.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = areasTecnicas; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron áreas técnicas.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando las áreas técnicas: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.Timestamp = DateTime.UtcNow;
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
 
         public async Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto)
         {
@@ -169,6 +264,6 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
-
+        
     }
 }

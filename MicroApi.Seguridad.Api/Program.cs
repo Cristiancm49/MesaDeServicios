@@ -158,7 +158,7 @@ builder.Services.AddScoped<IIncidenciaRepository, IncidenciaRepository>();
 builder.Services.AddScoped<IIncidenciaService, IncidenciaService>();
 
 builder.Services.AddScoped<ITrazabilidadRepository, TrazabilidadRepository>();
-builder.Services.AddScoped<ITrazabilidadService, ITrazabilidadService>();
+builder.Services.AddScoped<ITrazabilidadService, TrazabilidadService>();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 

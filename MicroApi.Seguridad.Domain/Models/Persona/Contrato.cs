@@ -25,6 +25,10 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         public int Unid_Id { get; set; }
 
         [Required]
+        [MaxLength(50)]
+        public string Cont_Cargo { get; set; }
+
+        [Required]
         public DateTime Cont_FechaInicio { get; set; }
 
         [Required]

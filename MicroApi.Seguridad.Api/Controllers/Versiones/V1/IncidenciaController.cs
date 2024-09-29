@@ -18,6 +18,28 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             this.incidenciaService = incidenciaService;
         }
 
+        [HttpGet("consultar-Contrato/{documentoPersona}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarContrato(long documentoPersona)
+        {
+            var respuesta = await incidenciaService.ConsultarContratoAsync(documentoPersona);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
+        [HttpGet("consultar-AreaTecnicaYCategoria")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarAreaTecnicaYCategoria()
+        {
+            var respuesta = await incidenciaService.ConsultarAreaTecnicaYCategoriaAsync();
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
         [HttpPost("insertar-Incidencia")]
         public async Task<ActionResult<RespuestaGeneral>> InsertarIncidencia([FromBody] InsertarIncidenciaDTO dto)
         {
