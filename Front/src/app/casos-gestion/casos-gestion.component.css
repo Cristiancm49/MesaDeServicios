@@ -81,14 +81,23 @@
 
   .cases-table th:nth-child(4),
   .cases-table td:nth-child(4) {
-    width: 5%; /* Columna "No." toma solo el 5% del ancho */
+    width: 8%; /* Columna "No." toma solo el 5% del ancho */
+  }
+  .cases-table th:nth-child(8),
+  .cases-table td:nth-child(8) {
+    width: 20%; /* Columna "No." toma solo el 5% del ancho */
   }
 
   .cases-table th:nth-child(9),
   .cases-table td:nth-child(9) {
-    width: 15%; /* Columna "No." toma solo el 5% del ancho */
+    width: 7%; /* Columna "No." toma solo el 5% del ancho */
   }
 
+  .cases-table th:nth-child(10),
+  .cases-table td:nth-child(10) {
+    width: 5%; /* Columna "No." toma solo el 5% del ancho */
+  }
+  
   .cases-table-personal th:nth-child(1),
   .cases-table-personal td:nth-child(1){
     width: 15%;

@@ -25,7 +25,6 @@ export class ModalRechazoComponent {
   RechazarIncidencia: RechazarIncidencia={
 
     inci_Id: 0,
-    inTr_FechaActualizacion: new Date(),
     inTr_MotivoRechazo: ''
 
   }
@@ -40,10 +39,6 @@ export class ModalRechazoComponent {
     this.RechazarIncidencia.inci_Id = this.valorRecibido;
   }
 
-
-  ngOnInit() {
-    this.cargarFechaHora();
-  }
 
   onRechazar() {
     if (this.RechazarIncidencia.inci_Id === 0) {
@@ -96,11 +91,6 @@ export class ModalRechazoComponent {
     this.matDialogRef.close() 
   }
 
-  cargarFechaHora() {
-    const now = new Date();
-    this.RechazarIncidencia.inTr_FechaActualizacion = now;
-    console.log("Fecha de rechazo", this.RechazarIncidencia.inTr_FechaActualizacion)
-  }
 
   onMotivoRechazoChange(value: string) {
     console.log('Motivo de rechazo actualizado:', value);

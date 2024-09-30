@@ -88,8 +88,8 @@ export class ModalAsignacionComponent {
     console.log('Requesting DatosPersonal...');
     
     this.casoGestion.mostrarpersonal(selectedRolId).subscribe({
-      next: (data) => {
-        this.vistapersonal = data;
+      next: (response) => {
+        this.vistapersonal = response.data || [];
         this.isLoading = false;
         console.log('Datos Personal:', this.vistapersonal);
       },
@@ -105,8 +105,8 @@ export class ModalAsignacionComponent {
     console.log('Requesting Datos Rol...');
     
     this.casoGestion.getRoles().subscribe({
-      next: (data) => {
-        this.vistaroles = data;
+      next: (response) => {
+        this.vistaroles = response.data || [];
         this.isLoading = false;
         console.log('Datos Rol:', this.vistaroles);
       },
