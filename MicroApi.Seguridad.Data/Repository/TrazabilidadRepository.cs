@@ -71,10 +71,8 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
-
             return respuesta;
         }
 

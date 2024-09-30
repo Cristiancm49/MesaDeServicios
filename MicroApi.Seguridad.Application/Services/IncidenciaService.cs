@@ -45,6 +45,11 @@ namespace MicroApi.Seguridad.Application.Services
             return await incidenciaRepository.RechazarIncidenciaAsync(dto);
         }
 
+        public async Task<RespuestaGeneral> CambiarPrioridadAsync(CambiarPrioridadDTO dto)
+        {
+            return await incidenciaRepository.CambiarPrioridadAsync(dto);
+        }
+
         public async Task<RespuestaGeneral> ConsultarRolesUsuariosAsync()
         {
             return await incidenciaRepository.ConsultarRolesUsuariosAsync();

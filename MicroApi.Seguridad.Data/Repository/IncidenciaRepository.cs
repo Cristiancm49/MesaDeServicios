@@ -64,7 +64,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
 
@@ -107,7 +106,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -150,7 +148,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -203,7 +200,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -286,7 +282,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -335,7 +330,56 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> CambiarPrioridadAsync(CambiarPrioridadDTO dto)
+        {
+            var respuesta = new RespuestaGeneral();
+            var errorMessage = new SqlParameter("@ErrorMessage", SqlDbType.NVarChar, 255)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            try
+            {
+                var inciIdParam = new SqlParameter("@Inci_Id", dto.Inci_Id);
+                var newPrioridadParam = new SqlParameter("@New_Prioridad", dto.New_Prioridad);
+                var motivoCambioParam = new SqlParameter("@MotivoCambio", dto.MotivoCambio ?? (object)DBNull.Value);
+
+                await modelContext.Database.ExecuteSqlRawAsync(
+                    "EXEC CambiarPorioridad @Inci_Id, @New_Prioridad, @MotivoCambio, @ErrorMessage OUTPUT",
+                    inciIdParam,
+                    newPrioridadParam,
+                    motivoCambioParam,
+                    errorMessage);
+
+                if (!string.IsNullOrEmpty(errorMessage.Value?.ToString()))
+                {
+                    respuesta.Status = "Error";
+                    respuesta.Answer = errorMessage.Value.ToString();
+                    respuesta.StatusCode = 400; // Código de error
+                    respuesta.Errors.Add(respuesta.Answer);
+                }
+                else
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Answer = "Prioridad de la incidencia actualizada exitosamente.";
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error actualizando la prioridad de la incidencia: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -377,7 +421,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -428,7 +471,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -476,7 +518,6 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
@@ -522,11 +563,9 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             finally
             {
-                respuesta.Timestamp = DateTime.UtcNow;
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
             return respuesta;
         }
-
     }
 }

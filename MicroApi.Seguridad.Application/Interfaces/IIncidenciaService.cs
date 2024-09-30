@@ -16,6 +16,7 @@ namespace MicroApi.Seguridad.Application.Interfaces
         Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto);
         Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync();
         Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto);
+        Task<RespuestaGeneral> CambiarPrioridadAsync(CambiarPrioridadDTO dto);
         Task<RespuestaGeneral> ConsultarRolesUsuariosAsync();
         Task<RespuestaGeneral> ConsultarUsuariosAsync(int? usRoId = null);
         Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto);

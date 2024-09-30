@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Domain.DTOs.zNO
+namespace MicroApi.Seguridad.Domain.DTOs.Incidencia
 {
-    public class CambioPrioridadDTO
+    public class CambiarPrioridadDTO
     {
         public int Inci_Id { get; set; }
         public int New_Prioridad { get; set; }
