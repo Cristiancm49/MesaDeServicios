@@ -10,6 +10,7 @@ namespace MicroApi.Seguridad.Application.Interfaces
 {
     public interface ITrazabilidadService
     {
+        Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad);
         Task<RespuestaGeneral> GenerarDiagnosticoAsync(GenerarDiagnosticoDTO dto);
     }
 }

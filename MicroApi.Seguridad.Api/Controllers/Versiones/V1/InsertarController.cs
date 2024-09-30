@@ -32,7 +32,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         }
 
         [HttpGet("consultar-CategoriaAreaTecnica")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarCategoriaAreaTecnicaAsync()
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarCategoriaAreaTecnica()
         {
             var respuesta = await incidenciaService.ConsultarCategoriaAreaTecnicaAsync();
             if (respuesta.Status == "NotFound")
@@ -43,7 +43,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         }
 
         [HttpGet("consultar-AreaTecnica/{CategoriaId}")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarAreaTecnicaAsync(int CategoriaId)
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarAreaTecnica(int CategoriaId)
         {
             var respuesta = await incidenciaService.ConsultarAreaTecnicaAsync(CategoriaId);
             if (respuesta.Status == "NotFound")

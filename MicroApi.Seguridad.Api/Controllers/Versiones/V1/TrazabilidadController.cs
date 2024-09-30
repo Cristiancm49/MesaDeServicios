@@ -19,6 +19,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             this.trazabilidadService = trazabilidadService;
         }
 
+        [HttpGet("consultar-MisIncidenciasActivas/{documentoIdentidad}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisIncidenciasActivas(long documentoIdentidad)
+        {
+            var respuesta = await trazabilidadService.ConsultarMisIncidenciasActivasAsync(documentoIdentidad);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
         [HttpPost("generar-Diagnostico")]
         public async Task<ActionResult<RespuestaGeneral>> GenerarDiagnostico([FromBody] GenerarDiagnosticoDTO dto)
         {

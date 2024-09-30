@@ -14,6 +14,10 @@ namespace MicroApi.Seguridad.Application.Services
         {
             this.trazabilidadRepository = trazabilidadRepository;
         }
+        public async Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad)
+        {
+            return await trazabilidadRepository.ConsultarMisIncidenciasActivasAsync(documentoIdentidad);
+        }
 
         public async Task<RespuestaGeneral> GenerarDiagnosticoAsync(GenerarDiagnosticoDTO dto)
         {
