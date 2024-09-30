@@ -45,6 +45,10 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
         [Required]
         public int InPr_Id { get; set; }
 
+        public int? Inci_EstadoActual { get; set; }
+
+        public int? Inci_UsuarioAsignado { get; set; }
+
         // Relaciones
         [ForeignKey("Cont_IdSolicitante, PeGe_IdSolicitante, Unid_IdSolicitante")]
         public virtual Contrato Solicitante { get; set; }

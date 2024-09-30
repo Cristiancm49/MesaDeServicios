@@ -233,10 +233,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                          from admin_c in adminContratoGroup.DefaultIfEmpty() // LEFT JOIN
                                          join admin_pg in modelContext.PersonasGenerales on admin_c.PeGe_Id equals admin_pg.PeGe_Id into adminPersonaGroup
                                          from admin_pg in adminPersonaGroup.DefaultIfEmpty() // LEFT JOIN
-                                         where it.InTr_FechaGenerada == (from itSub in modelContext.IncidenciasTrazabilidad
-                                                                         where itSub.Inci_Id == i.Inci_Id
-                                                                         select itSub.InTr_FechaGenerada).Max()
-                                               && it.TrEs_Id == 1 // Solo incidencias con estado 1
+                                         where i.Inci_EstadoActual == 1 // Solo incidencias con estado 1
                                          select new
                                          {
                                              i.Inci_Id,
@@ -478,17 +475,33 @@ namespace MicroApi.Seguridad.Data.Repository
                                       join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
                                       join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
                                       join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
+                                      join i in modelContext.Incidencias on u.Usua_Id equals i.Inci_UsuarioAsignado into incidencias
+                                      from i in incidencias.Where(i => i.Inci_EstadoActual == 3 || i.Inci_EstadoActual == 4 || i.Inci_EstadoActual == 5 || i.Inci_EstadoActual == 6).DefaultIfEmpty()
                                       where u.Usua_Estado == true
                                       && (!usRoId.HasValue || u.UsRo_Id == usRoId)
-                                      select new
+                                      group new { u, pg, ur, i } by new
                                       {
                                           u.Usua_Id,
-                                          NombreCompleto = $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}",
-                                          NumeroDocumento = pg.PeGe_DocumentoIdentidad,
-                                          Rol = ur.UsRo_Nombre,
-                                          PromedioEvaluacion = u.Usua_PromedioEvaluacion,
-                                          NivelRol = ur.UsRo_Nivel
-                                      }).ToListAsync();
+                                          pg.PeGe_PrimerNombre,
+                                          pg.PeGe_SegundoNombre,
+                                          pg.PeGe_PrimerApellido,
+                                          pg.PeGe_SegundoApellido,
+                                          pg.PeGe_DocumentoIdentidad,
+                                          ur.UsRo_Nombre,
+                                          ur.UsRo_Nivel,
+                                          u.Usua_PromedioEvaluacion
+                                      } into g
+                                      select new
+                                      {
+                                          g.Key.Usua_Id,
+                                          NombreCompleto = $"{g.Key.PeGe_PrimerNombre} {g.Key.PeGe_SegundoNombre ?? string.Empty} {g.Key.PeGe_PrimerApellido} {g.Key.PeGe_SegundoApellido ?? string.Empty}",
+                                          NumeroDocumento = g.Key.PeGe_DocumentoIdentidad,
+                                          Rol = g.Key.UsRo_Nombre,
+                                          PromedioEvaluacion = g.Key.Usua_PromedioEvaluacion,
+                                          NivelRol = g.Key.UsRo_Nivel,
+                                          IncidenciasActivas = g.Count(i => i.i != null) // Conteo de incidencias activas
+                                      }).OrderByDescending(u => u.IncidenciasActivas)
+                      .ToListAsync();
 
                 if (usuarios.Any())
                 {
