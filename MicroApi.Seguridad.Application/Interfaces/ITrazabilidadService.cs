@@ -1,5 +1,6 @@
 ﻿using MicroApi.Seguridad.Domain.DTOs;
 using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
+using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace MicroApi.Seguridad.Application.Interfaces
     {
         Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad);
         Task<RespuestaGeneral> GenerarDiagnosticoAsync(GenerarDiagnosticoDTO dto);
+        Task<RespuestaGeneral> ReAsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
     }
 }

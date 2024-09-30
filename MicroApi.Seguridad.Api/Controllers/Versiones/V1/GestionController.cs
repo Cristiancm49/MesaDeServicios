@@ -41,6 +41,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
+        [HttpGet("consultar-Prioridades")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarTipoPrioridades()
+        {
+            var respuesta = await incidenciaService.ConsultarTipoPrioridadesAsync();
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
         [HttpPost("cambiarPrioridad-Incidencia")]
         public async Task<ActionResult<RespuestaGeneral>> CambiarPrioridad([FromBody] CambiarPrioridadDTO dto)
         {

@@ -17,6 +17,7 @@ namespace MicroApi.Seguridad.Domain.Interfaces
         Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto);
         Task<RespuestaGeneral> ConsultarIncidenciasRegistradasAsync();
         Task<RespuestaGeneral> RechazarIncidenciaAsync(RechazarIncidenciaDTO dto);
+        Task<RespuestaGeneral> ConsultarTipoPrioridadesAsync();
         Task<RespuestaGeneral> CambiarPrioridadAsync(CambiarPrioridadDTO dto);
         Task<RespuestaGeneral> ConsultarRolesUsuariosAsync();
         Task<RespuestaGeneral> ConsultarUsuariosAsync(int? usRoId = null);

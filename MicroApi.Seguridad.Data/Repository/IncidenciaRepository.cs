@@ -19,6 +19,7 @@ namespace MicroApi.Seguridad.Data.Repository
         {
             this.modelContext = modelContext;
         }
+
         public async Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona)
         {
             var respuesta = new RespuestaGeneral();
@@ -324,6 +325,47 @@ namespace MicroApi.Seguridad.Data.Repository
             {
                 respuesta.Status = "Error";
                 respuesta.Answer = $"Error insertando la incidencia: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> ConsultarTipoPrioridadesAsync()
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var prioridades = await (from pr in modelContext.IncidenciasPrioridad
+                                           select new
+                                           {
+                                               pr.InPr_Id,
+                                               pr.InPr_Nombre
+                                           }).ToListAsync();
+
+                if (prioridades.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = prioridades; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron prioridades.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando las prioridades: {ex.Message}";
                 respuesta.StatusCode = 500; // Código de error interno del servidor
                 respuesta.Errors.Add(ex.Message);
                 respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
