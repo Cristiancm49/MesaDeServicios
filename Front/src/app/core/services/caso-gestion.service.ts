@@ -15,10 +15,10 @@ import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 })
 export class CasoGestion {
   private selectincidencia = 'https://localhost:44346/api/Incidencia/Gestion/consultar-IncidenciasResgistradas';
-  private selectpersonal = 'https://localhost:44346/api/v5/GestionIncidencia/UsuariosConIncidenciasAsignadas';
-  private insertarasignacion = 'https://localhost:44346/api/v5/GestionIncidencia';
-  private selectroles = 'https://localhost:44346/api/v2/Roles/SelectRolesUsuario';
-  private rechazar = 'https://localhost:44346/api/v5/GestionIncidencia';
+  private selectpersonal = 'https://localhost:44346/api/Incidencia/Gestion/consultar-usuario';
+  private insertarasignacion = 'https://localhost:44346/api/Incidencia/Gestion';
+  private selectroles = 'https://localhost:44346/api/Incidencia/Gestion/consultar-rolesUsuarios';
+  private rechazar = 'https://localhost:44346/api/Incidencia/Gestion';
   private prioridad = 'https://localhost:44346/api/v5/GestionIncidencia/SelectPrioridad';
   private cambioprioridad = 'https://localhost:44346/api/v5/GestionIncidencia';
 
@@ -29,13 +29,13 @@ export class CasoGestion {
     return this.http.get<ApiResponse<ViewIncidencia>>(`${this.selectincidencia}`);
   }
 
-  mostrarpersonal(id_Rol: number): Observable<ViewPersonalAsignacion[]> {
-    return this.http.get<ViewPersonalAsignacion[]>(`${this.selectpersonal}?id_Rol=${id_Rol}`);
+  mostrarpersonal(id_Rol: number): Observable<ApiResponse<ViewPersonalAsignacion>> {
+    return this.http.get<ApiResponse<ViewPersonalAsignacion>>(`${this.selectpersonal}?usRoId=${id_Rol}`);
   }
 
 
   insertasignacion(asignacion: InsertAsignacion): Observable<HttpResponse<any>> {
-    const url = `${this.insertarasignacion}/AsignarUsuario`;
+    const url = `${this.insertarasignacion}/asignar-Incidencia`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post(url, asignacion, { 
@@ -45,13 +45,13 @@ export class CasoGestion {
     });
   }
 
-  getRoles(): Observable<ViewRoles[]> {
-    return this.http.get<ViewRoles[]>(`${this.selectroles}`);
+  getRoles(): Observable<ApiResponse<ViewRoles>> {
+    return this.http.get<ApiResponse<ViewRoles>>(`${this.selectroles}`);
   }
 
 
   rechazarinciden(rechazo: RechazarIncidencia): Observable<HttpResponse<any>> {
-    const url = `${this.rechazar}/RechazarIncidencia`;
+    const url = `${this.rechazar}/rechazar-Incidencia`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post(url, rechazo, { 
