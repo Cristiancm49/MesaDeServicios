@@ -31,5 +31,9 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await trazabilidadRepository.ReAsignarIncidenciaAsync(dto);
         }
+        public async Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad)
+        {
+            return await trazabilidadRepository.ConsultarEscalarInternoIncidenciaAsync(documentoIdentidad);
+        }
     }
 }

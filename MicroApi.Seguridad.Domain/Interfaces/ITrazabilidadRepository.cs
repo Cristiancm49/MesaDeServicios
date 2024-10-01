@@ -14,5 +14,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
         Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad);
         Task<RespuestaGeneral> GenerarDiagnosticoAsync(GenerarDiagnosticoDTO dto);
         Task<RespuestaGeneral> ReAsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
+        Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad);
     }
 }

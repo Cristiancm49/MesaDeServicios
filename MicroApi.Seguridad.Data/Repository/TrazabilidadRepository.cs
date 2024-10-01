@@ -205,5 +205,78 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             return respuesta;
         }
+
+        public async Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad)
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try { 
+                var rolNivel = await (from u in modelContext.Usuarios
+                                      join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
+                                      join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
+                                      join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
+                                      where pg.PeGe_DocumentoIdentidad == documentoIdentidad
+                                      select ur.UsRo_Nivel).FirstOrDefaultAsync();
+
+                var usuarios = await (from u in modelContext.Usuarios
+                                      join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
+                                      join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
+                                      join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
+                                      join i in modelContext.Incidencias on u.Usua_Id equals i.Inci_UsuarioAsignado into incidencias
+                                      from i in incidencias.Where(i => i.Inci_EstadoActual == 3 || i.Inci_EstadoActual == 4 || i.Inci_EstadoActual == 5 || i.Inci_EstadoActual == 6).DefaultIfEmpty()
+                                      where u.Usua_Estado == true
+                                      && (rolNivel == null || u.UsRo_Id > rolNivel)
+                                      group new { u, pg, ur, i } by new
+                                      {
+                                          u.Usua_Id,
+                                          pg.PeGe_PrimerNombre,
+                                          pg.PeGe_SegundoNombre,
+                                          pg.PeGe_PrimerApellido,
+                                          pg.PeGe_SegundoApellido,
+                                          pg.PeGe_DocumentoIdentidad,
+                                          ur.UsRo_Nombre,
+                                          ur.UsRo_Nivel,
+                                          u.Usua_PromedioEvaluacion
+                                      } into g
+                                      select new
+                                      {
+                                          g.Key.Usua_Id,
+                                          NombreCompleto = $"{g.Key.PeGe_PrimerNombre} {g.Key.PeGe_SegundoNombre ?? string.Empty} {g.Key.PeGe_PrimerApellido} {g.Key.PeGe_SegundoApellido ?? string.Empty}",
+                                          NumeroDocumento = g.Key.PeGe_DocumentoIdentidad,
+                                          Rol = g.Key.UsRo_Nombre,
+                                          PromedioEvaluacion = g.Key.Usua_PromedioEvaluacion,
+                                          NivelRol = g.Key.UsRo_Nivel,
+                                          IncidenciasActivas = g.Count(i => i.i != null)
+                                      }).OrderByDescending(u => u.IncidenciasActivas)
+                                      .ToListAsync();
+
+                if (usuarios.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = usuarios; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron roles superiores.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando las incidencias activas: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+
+            return respuesta;
+        }
     }
 }

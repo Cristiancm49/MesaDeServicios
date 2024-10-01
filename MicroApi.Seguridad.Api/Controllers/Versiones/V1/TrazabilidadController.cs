@@ -52,5 +52,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpGet("consultar-escalarInterno/{documentoIdentidad}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarEscalarInternoIncidencia(long documentoIdentidad)
+        {
+            var respuesta = await trazabilidadService.ConsultarEscalarInternoIncidenciaAsync(documentoIdentidad);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }
