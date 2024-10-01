@@ -63,5 +63,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpPost("escalarInterno-Incidencia")]
+        public async Task<ActionResult<RespuestaGeneral>> EscalarInternoIncidencia([FromBody] AsignarIncidenciaDTO dto)
+        {
+            var respuesta = await trazabilidadService.EscalarInternoIncidenciaAsync(dto);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }
