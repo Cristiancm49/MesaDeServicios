@@ -13,15 +13,15 @@ namespace MicroApi.Seguridad.Domain.Models.Trazabilidad
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int InTrEs_Id { get; set; }
+        public int TrEs_Id { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string InTrEs_Nombre { get; set; }
+        public string TrEs_Nombre { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string InTrEs_Descripcion { get; set; }
+        public string TrEs_Descripcion { get; set; }
 
         // Relación con IncidenciaTrazabilidad
         public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }

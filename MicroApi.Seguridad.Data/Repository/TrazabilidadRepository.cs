@@ -3,6 +3,7 @@ using MicroApi.Seguridad.Domain.DTOs;
 using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
 using MicroApi.Seguridad.Domain.Interfaces;
+using MicroApi.Seguridad.Domain.Models.Persona;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,7 @@ namespace MicroApi.Seguridad.Data.Repository
         {
             this.modelContext = modelContext;
         }
+
         public async Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad)
         {
             var respuesta = new RespuestaGeneral();
