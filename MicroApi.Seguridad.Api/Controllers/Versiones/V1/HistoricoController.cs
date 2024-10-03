@@ -30,5 +30,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpGet("consultar-MisIncidenciasCerradas/{documentoIdentidad}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisIncidenciaCerradas(long documentoIdentidad)
+        {
+            var respuesta = await historicoService.ConsultarMisIncidenciaCerradasAsync(documentoIdentidad);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }

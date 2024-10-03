@@ -11,5 +11,6 @@ namespace MicroApi.Seguridad.Application.Interfaces
     public interface IHistoricoService
     {
         Task<RespuestaGeneral> ConsultarHistoricoIncidenciasAsync();
+        Task<RespuestaGeneral> ConsultarMisIncidenciaCerradasAsync(long documentoIdentidad);
     }
 }
