@@ -59,7 +59,7 @@ namespace MicroApi.Seguridad.Data.Repository
 
                                          join estado in modelContext.IncidenciasTrazabilidadEstado on i.Inci_EstadoActual equals estado.TrEs_Id
 
-                                         where i.Inci_EstadoActual != 1 && i.Inci_EstadoActual != 2 && i.Inci_EstadoActual != 8 && i.Inci_EstadoActual != 9
+                                         where i.Inci_EstadoActual != 1 && i.Inci_EstadoActual != 2 && i.Inci_EstadoActual != 9
                                          && it.InTr_FechaGenerada == (from sub_it in modelContext.IncidenciasTrazabilidad
                                                                       where sub_it.Inci_Id == i.Inci_Id
                                                                       select sub_it.InTr_FechaGenerada).Max() // Subconsulta para obtener la fecha máxima
@@ -120,6 +120,8 @@ namespace MicroApi.Seguridad.Data.Repository
                                             from ite in iteGroup.DefaultIfEmpty()
                                             join u in modelContext.Usuarios on d.Usua_Id equals u.Usua_Id into userGroup
                                             from u in userGroup.DefaultIfEmpty()
+                                            join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id into rolGroup
+                                            from ur in rolGroup.DefaultIfEmpty()
                                             join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id } into contractGroup
                                             from c in contractGroup.DefaultIfEmpty()
                                             join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id into personGroup
@@ -142,7 +144,8 @@ namespace MicroApi.Seguridad.Data.Repository
                                                 Usua_Id = d != null ? (d.Usua_Id) : (int?)null, // Manejo de nulos
                                                 NombreCompletoUsuario = pg != null
                                             ? $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}"
-                                            : "No disponible - No aplica" // Manejo de nulos
+                                            : "No disponible - No aplica",
+                                                NombreRol = ur != null ? ur.UsRo_Nombre: "No disponible - No aplica"// Manejo de nulos
                                             }).ToListAsync();
 
 

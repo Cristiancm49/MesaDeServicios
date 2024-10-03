@@ -56,7 +56,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                                 join ca in modelContext.IncidenciasAreaTecnicaCategoria on at.CaAr_Id equals ca.CaAr_Id
                                                 join ip in modelContext.IncidenciasPrioridad on i.InPr_Id equals ip.InPr_Id
                                                 where ut.TrEs_Id != 1 // Excluir estado 1
-                                                && new[] { 3, 4, 5, 6 }.Contains(ut.TrEs_Id) // Filtrar por estados específicos
+                                                && new[] { 3, 4, 5, 6, 8 }.Contains(ut.TrEs_Id) // Filtrar por estados específicos
                                                 && pg_usuario.PeGe_DocumentoIdentidad == documentoIdentidad // Filtrar por documento de identidad
                                                 orderby i.Inci_FechaRegistro ascending
                                                 select new
@@ -71,9 +71,10 @@ namespace MicroApi.Seguridad.Data.Repository
                                                     AreaTecnica = at.ArTe_Nombre,
                                                     i.Inci_Descripcion,
                                                     i.Inci_FechaRegistro,
-                                                    NombreUsuario = pg_usuario.PeGe_PrimerNombre + " " + pg_usuario.PeGe_SegundoNombre + " " +
+                                                    ip.InPr_Nombre,
+                                                    UsuarioAsignado = pg_usuario.PeGe_PrimerNombre + " " + pg_usuario.PeGe_SegundoNombre + " " +
                                                                    pg_usuario.PeGe_PrimerApellido + " " + pg_usuario.PeGe_SegundoApellido,
-                                                    DocumentoUsuario = pg_usuario.PeGe_DocumentoIdentidad
+                                                    DocumentoUsuarioAsignado = pg_usuario.PeGe_DocumentoIdentidad
                                                 }).ToListAsync();
 
 

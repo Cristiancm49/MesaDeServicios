@@ -163,6 +163,9 @@ builder.Services.AddScoped<ITrazabilidadService, TrazabilidadService>();
 builder.Services.AddScoped<ISeguimientoRepository, SeguimientoRepository>();
 builder.Services.AddScoped<ISeguimientoService, SeguimientoService>();
 
+builder.Services.AddScoped<IHistoricoRepository, HistoricoRepository>();
+builder.Services.AddScoped<IHistoricoService, HistoricoService>();
+
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 
 var app = builder.Build();
