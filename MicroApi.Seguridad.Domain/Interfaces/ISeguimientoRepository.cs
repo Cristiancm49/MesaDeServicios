@@ -12,5 +12,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
     public interface ISeguimientoRepository
     {
         Task<RespuestaGeneral> ConsultarSeguimientoIncidenciaAsync();
+        Task<RespuestaGeneral> ConsultarTrazabilidadIncidenciaAsync(int incidenciaId);
     }
 }

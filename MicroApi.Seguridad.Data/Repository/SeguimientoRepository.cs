@@ -3,6 +3,7 @@ using MicroApi.Seguridad.Domain.DTOs;
 using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
 using MicroApi.Seguridad.Domain.Interfaces;
+using MicroApi.Seguridad.Domain.Models.Incidencia;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +82,74 @@ namespace MicroApi.Seguridad.Data.Repository
                 {
                     respuesta.Status = "Success";
                     respuesta.Data = incidencias; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron incidencias.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando las incidencias: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> ConsultarTrazabilidadIncidenciaAsync(int incidenciaId)
+        {
+            var respuesta = new RespuestaGeneral();
+            try
+            {
+                var trazabilidades = await (from it in modelContext.IncidenciasTrazabilidad
+                                            join d in modelContext.IncidenciasDiagnostico on it.Diag_Id equals d.Diag_Id into diagGroup
+                                            from d in diagGroup.DefaultIfEmpty()
+                                            join ts in modelContext.IncidenciasDiagnosticoTipoSolucion on d.TiSo_Id equals ts.TiSo_Id into tsGroup
+                                            from ts in tsGroup.DefaultIfEmpty()
+                                            join ite in modelContext.IncidenciasTrazabilidadEstado on it.TrEs_Id equals ite.TrEs_Id into iteGroup
+                                            from ite in iteGroup.DefaultIfEmpty()
+                                            join u in modelContext.Usuarios on d.Usua_Id equals u.Usua_Id into userGroup
+                                            from u in userGroup.DefaultIfEmpty()
+                                            join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id } into contractGroup
+                                            from c in contractGroup.DefaultIfEmpty()
+                                            join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id into personGroup
+                                            from pg in personGroup.DefaultIfEmpty()
+                                            where it.Inci_Id == incidenciaId
+                                            orderby it.InTr_FechaGenerada descending
+                                            select new
+                                            {
+                                                it.InTr_Id,
+                                                it.InTr_FechaGenerada,
+                                                Diag_Descripcion = d.Diag_DescripcionDiagnostico, // Manejo de nulos
+                                                Diag_Solucionado = d != null && d.Diag_Solucionado != null ? d.Diag_Solucionado : false, // Manejo de nulos
+                                                TiSo_Id = ts != null ? ts.TiSo_Id : (int?)null, // Manejo de nulos
+                                                TiSo_Nombre = ts != null ? ts.TiSo_Nombre : "No disponible - No aplica", // Manejo de nulos
+                                                TiSo_Descripcion = ts != null ? ts.TiSo_Descripcion : "No disponible - No aplica", // Manejo de nulos
+                                                Diag_Escalable = d != null && d.Diag_Escalable != null ? d.Diag_Escalable : false, // Manejo de nulos
+                                                TrEs_Id = ite.TrEs_Id, // Manejo de nulos
+                                                TrEs_Nombre =ite.TrEs_Nombre,
+                                                TrEs_Descripcion = ite.TrEs_Descripcion, // Manejo de nulos
+                                                Usua_Id = d != null ? (d.Usua_Id) : (int?)null, // Manejo de nulos
+                                                NombreCompletoUsuario = pg != null
+                                            ? $"{pg.PeGe_PrimerNombre} {pg.PeGe_SegundoNombre ?? string.Empty} {pg.PeGe_PrimerApellido} {pg.PeGe_SegundoApellido ?? string.Empty}"
+                                            : "No disponible - No aplica" // Manejo de nulos
+                                            }).ToListAsync();
+
+
+                if (trazabilidades.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = trazabilidades; // Guardar resultados en Data
                     respuesta.StatusCode = 200; // Código de éxito
                 }
                 else

@@ -12,5 +12,6 @@ namespace MicroApi.Seguridad.Application.Interfaces
     public interface ISeguimientoService
     {
         Task<RespuestaGeneral> ConsultarSeguimientoIncidenciaAsync();
+        Task<RespuestaGeneral> ConsultarTrazabilidadIncidenciaAsync(int incidenciaId);
     }
 }

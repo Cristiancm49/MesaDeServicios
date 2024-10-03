@@ -21,5 +21,10 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await seguimientoRepository.ConsultarSeguimientoIncidenciaAsync();
         }
+
+        public async Task<RespuestaGeneral> ConsultarTrazabilidadIncidenciaAsync(int incidenciaId)
+        {
+            return await seguimientoRepository.ConsultarTrazabilidadIncidenciaAsync(incidenciaId);
+        }
     }
 }
