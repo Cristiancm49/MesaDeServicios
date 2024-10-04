@@ -2,6 +2,7 @@
 using MicroApi.Seguridad.Domain.DTOs;
 using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using MicroApi.Seguridad.Domain.Interfaces;
+using MicroApi.Seguridad.Domain.Models.Incidencia;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -285,6 +286,54 @@ namespace MicroApi.Seguridad.Data.Repository
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
 
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> ConsultarEvaluacionIncidenciaAsync(int Inci_Id)
+        {
+            var respuesta = new RespuestaGeneral();
+            try
+            {
+                // Realizar la consulta a la tabla EncuestaCalidad
+                var evaluacion = await modelContext.EncuestasCalidad
+                    .Where(ec => ec.Inci_Id == Inci_Id) // Filtrar por Inci_Id
+                    .Select(ec => new
+                    {
+                        ec.Inci_Id,
+                        ec.EnCa_Preg1,
+                        ec.EnCa_Preg2,
+                        ec.EnCa_Preg3,
+                        ec.EnCa_Preg4,
+                        ec.EnCa_Preg5,
+                        ec.EnCa_PromedioEvaluacion,
+                        ec.EnCa_FechaRespuesta
+                    })
+                    .ToListAsync();
+                if (evaluacion.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = evaluacion; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontró registros de evaluacion.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando la evaluacion: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
             return respuesta;
         }
     }

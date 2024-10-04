@@ -13,5 +13,6 @@ namespace MicroApi.Seguridad.Application.Interfaces
         Task<RespuestaGeneral> ConsultarHistoricoIncidenciasAsync();
         Task<RespuestaGeneral> ConsultarMisIncidenciaCerradasAsync(long documentoIdentidad);
         Task<RespuestaGeneral> ConsultarMisSolicitudesAsync(long documentoSolicitante, bool estado);
+        Task<RespuestaGeneral> ConsultarEvaluacionIncidenciaAsync(int Inci_Id);
     }
 }

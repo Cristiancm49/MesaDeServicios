@@ -30,5 +30,10 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await historicoRepository.ConsultarMisSolicitudesAsync(documentoSolicitante, estado);
         }
+
+        public async Task<RespuestaGeneral> ConsultarEvaluacionIncidenciaAsync(int Inci_Id)
+        {
+            return await historicoRepository.ConsultarEvaluacionIncidenciaAsync(Inci_Id);
+        }
     }
 }

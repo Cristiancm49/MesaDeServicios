@@ -52,5 +52,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpGet("consultar-EvaluacionIncidencia/{Inci_Id}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarEvaluacionIncidencia(int Inci_Id)
+        {
+            var respuesta = await historicoService.ConsultarEvaluacionIncidenciaAsync(Inci_Id);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }
