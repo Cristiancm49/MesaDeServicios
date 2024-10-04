@@ -55,9 +55,10 @@ namespace MicroApi.Seguridad.Data.Repository
                                                 join at in modelContext.IncidenciasAreaTecnica on i.ArTe_Id equals at.ArTe_Id
                                                 join ca in modelContext.IncidenciasAreaTecnicaCategoria on at.CaAr_Id equals ca.CaAr_Id
                                                 join ip in modelContext.IncidenciasPrioridad on i.InPr_Id equals ip.InPr_Id
-                                                where ut.TrEs_Id != 1 // Excluir estado 1
-                                                && new[] { 3, 4, 5, 6, 8 }.Contains(ut.TrEs_Id) // Filtrar por estados específicos
-                                                && pg_usuario.PeGe_DocumentoIdentidad == documentoIdentidad // Filtrar por documento de identidad
+                                                where (i.Inci_EstadoActual == 3 || i.Inci_EstadoActual == 4 ||
+                                                   i.Inci_EstadoActual == 5 || i.Inci_EstadoActual == 6 ||
+                                                   i.Inci_EstadoActual == 8) // Filtrar por estados 3, 4, 5, 6, 8
+                                                    && pg_usuario.PeGe_DocumentoIdentidad == documentoIdentidad // Filtrar por documento de identidad
                                                 orderby i.Inci_FechaRegistro ascending
                                                 select new
                                                 {

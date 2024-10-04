@@ -41,5 +41,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpGet("consultar-MisSolicitudes/{documentoSolicitante}&{estado}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisSolicitudes(long documentoSolicitante, bool estado)
+        {
+            var respuesta = await historicoService.ConsultarMisSolicitudesAsync(documentoSolicitante, estado);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }
