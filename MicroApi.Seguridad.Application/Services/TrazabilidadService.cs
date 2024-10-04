@@ -41,5 +41,10 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await trazabilidadRepository.EscalarInternoIncidenciaAsync(dto);
         }
+        
+        public async Task<RespuestaGeneral> EscalarExternoIncidenciaAsync(EscalarExternoIncidenciaDTO dto)
+        {
+            return await trazabilidadRepository.EscalarExternoIncidenciaAsync(dto);
+        }
     }
 }

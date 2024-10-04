@@ -16,5 +16,6 @@ namespace MicroApi.Seguridad.Application.Interfaces
         Task<RespuestaGeneral> ReAsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
         Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad);
         Task<RespuestaGeneral> EscalarInternoIncidenciaAsync(AsignarIncidenciaDTO dto);
+        Task<RespuestaGeneral> EscalarExternoIncidenciaAsync(EscalarExternoIncidenciaDTO dto);
     }
 }
