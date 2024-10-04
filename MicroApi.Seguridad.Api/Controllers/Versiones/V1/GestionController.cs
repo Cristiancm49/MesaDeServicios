@@ -110,5 +110,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpPost("evaluar_cerrar-Incidencia")]
+        public async Task<ActionResult<RespuestaGeneral>> EvaluarCerrarIncidencia([FromBody] EvaluarCerrarIncidenciaDTO dto)
+        {
+            var respuesta = await incidenciaService.EvaluarCerrarIncidenciaAsync(dto);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }

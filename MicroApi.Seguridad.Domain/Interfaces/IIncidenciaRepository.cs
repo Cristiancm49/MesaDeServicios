@@ -23,5 +23,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
         Task<RespuestaGeneral> ConsultarUsuariosAsync(int? usRoId = null);
         Task<RespuestaGeneral> AsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
         Task<RespuestaGeneral> ResolverIncidenciaAsync(ResolverIncidenciaDTO dto);
+        Task<RespuestaGeneral> EvaluarCerrarIncidenciaAsync(EvaluarCerrarIncidenciaDTO dto);
     }
 }

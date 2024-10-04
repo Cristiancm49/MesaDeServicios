@@ -604,6 +604,57 @@ namespace MicroApi.Seguridad.Data.Repository
                 else
                 {
                     respuesta.Status = "Success";
+                    respuesta.Answer = "Incidencia resuelta exitosamente.";
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error resolviendo la incidencia: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> EvaluarCerrarIncidenciaAsync(EvaluarCerrarIncidenciaDTO dto)
+        {
+            var respuesta = new RespuestaGeneral();
+            var errorMessage = new SqlParameter("@ErrorMessage", SqlDbType.NVarChar, 255)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            try
+            {
+                var inciIdParam = new SqlParameter("@Inci_Id", dto.Inci_Id);
+                var preg1Param = new SqlParameter("@EnCa_Preg1", dto.EnCa_Preg1);
+                var preg2Param = new SqlParameter("@EnCa_Preg2", dto.EnCa_Preg2);
+                var preg3Param = new SqlParameter("@EnCa_Preg3", dto.EnCa_Preg3);
+                var preg4Param = new SqlParameter("@EnCa_Preg4", dto.EnCa_Preg4);
+                var preg5Param = new SqlParameter("@EnCa_Preg5", dto.EnCa_Preg5);
+
+                // Ejecutar el procedimiento almacenado
+                await modelContext.Database.ExecuteSqlRawAsync(
+                    "EXEC EvaluarCerrarIncidencia @Inci_Id, @EnCa_Preg1, @EnCa_Preg2, @EnCa_Preg3, @EnCa_Preg4, @EnCa_Preg5, @ErrorMessage OUTPUT",
+                    inciIdParam, preg1Param, preg2Param, preg3Param, preg4Param, preg5Param, errorMessage);
+
+                if (!string.IsNullOrEmpty(errorMessage.Value?.ToString()))
+                {
+                    respuesta.Status = "Error";
+                    respuesta.Answer = errorMessage.Value.ToString();
+                    respuesta.StatusCode = 400; // Código de error
+                    respuesta.Errors.Add(respuesta.Answer);
+                }
+                else
+                {
+                    respuesta.Status = "Success";
                     respuesta.Answer = "Incidencia cerrada exitosamente.";
                     respuesta.StatusCode = 200; // Código de éxito
                 }

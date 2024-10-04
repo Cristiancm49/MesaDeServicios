@@ -74,5 +74,9 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await incidenciaRepository.ResolverIncidenciaAsync(dto);
         }
+        public async Task<RespuestaGeneral> EvaluarCerrarIncidenciaAsync(EvaluarCerrarIncidenciaDTO dto)
+        {
+            return await incidenciaRepository.EvaluarCerrarIncidenciaAsync(dto);
+        }
     }
 }
