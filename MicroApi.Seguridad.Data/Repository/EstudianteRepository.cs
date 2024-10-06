@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace MicroApi.Seguridad.Data.Repository
 {
     public class EstudianteRepository : IEstudianteRepository
-    {
+    {/*
         private readonly ModelContext modelContext;
         private readonly BdConection bdConection;
 
@@ -36,6 +36,6 @@ namespace MicroApi.Seguridad.Data.Repository
             {
                 return new List<VsProgramahistoricoest>();
             }
-        }
+        }*/
     }
 }

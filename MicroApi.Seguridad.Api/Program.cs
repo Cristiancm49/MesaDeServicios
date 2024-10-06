@@ -139,7 +139,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     ClockSkew = TimeSpan.FromSeconds(1)
                 });
 
-builder.Services.AddDbContext<ModelContext>(options =>
+builder.Services.AddDbContext<ModelContextORACLE>(options =>
                 options.UseOracle(builder.Configuration.GetConnectionString("oracleConnection")));
 
 builder.Services.AddDbContext<ModelContextSQL>(options =>

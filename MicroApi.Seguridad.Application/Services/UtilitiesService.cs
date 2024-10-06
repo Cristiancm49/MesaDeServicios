@@ -12,17 +12,17 @@ using System.Threading.Tasks;
 namespace MicroApi.Seguridad.Application.Services
 {
     public class UtilitiesService : IUtilitiesService
-    {
+    {/*
         private readonly IUtilitiesRepository utilitiesRepository;
 
         public UtilitiesService(IUtilitiesRepository utilitiesRepository)
         {
             this.utilitiesRepository = utilitiesRepository;
         }
-
+        
         public bool InsertAuditoria(string writeModel, HttpContext httpContext)
         {
             return utilitiesRepository.InsertAuditoria(writeModel, httpContext);
-        }
+        }*/
     }
 }

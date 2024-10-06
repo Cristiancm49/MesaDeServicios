@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace MicroApi.Seguridad.Application.Services
 {
     public class EstudianteService : IEstudianteService
-    {
+    {/*
         private readonly IEstudianteRepository estudianteRepository;
 
         public EstudianteService(IEstudianteRepository estudianteRepository)
@@ -24,6 +24,6 @@ namespace MicroApi.Seguridad.Application.Services
         public Task<ActionResult<List<VsProgramahistoricoest>>> VsProgramaHistorico(string pg_Id)
         {
             return estudianteRepository.VsProgramaHistorico(pg_Id);
-        }
+        }*/
     }
 }
