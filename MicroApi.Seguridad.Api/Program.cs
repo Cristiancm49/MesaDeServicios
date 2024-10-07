@@ -139,7 +139,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     ClockSkew = TimeSpan.FromSeconds(1)
                 });
 
-builder.Services.AddDbContext<ModelContext>(options =>
+builder.Services.AddDbContext<ModelContextORACLE>(options =>
                 options.UseOracle(builder.Configuration.GetConnectionString("oracleConnection")));
 
 builder.Services.AddDbContext<ModelContextSQL>(options =>
@@ -159,6 +159,12 @@ builder.Services.AddScoped<IIncidenciaService, IncidenciaService>();
 
 builder.Services.AddScoped<ITrazabilidadRepository, TrazabilidadRepository>();
 builder.Services.AddScoped<ITrazabilidadService, TrazabilidadService>();
+
+builder.Services.AddScoped<ISeguimientoRepository, SeguimientoRepository>();
+builder.Services.AddScoped<ISeguimientoService, SeguimientoService>();
+
+builder.Services.AddScoped<IHistoricoRepository, HistoricoRepository>();
+builder.Services.AddScoped<IHistoricoService, HistoricoService>();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 

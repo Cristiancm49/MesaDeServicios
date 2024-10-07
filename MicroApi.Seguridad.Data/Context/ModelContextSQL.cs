@@ -67,6 +67,9 @@ namespace MicroApi.Seguridad.Data.Context
 
             // Configuración de relaciones para Incidencia
             modelBuilder.Entity<Incidencia>()
+                .HasKey(i => i.Inci_Id); // Clave primaria para Incidencia
+
+            modelBuilder.Entity<Incidencia>()
                 .HasOne(i => i.Solicitante)
                 .WithMany(c => c.Incidencia)
                 .HasForeignKey(i => new { i.Cont_IdSolicitante, i.PeGe_IdSolicitante, i.Unid_IdSolicitante });
@@ -85,6 +88,18 @@ namespace MicroApi.Seguridad.Data.Context
                 .HasOne(i => i.Prioridad)
                 .WithMany(p => p.Incidencia)
                 .HasForeignKey(i => i.InPr_Id);
+
+            modelBuilder.Entity<Incidencia>()
+                .Property(i => i.Inci_FechaRegistro)
+                .HasDefaultValueSql("(((sysdatetimeoffset() AT TIME ZONE 'UTC') AT TIME ZONE 'Central Standard Time'))");
+
+            modelBuilder.Entity<Incidencia>()
+                .Property(i => i.Inci_ValorTotal)
+                .HasDefaultValue(0);
+
+            modelBuilder.Entity<Incidencia>()
+                .Property(i => i.Inci_EstadoActual)
+                .HasDefaultValue(1);
 
             // Configuración de relaciones para IncidenciaAreaTecnica
             modelBuilder.Entity<IncidenciaAreaTecnica>()

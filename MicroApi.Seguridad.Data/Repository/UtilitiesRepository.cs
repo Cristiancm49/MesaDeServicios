@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace MicroApi.Seguridad.Data.Repository
 {
     public class UtilitiesRepository : IUtilitiesRepository
-    {
+    {/*
         private readonly ModelContext modelContext;
         Crypto crypto;
 
@@ -21,7 +21,7 @@ namespace MicroApi.Seguridad.Data.Repository
         {
             this.modelContext = modelContext;
         }
-
+        
         public RespuestaGeneral Descryp(string text)
         {
             crypto = new Crypto();
@@ -71,6 +71,6 @@ namespace MicroApi.Seguridad.Data.Repository
             var endpoint = context.Request.Path;
 
             return endpoint.ToString();
-        }
+        }*/
     }
 }

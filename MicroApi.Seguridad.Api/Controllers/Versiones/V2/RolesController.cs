@@ -14,11 +14,27 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly ModelContextSQL _context;
+        private readonly ModelContextORACLE _context;
 
-        public RolesController(ModelContextSQL context)
+        public RolesController(ModelContextORACLE context)
         {
             _context = context;
+        }
+
+        [HttpGet("Cotratos_Oracle")]
+        public async Task<IActionResult> GetAreaTecnicaNombres()
+        {
+            try
+            {
+                var result = await _context.contratos
+                                           .Select(a => a.CONT_ID)
+                                           .ToListAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al consultar la base de datos: {ex.Message}");
+            }
         }
 
         /* GET: api/usuarios/contratos-activos

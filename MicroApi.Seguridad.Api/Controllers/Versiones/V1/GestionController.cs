@@ -41,6 +41,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
+        [HttpGet("consultar-Prioridades")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarTipoPrioridades()
+        {
+            var respuesta = await incidenciaService.ConsultarTipoPrioridadesAsync();
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
         [HttpPost("cambiarPrioridad-Incidencia")]
         public async Task<ActionResult<RespuestaGeneral>> CambiarPrioridad([FromBody] CambiarPrioridadDTO dto)
         {
@@ -93,6 +104,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         public async Task<ActionResult<RespuestaGeneral>> ResolverIncidencia([FromBody] ResolverIncidenciaDTO dto)
         {
             var respuesta = await incidenciaService.ResolverIncidenciaAsync(dto);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
+        [HttpPost("evaluar_cerrar-Incidencia")]
+        public async Task<ActionResult<RespuestaGeneral>> EvaluarCerrarIncidencia([FromBody] EvaluarCerrarIncidenciaDTO dto)
+        {
+            var respuesta = await incidenciaService.EvaluarCerrarIncidenciaAsync(dto);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);

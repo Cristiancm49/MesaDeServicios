@@ -10,6 +10,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
 {
     public interface IEstudianteRepository
     {
-        Task<ActionResult<List<VsProgramahistoricoest>>> VsProgramaHistorico(string pg_Id);
+   //     Task<ActionResult<List<VsProgramahistoricoest>>> VsProgramaHistorico(string pg_Id);
     }
 }

@@ -45,6 +45,11 @@ namespace MicroApi.Seguridad.Application.Services
             return await incidenciaRepository.RechazarIncidenciaAsync(dto);
         }
 
+        public async Task<RespuestaGeneral> ConsultarTipoPrioridadesAsync()
+        {
+            return await incidenciaRepository.ConsultarTipoPrioridadesAsync();
+        }
+
         public async Task<RespuestaGeneral> CambiarPrioridadAsync(CambiarPrioridadDTO dto)
         {
             return await incidenciaRepository.CambiarPrioridadAsync(dto);
@@ -68,6 +73,10 @@ namespace MicroApi.Seguridad.Application.Services
         public async Task<RespuestaGeneral> ResolverIncidenciaAsync(ResolverIncidenciaDTO dto)
         {
             return await incidenciaRepository.ResolverIncidenciaAsync(dto);
+        }
+        public async Task<RespuestaGeneral> EvaluarCerrarIncidenciaAsync(EvaluarCerrarIncidenciaDTO dto)
+        {
+            return await incidenciaRepository.EvaluarCerrarIncidenciaAsync(dto);
         }
     }
 }

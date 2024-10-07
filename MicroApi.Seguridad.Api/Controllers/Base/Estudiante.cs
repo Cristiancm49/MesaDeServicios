@@ -36,7 +36,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Base
             connectionString = appSettings.Value.OracleConnection;
             _crypto = new Crypto();
         }
-
+        /*
         // POST api/<Estudiante>
         [HttpPost("xxxxxx")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -44,7 +44,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Base
         {
             utilitiesService.InsertAuditoria(writeHttpRequests.GetRequestBodyJson(pg_ID), HttpContext);
             return await estudianteService.VsProgramaHistorico(_crypto.Descrypt(pg_ID.Pg_ID).Answer);
-        }
+        }*/
 
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MicroApi.Seguridad.Application.Interfaces
 {
     public interface IUtilitiesService
-    {
-        bool InsertAuditoria(string writeModel, HttpContext httpContext);
+    {/*
+        bool InsertAuditoria(string writeModel, HttpContext httpContext);*/
     }
 }
