@@ -6,7 +6,7 @@
 /* Menú lateral (sidenav) */
 .sidenav {
   width: 300px; /* Ajusta al ancho del diseño anterior */
-  background-color: #077D35; /* Color de fondo del menú anterior */
+  background-color: #0B750E; /* Color de fondo del menú anterior */
   padding: 10px;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .mat-nav-list a.active {
-  background-color: #077D35;
+  background-color: #0B750E;
   color: white;
   border-radius: 50px; 
 }
