@@ -27,7 +27,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
             try
             {
                 var result = await _context.contratos
-                                           .Select(a => a.CONT_ID)
+                                           .Select(a => new {a.CONT_ID,a.PEGE_IDCONTRATISTA })
                                            .ToListAsync();
                 return Ok(result);
             }
