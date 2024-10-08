@@ -163,6 +163,53 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
+        public async Task<RespuestaGeneral> ConsultarTipoSolucionAsync()
+        {
+            var respuesta = new RespuestaGeneral();
+            var errorMessage = new SqlParameter("@ErrorMessage", SqlDbType.NVarChar, 255)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            try
+            {
+                var tiposSoluciones = await (from ts in modelContext.IncidenciasDiagnosticoTipoSolucion
+                                             select new
+                                             {
+                                                 ts.TiSo_Id,
+                                                 ts.TiSo_Nombre,
+                                                 ts.TiSo_Descripcion
+                                             }).ToListAsync();
+
+                if (tiposSoluciones.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = tiposSoluciones; // Guardar los resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron tipos de soluciones.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error Consultando los tipos de solución: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
+
         public async Task<RespuestaGeneral> ReAsignarIncidenciaAsync(AsignarIncidenciaDTO dto)
         {
             var respuesta = new RespuestaGeneral();

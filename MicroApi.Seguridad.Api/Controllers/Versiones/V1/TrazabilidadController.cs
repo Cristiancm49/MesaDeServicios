@@ -31,6 +31,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
+        [HttpGet("consultar-TiposDeSolucion")]
+        public async Task<ActionResult<RespuestaGeneral>> ConstarTipoSolucion()
+        {
+            var respuesta = await trazabilidadService.ConsultarTipoSolucionAsync();
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
         [HttpPost("generar-Diagnostico")]
         public async Task<ActionResult<RespuestaGeneral>> GenerarDiagnostico([FromBody] GenerarDiagnosticoDTO dto)
         {

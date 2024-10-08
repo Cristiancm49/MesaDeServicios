@@ -12,6 +12,7 @@ namespace MicroApi.Seguridad.Domain.Interfaces
     public interface ITrazabilidadRepository
     {
         Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad);
+        Task<RespuestaGeneral> ConsultarTipoSolucionAsync();
         Task<RespuestaGeneral> GenerarDiagnosticoAsync(GenerarDiagnosticoDTO dto);
         Task<RespuestaGeneral> ReAsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
         Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad);

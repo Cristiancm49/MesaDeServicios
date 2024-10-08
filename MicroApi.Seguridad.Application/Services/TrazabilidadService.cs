@@ -22,6 +22,11 @@ namespace MicroApi.Seguridad.Application.Services
             return await trazabilidadRepository.ConsultarMisIncidenciasActivasAsync(documentoIdentidad);
         }
 
+        public async Task<RespuestaGeneral> ConsultarTipoSolucionAsync()
+        {
+            return await trazabilidadRepository.ConsultarTipoSolucionAsync();
+        }
+
         public async Task<RespuestaGeneral> GenerarDiagnosticoAsync(GenerarDiagnosticoDTO dto)
         {
             return await trazabilidadRepository.GenerarDiagnosticoAsync(dto);
