@@ -27,8 +27,6 @@ namespace MicroApi.Seguridad.Data.Repository
             try
             {
                 var incidencias = await (from i in modelContext.Incidencias
-                                         join it in modelContext.IncidenciasTrazabilidad on i.Inci_Id equals it.Inci_Id into trazabilidadGroup
-                                         from it in trazabilidadGroup.DefaultIfEmpty() // LEFT JOIN
                                          join c in modelContext.Contratos on i.Cont_IdSolicitante equals c.Cont_Id into contratoGroup
                                          from c in contratoGroup.DefaultIfEmpty() // LEFT JOIN
                                          join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id into personaGroup
@@ -48,6 +46,11 @@ namespace MicroApi.Seguridad.Data.Repository
                                          join admin_pg in modelContext.PersonasGenerales on admin_c.PeGe_Id equals admin_pg.PeGe_Id into adminPersonaGroup
                                          from admin_pg in adminPersonaGroup.DefaultIfEmpty() // LEFT JOIN
                                          where i.Inci_EstadoActual == 9
+                                         let lastTrazabilidad = modelContext.IncidenciasTrazabilidad
+                                                                 .Where(it => it.Inci_Id == i.Inci_Id)
+                                                                 .OrderByDescending(it => it.InTr_FechaGenerada)
+                                                                 .Select(it => it.InTr_FechaGenerada)
+                                                                 .FirstOrDefault() // Obtener la última fecha de trazabilidad
                                          select new
                                          {
                                              i.Inci_Id,
@@ -69,11 +72,11 @@ namespace MicroApi.Seguridad.Data.Repository
                                                    admin_pg.PeGe_PrimerApellido + " " +
                                                    (admin_pg.PeGe_SegundoApellido ?? "")
                                                  : null, // Muestra "null" si no hay datos
+                                             InTr_FechaGenerada = lastTrazabilidad,  // Última fecha de trazabilidad
                                              i.Inci_EstadoActual
                                          })
-                                         .GroupBy(x => x.Inci_Id) // Agrupar por Inci_Id
-                                         .Select(g => g.FirstOrDefault()) // Seleccionar el primer elemento de cada grupo
-                                         .ToListAsync();
+                         .ToListAsync();
+
                 if (incidencias.Any())
                 {
                     respuesta.Status = "Success";
