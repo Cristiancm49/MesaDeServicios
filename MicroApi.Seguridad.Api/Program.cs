@@ -151,8 +151,8 @@ builder.Services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 
-builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
-builder.Services.AddScoped<IUnidadService, UnidadService>();
+builder.Services.AddScoped<IOracleRepository, OracleRepository>();
+builder.Services.AddScoped<IOracleService, OracleService>();
 
 builder.Services.AddScoped<IIncidenciaRepository, IncidenciaRepository>();
 builder.Services.AddScoped<IIncidenciaService, IncidenciaService>();
