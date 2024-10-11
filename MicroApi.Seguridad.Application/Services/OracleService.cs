@@ -18,9 +18,9 @@ namespace MicroApi.Seguridad.Application.Services
             this.oracleRepository = oracleRepository;
         }
 
-        public async Task<RespuestaGeneral> ConsultarPersonaGeneralAsync(string documentoIdentidad)
+        public async Task<RespuestaGeneral> ConsultarContratosActivosAsync(string documentoIdentidad)
         {
-            return await oracleRepository.ConsultarPersonaGeneralAsync(documentoIdentidad);
+            return await oracleRepository.ConsultarContratosActivosAsync(documentoIdentidad);
         }
     }
 }

@@ -9,6 +9,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
 {
     public interface IOracleRepository
     {
-        Task<RespuestaGeneral> ConsultarPersonaGeneralAsync(string documentoIdentidad);
+        Task<RespuestaGeneral> ConsultarContratosActivosAsync(string documentoIdentidad);
     }
 }

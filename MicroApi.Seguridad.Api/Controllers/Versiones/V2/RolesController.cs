@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MicroApi.Seguridad.Data.Context;
 using MicroApi.Seguridad.Domain.DTOs;
 using Microsoft.Data.SqlClient;
+using MicroApi.Seguridad.Application.Interfaces;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
 {
@@ -14,27 +15,22 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly ModelContextORACLE _context;
+        private readonly IOracleService oracleService;
 
-        public RolesController(ModelContextORACLE context)
+        public RolesController(IOracleService oracleService)
         {
-            _context = context;
+            this.oracleService = oracleService;
         }
-
+        
         [HttpGet("Cotratos_Oracle")]
-        public async Task<IActionResult> GetAreaTecnicaNombres()
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarContratosActivos(string documentoIdentidad)
         {
-            try
+            var respuesta = await oracleService.ConsultarContratosActivosAsync(documentoIdentidad);
+            if (respuesta.Status == "NotFound")
             {
-                var result = await _context.contratos
-                                           .Select(a => a.CONT_ID)
-                                           .ToListAsync();
-                return Ok(result);
+                return NotFound(respuesta.Answer);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al consultar la base de datos: {ex.Message}");
-            }
+            return Ok(respuesta);
         }
 
         /* GET: api/usuarios/contratos-activos
