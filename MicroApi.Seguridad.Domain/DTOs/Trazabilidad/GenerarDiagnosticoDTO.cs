@@ -9,7 +9,7 @@ namespace MicroApi.Seguridad.Domain.DTOs.Trazabilidad
     public class GenerarDiagnosticoDTO
     {
         public int Inci_Id { get; set; }
-        public long DocumentoUsuario { get; set; }
+        public int IdContratoUsuario { get; set; }
         public string Diag_DescripcionDiagnostico { get; set; }
         public bool Diag_Solucionado { get; set; }
         public int? TiSo_Id { get; set; }

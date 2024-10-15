@@ -18,7 +18,7 @@ namespace MicroApi.Seguridad.Data.Repository
         }
 
         // Método para consultar una persona por documento de identidad
-        public async Task<RespuestaGeneral> ConsultarContratosActivosAsync(string documentoIdentidad)
+        public async Task<RespuestaGeneral> ConsultarContratosActivosAsync(string documentoIdentidad) //88213248
         {
             var respuesta = new RespuestaGeneral();
 
@@ -35,10 +35,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                       {
                                           pg.PeGe_Id,
                                           pg.PeGe_DocumentoIdentidad,
-                                          png.PeNG_PrimerNombre,
-                                          png.PeNG_SegundoNombre,
-                                          png.PeNG_PrimerApellido,
-                                          png.PeNG_SegundoApellido,
+                                          NombreCompleto = $"{png.PeNG_PrimerNombre} {png.PeNG_SegundoNombre ?? string.Empty} {png.PeNG_PrimerApellido} {png.PeNG_SegundoApellido ?? string.Empty}",
                                           un.Unid_Id,
                                           un.Unid_Nombre,
                                           un.Unid_Telefono,
@@ -48,7 +45,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                           c.Cont_Numero,
                                           tina.Tnom_Descripcion,
                                           c.Cont_FechaInicio,
-                                          Cont_FechaFina = c.Cont_FechaFin ?? null,
+                                          FechaFinContrato = c.Cont_FechaFin ?? null,
                                           c.Cont_EstadoContrato
                                       }).ToListAsync();
 

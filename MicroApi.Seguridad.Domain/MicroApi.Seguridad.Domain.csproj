@@ -15,9 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Usuario\**" />
-    <EmbeddedResource Remove="Models\Usuario\**" />
-    <None Remove="Models\Usuario\**" />
     <None Remove="DTOs\Usuario\" />
   </ItemGroup>
 

@@ -21,17 +21,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
         {
             this.oracleService = oracleService;
         }
-        
-        [HttpGet("Cotratos_Oracle")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarContratosActivos(string documentoIdentidad)
-        {
-            var respuesta = await oracleService.ConsultarContratosActivosAsync(documentoIdentidad);
-            if (respuesta.Status == "NotFound")
-            {
-                return NotFound(respuesta.Answer);
-            }
-            return Ok(respuesta);
-        }
 
         /* GET: api/usuarios/contratos-activos
         [HttpGet("PersonasConContratosActivos")]
@@ -155,4 +144,3 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
         }*/
     }
 }
-

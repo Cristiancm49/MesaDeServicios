@@ -15,9 +15,9 @@ namespace MicroApi.Seguridad.Application.Services
             this.incidenciaRepository = incidenciaRepository;
         }
 
-        public async Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona)
+        public async Task<RespuestaGeneral> ConsultarContratoAsync(int IdContrato)
         {
-            return await incidenciaRepository.ConsultarContratoAsync(documentoPersona);
+            return await incidenciaRepository.ConsultarContratoAsync(IdContrato);
         }
 
         public async Task<RespuestaGeneral> ConsultarCategoriaAreaTecnicaAsync()

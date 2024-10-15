@@ -21,14 +21,14 @@ namespace MicroApi.Seguridad.Application.Services
             return await historicoRepository.ConsultarHistoricoIncidenciasAsync();
         }
 
-        public async Task<RespuestaGeneral> ConsultarMisIncidenciaCerradasAsync(long documentoIdentidad)
+        public async Task<RespuestaGeneral> ConsultarMisIncidenciaCerradasAsync(int IdContrato)
         {
-            return await historicoRepository.ConsultarMisIncidenciaCerradasAsync(documentoIdentidad);
+            return await historicoRepository.ConsultarMisIncidenciaCerradasAsync(IdContrato);
         }
 
-        public async Task<RespuestaGeneral> ConsultarMisSolicitudesAsync(long documentoSolicitante, bool estado)
+        public async Task<RespuestaGeneral> ConsultarMisSolicitudesAsync(int IdContrato, bool estado)
         {
-            return await historicoRepository.ConsultarMisSolicitudesAsync(documentoSolicitante, estado);
+            return await historicoRepository.ConsultarMisSolicitudesAsync(IdContrato, estado);
         }
 
         public async Task<RespuestaGeneral> ConsultarEvaluacionIncidenciaAsync(int Inci_Id)

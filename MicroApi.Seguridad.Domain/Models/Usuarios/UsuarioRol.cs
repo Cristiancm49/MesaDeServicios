@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MicroApi.Seguridad.Domain.Models.Persona
+namespace MicroApi.Seguridad.Domain.Models.Usuarios
 {
     [Table("UsuarioRol")]
     public class UsuarioRol

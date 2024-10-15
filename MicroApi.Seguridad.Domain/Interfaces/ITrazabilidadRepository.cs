@@ -11,11 +11,11 @@ namespace MicroApi.Seguridad.Domain.Interfaces
 {
     public interface ITrazabilidadRepository
     {
-        Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad);
+        Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(int IdContrato);
         Task<RespuestaGeneral> ConsultarTipoSolucionAsync();
         Task<RespuestaGeneral> GenerarDiagnosticoAsync(GenerarDiagnosticoDTO dto);
         Task<RespuestaGeneral> ReAsignarIncidenciaAsync(AsignarIncidenciaDTO dto);
-        Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad);
+        Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(int IdContrato);
         Task<RespuestaGeneral> EscalarInternoIncidenciaAsync(AsignarIncidenciaDTO dto);
         Task<RespuestaGeneral> EscalarExternoIncidenciaAsync(EscalarExternoIncidenciaDTO dto);
     }

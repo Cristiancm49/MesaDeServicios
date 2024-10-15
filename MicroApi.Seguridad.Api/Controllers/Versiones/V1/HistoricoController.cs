@@ -31,10 +31,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
-        [HttpGet("consultar-MisIncidenciasCerradas/{documentoIdentidad}")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisIncidenciaCerradas(long documentoIdentidad)
+        [HttpGet("consultar-MisIncidenciasCerradas/{IdContrato}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisIncidenciaCerradas(int IdContrato)
         {
-            var respuesta = await historicoService.ConsultarMisIncidenciaCerradasAsync(documentoIdentidad);
+            var respuesta = await historicoService.ConsultarMisIncidenciaCerradasAsync(IdContrato);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);
@@ -42,10 +42,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
-        [HttpGet("consultar-MisSolicitudes/{documentoSolicitante}&{estado}")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisSolicitudes(long documentoSolicitante, bool estado)
+        [HttpGet("consultar-MisSolicitudes/{IdContrato}&{estado}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisSolicitudes(int IdContrato, bool estado)
         {
-            var respuesta = await historicoService.ConsultarMisSolicitudesAsync(documentoSolicitante, estado);
+            var respuesta = await historicoService.ConsultarMisSolicitudesAsync(IdContrato, estado);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);

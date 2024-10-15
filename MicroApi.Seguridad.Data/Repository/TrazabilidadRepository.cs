@@ -3,6 +3,7 @@ using MicroApi.Seguridad.Domain.DTOs;
 using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using MicroApi.Seguridad.Domain.DTOs.Trazabilidad;
 using MicroApi.Seguridad.Domain.Interfaces;
+using MicroApi.Seguridad.Domain.Models.Oracle;
 using MicroApi.Seguridad.Domain.Models.Persona;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace MicroApi.Seguridad.Data.Repository
             this.modelContext = modelContext;
         }
 
-        public async Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad)
+        public async Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(int IdContrato)
         {
             var respuesta = new RespuestaGeneral();
 
@@ -47,35 +48,24 @@ namespace MicroApi.Seguridad.Data.Repository
                                                 join ut in ultimaTrazabilidad on i.Inci_Id equals ut.Inci_Id
                                                 join d in modelContext.IncidenciasDiagnostico on ut.Diag_Id equals d.Diag_Id
                                                 join u in modelContext.Usuarios on d.Usua_Id equals u.Usua_Id
-                                                join c_usuario in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id } equals new { c_usuario.Cont_Id, c_usuario.PeGe_Id }
-                                                join pg_usuario in modelContext.PersonasGenerales on c_usuario.PeGe_Id equals pg_usuario.PeGe_Id
-                                                join c_solicitante in modelContext.Contratos on i.Cont_IdSolicitante equals c_solicitante.Cont_Id
-                                                join pg_solicitante in modelContext.PersonasGenerales on c_solicitante.PeGe_Id equals pg_solicitante.PeGe_Id
-                                                join un_solicitante in modelContext.Unidades on c_solicitante.Unid_Id equals un_solicitante.Unid_Id
                                                 join at in modelContext.IncidenciasAreaTecnica on i.ArTe_Id equals at.ArTe_Id
                                                 join ca in modelContext.IncidenciasAreaTecnicaCategoria on at.CaAr_Id equals ca.CaAr_Id
                                                 join ip in modelContext.IncidenciasPrioridad on i.InPr_Id equals ip.InPr_Id
                                                 where (i.Inci_EstadoActual == 3 || i.Inci_EstadoActual == 4 ||
                                                    i.Inci_EstadoActual == 5 || i.Inci_EstadoActual == 6 ||
                                                    i.Inci_EstadoActual == 8) // Filtrar por estados 3, 4, 5, 6, 8
-                                                    && pg_usuario.PeGe_DocumentoIdentidad == documentoIdentidad // Filtrar por documento de identidad
+                                                    && u.Cont_Id == IdContrato // Filtrar por documento de identidad
                                                 orderby i.Inci_FechaRegistro ascending
                                                 select new
                                                 {
                                                     i.Inci_Id,
-                                                    NombreSolicitante = pg_solicitante.PeGe_PrimerNombre + " " + pg_solicitante.PeGe_SegundoNombre + " " +
-                                                                       pg_solicitante.PeGe_PrimerApellido + " " + pg_solicitante.PeGe_SegundoApellido,
-                                                    DocumentoSolicitante = pg_solicitante.PeGe_DocumentoIdentidad,
-                                                    CargoSolicitante = c_solicitante.Cont_Cargo,
-                                                    NombreDependencia = un_solicitante.Unid_Nombre,
+                                                    ContratoSolicitante = i.Cont_IdSolicitante,
                                                     NombreCategoria = ca.CaAr_Nombre,
                                                     AreaTecnica = at.ArTe_Nombre,
                                                     i.Inci_Descripcion,
                                                     i.Inci_FechaRegistro,
                                                     ip.InPr_Nombre,
-                                                    UsuarioAsignado = pg_usuario.PeGe_PrimerNombre + " " + pg_usuario.PeGe_SegundoNombre + " " +
-                                                                   pg_usuario.PeGe_PrimerApellido + " " + pg_usuario.PeGe_SegundoApellido,
-                                                    DocumentoUsuarioAsignado = pg_usuario.PeGe_DocumentoIdentidad
+                                                    ContratoUsuarioAsignado = u.Cont_Id
                                                 }).ToListAsync();
 
 
@@ -119,15 +109,15 @@ namespace MicroApi.Seguridad.Data.Repository
             try
             {
                 var inciIdParam = new SqlParameter("@Inci_Id", dto.Inci_Id);
-                var documentoUsuarioParam = new SqlParameter("@DocumentoUsuario", dto.DocumentoUsuario);
+                var ContratoUsuarioParam = new SqlParameter("@ContratoUsuario", dto.IdContratoUsuario);
                 var diagDescripcionParam = new SqlParameter("@Diag_DescripcionDiagnostico", dto.Diag_DescripcionDiagnostico);
                 var diagSolucionadoParam = new SqlParameter("@Diag_Solucionado", dto.Diag_Solucionado);
                 var tiSoIdParam = new SqlParameter("@TiSo_Id", (object)dto.TiSo_Id ?? DBNull.Value);
                 var diagEscalableParam = new SqlParameter("@Diag_Escalable", dto.Diag_Escalable);
 
-                await modelContext.Database.ExecuteSqlRawAsync("EXEC GenerarDiagnosticos @Inci_Id, @DocumentoUsuario, @Diag_DescripcionDiagnostico, @Diag_Solucionado, @TiSo_Id, @Diag_Escalable, @ErrorMessage OUTPUT",
+                await modelContext.Database.ExecuteSqlRawAsync("EXEC GenerarDiagnosticos @Inci_Id, @ContratoUsuario, @Diag_DescripcionDiagnostico, @Diag_Solucionado, @TiSo_Id, @Diag_Escalable, @ErrorMessage OUTPUT",
                     inciIdParam,
-                    documentoUsuarioParam,
+                    ContratoUsuarioParam,
                     diagDescripcionParam,
                     diagSolucionadoParam,
                     tiSoIdParam,
@@ -138,27 +128,27 @@ namespace MicroApi.Seguridad.Data.Repository
                 {
                     respuesta.Status = "Error";
                     respuesta.Answer = errorMessage.Value.ToString();
-                    respuesta.StatusCode = 400; // Código de error
+                    respuesta.StatusCode = 400;
                     respuesta.Errors.Add(respuesta.Answer);
                 }
                 else
                 {
                     respuesta.Status = "Success";
                     respuesta.Answer = "Diagnóstico generado exitosamente.";
-                    respuesta.StatusCode = 200; // Código de éxito
+                    respuesta.StatusCode = 200;
                 }
             }
             catch (Exception ex)
             {
                 respuesta.Status = "Error";
                 respuesta.Answer = $"Error generando el diagnóstico: {ex.Message}";
-                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.StatusCode = 500;
                 respuesta.Errors.Add(ex.Message);
-                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+                respuesta.LocalizedMessage = ex.InnerException?.Message;
             }
             finally
             {
-                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+                respuesta.RequestId = Guid.NewGuid().ToString();
             }
             return respuesta;
         }
@@ -166,10 +156,6 @@ namespace MicroApi.Seguridad.Data.Repository
         public async Task<RespuestaGeneral> ConsultarTipoSolucionAsync()
         {
             var respuesta = new RespuestaGeneral();
-            var errorMessage = new SqlParameter("@ErrorMessage", SqlDbType.NVarChar, 255)
-            {
-                Direction = ParameterDirection.Output
-            };
 
             try
             {
@@ -257,34 +243,27 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
-        public async Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad)
+        public async Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(int IdContrato)
         {
             var respuesta = new RespuestaGeneral();
 
             try { 
                 var rolNivel = await (from u in modelContext.Usuarios
-                                      join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
-                                      join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
                                       join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
-                                      where pg.PeGe_DocumentoIdentidad == documentoIdentidad
-                                      select ur.UsRo_Nivel).FirstOrDefaultAsync();
+                                      where u.Cont_Id == IdContrato
+                                      select ur.UsRo_Nivel)
+                                      .FirstOrDefaultAsync();
 
                 var usuarios = await (from u in modelContext.Usuarios
-                                      join c in modelContext.Contratos on new { u.Cont_Id, u.PeGe_Id, u.Unid_Id } equals new { c.Cont_Id, c.PeGe_Id, c.Unid_Id }
-                                      join pg in modelContext.PersonasGenerales on c.PeGe_Id equals pg.PeGe_Id
                                       join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id
                                       join i in modelContext.Incidencias on u.Usua_Id equals i.Inci_UsuarioAsignado into incidencias
                                       from i in incidencias.Where(i => i.Inci_EstadoActual == 3 || i.Inci_EstadoActual == 4 || i.Inci_EstadoActual == 5 || i.Inci_EstadoActual == 6).DefaultIfEmpty()
                                       where u.Usua_Estado == true
                                       && (rolNivel == null || u.UsRo_Id > rolNivel)
-                                      group new { u, pg, ur, i } by new
+                                      group new { u, ur, i } by new
                                       {
                                           u.Usua_Id,
-                                          pg.PeGe_PrimerNombre,
-                                          pg.PeGe_SegundoNombre,
-                                          pg.PeGe_PrimerApellido,
-                                          pg.PeGe_SegundoApellido,
-                                          pg.PeGe_DocumentoIdentidad,
+                                          u.Cont_Id,
                                           ur.UsRo_Nombre,
                                           ur.UsRo_Nivel,
                                           u.Usua_PromedioEvaluacion
@@ -292,8 +271,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                       select new
                                       {
                                           g.Key.Usua_Id,
-                                          NombreCompleto = $"{g.Key.PeGe_PrimerNombre} {g.Key.PeGe_SegundoNombre ?? string.Empty} {g.Key.PeGe_PrimerApellido} {g.Key.PeGe_SegundoApellido ?? string.Empty}",
-                                          NumeroDocumento = g.Key.PeGe_DocumentoIdentidad,
+                                          IdContrato = g.Key.Cont_Id,
                                           Rol = g.Key.UsRo_Nombre,
                                           PromedioEvaluacion = g.Key.Usua_PromedioEvaluacion,
                                           NivelRol = g.Key.UsRo_Nivel,

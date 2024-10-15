@@ -20,10 +20,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             this.trazabilidadService = trazabilidadService;
         }
 
-        [HttpGet("consultar-MisIncidenciasActivas/{documentoIdentidad}")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisIncidenciasActivas(long documentoIdentidad)
+        [HttpGet("consultar-MisIncidenciasActivas/{IdContrato}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarMisIncidenciasActivas(int IdContrato)
         {
-            var respuesta = await trazabilidadService.ConsultarMisIncidenciasActivasAsync(documentoIdentidad);
+            var respuesta = await trazabilidadService.ConsultarMisIncidenciasActivasAsync(IdContrato);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);
@@ -64,10 +64,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
-        [HttpGet("consultar-escalarInterno/{documentoIdentidad}")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarEscalarInternoIncidencia(long documentoIdentidad)
+        [HttpGet("consultar-escalarInterno/{IdContrato}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarEscalarInternoIncidencia(int IdContrato)
         {
-            var respuesta = await trazabilidadService.ConsultarEscalarInternoIncidenciaAsync(documentoIdentidad);
+            var respuesta = await trazabilidadService.ConsultarEscalarInternoIncidenciaAsync(IdContrato);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);

@@ -17,9 +17,9 @@ namespace MicroApi.Seguridad.Application.Services
             this.trazabilidadRepository = trazabilidadRepository;
         }
 
-        public async Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(long documentoIdentidad)
+        public async Task<RespuestaGeneral> ConsultarMisIncidenciasActivasAsync(int IdContrato)
         {
-            return await trazabilidadRepository.ConsultarMisIncidenciasActivasAsync(documentoIdentidad);
+            return await trazabilidadRepository.ConsultarMisIncidenciasActivasAsync(IdContrato);
         }
 
         public async Task<RespuestaGeneral> ConsultarTipoSolucionAsync()
@@ -37,9 +37,9 @@ namespace MicroApi.Seguridad.Application.Services
             return await trazabilidadRepository.ReAsignarIncidenciaAsync(dto);
         }
 
-        public async Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(long documentoIdentidad)
+        public async Task<RespuestaGeneral> ConsultarEscalarInternoIncidenciaAsync(int IdContrato)
         {
-            return await trazabilidadRepository.ConsultarEscalarInternoIncidenciaAsync(documentoIdentidad);
+            return await trazabilidadRepository.ConsultarEscalarInternoIncidenciaAsync(IdContrato);
         }
 
         public async Task<RespuestaGeneral> EscalarInternoIncidenciaAsync(AsignarIncidenciaDTO dto)

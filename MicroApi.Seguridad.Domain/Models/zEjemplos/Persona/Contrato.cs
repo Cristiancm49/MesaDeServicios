@@ -43,9 +43,5 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
 
         [ForeignKey("Unid_Id")]
         public virtual Unidad Unidad { get; set; }
-
-        // Relación con Usuario
-        public virtual ICollection<Usuario> Usuarios { get; set; }
-        public virtual ICollection<Incidencia.Incidencia> Incidencia { get; set; }
     }
 }
