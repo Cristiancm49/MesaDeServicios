@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using MicroApi.Seguridad.Domain.Models.Encuesta;
 using MicroApi.Seguridad.Domain.Models.Trazabilidad;
 using MicroApi.Seguridad.Domain.Models.Usuarios;
+using MicroApi.Seguridad.Domain.Models.Inventario;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencia
 {
@@ -55,5 +56,6 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
 
         public virtual EncuestaCalidad EncuestaCalidad { get; set; }
         public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
+        public virtual ICollection<HojaDeVida> HojaDeVidas { get; set; }
     }
 }

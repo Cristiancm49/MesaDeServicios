@@ -26,6 +26,8 @@ namespace MicroApi.Seguridad.Data.Context
         public DbSet<IncidenciaDiagnosticoTipoSolucion> IncidenciasDiagnosticoTipoSolucion { get; set; }
         public DbSet<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
         public DbSet<IncidenciaTrazabilidadEstado> IncidenciasTrazabilidadEstado { get; set; }
+        public DbSet<HojaDeVida> HojaDeVidas { get; set; }
+        public DbSet<HojaDeVidaTipoEvento> HojaDeVidaTipoEventos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -112,6 +114,22 @@ namespace MicroApi.Seguridad.Data.Context
                 .HasOne(it => it.TrazabilidadEstado)
                 .WithMany(te => te.IncidenciasTrazabilidad)
                 .HasForeignKey(it => it.TrEs_Id);
+
+            // Configuración de relaciones para HojaDeVida
+            modelBuilder.Entity<HojaDeVida>()
+                .HasOne(hv => hv.Usuario)
+                .WithMany(u => u.HojaDeVidas)
+                .HasForeignKey(hv => hv.Usua_Id);
+
+            modelBuilder.Entity<HojaDeVida>()
+                .HasOne(hv => hv.Incidencia)
+                .WithMany(i => i.HojaDeVidas)
+                .HasForeignKey(hv => hv.Inci_Id);
+
+            modelBuilder.Entity<HojaDeVida>()
+                .HasOne(hv => hv.HojaDeVidaTipoEvento)
+                .WithMany(te => te.HojaDeVidas)
+                .HasForeignKey(hv => hv.TiEv_Id);
         }
     }
 }

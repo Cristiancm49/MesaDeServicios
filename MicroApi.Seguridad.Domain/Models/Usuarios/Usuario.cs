@@ -37,5 +37,6 @@ namespace MicroApi.Seguridad.Domain.Models.Usuarios
 
         public virtual ICollection<Incidencia.Incidencia> Incidencia { get; set; }
         public virtual ICollection<IncidenciaDiagnostico> IncidenciasDiagnostico { get; set; }
+        public virtual ICollection<HojaDeVida> HojaDeVidas { get; set; }
     }
 }
