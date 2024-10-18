@@ -154,6 +154,10 @@ namespace MicroApi.Seguridad.Data.Repository
             {
                 Direction = System.Data.ParameterDirection.Output
             };
+            var inciId = new SqlParameter("@Inci_Id", System.Data.SqlDbType.Int)
+            {
+                Direction = System.Data.ParameterDirection.Output
+            };
 
             try
             {
@@ -163,13 +167,14 @@ namespace MicroApi.Seguridad.Data.Repository
                 var areaTecnicaParam = new SqlParameter("@AreaTecnica", dto.AreaTecnica);
                 var descripcionParam = new SqlParameter("@Descripcion", (object)dto.Descripcion ?? DBNull.Value);
 
-                await modelContext.Database.ExecuteSqlRawAsync("EXEC InsertarIncidencia @ContratoSolicitante, @NivelUnidadSolicitante, @ContratoAdmin, @AreaTecnica, @Descripcion, @ErrorMessage OUTPUT",
+                await modelContext.Database.ExecuteSqlRawAsync("EXEC InsertarIncidencia @ContratoSolicitante, @NivelUnidadSolicitante, @ContratoAdmin, @AreaTecnica, @Descripcion, @ErrorMessage OUTPUT, @Inci_Id OUTPUT",
                     ContratoSolicitanteParam,
                     ValorUnidadSolicitanteParam,
                     ContratoAdminParam,
                     areaTecnicaParam,
                     descripcionParam,
-                    errorMessage);
+                    errorMessage,
+                    inciId);
 
                 if (!string.IsNullOrEmpty(errorMessage.Value?.ToString()))
                 {
@@ -183,6 +188,7 @@ namespace MicroApi.Seguridad.Data.Repository
                     respuesta.Status = "Success";
                     respuesta.Answer = "Incidencia insertada exitosamente";
                     respuesta.StatusCode = 200;
+                    respuesta.Data = inciId.Value;
                 }
             }
             catch (Exception ex)
