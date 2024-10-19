@@ -8,8 +8,9 @@ namespace MicroApi.Seguridad.Domain.DTOs.Incidencia
 {
     public class InsertarIncidenciaDTO
     {
-        public long DocumentoSolicitante { get; set; }
-        public long? DocumentoAdmin { get; set; }
+        public int IdContratoSolicitante { get; set; }
+        public int ValorUnidadSolicitante { get; set; }
+        public int? IdContratoAdmin { get; set; }
         public int AreaTecnica { get; set; }
         public string Descripcion { get; set; }
     }

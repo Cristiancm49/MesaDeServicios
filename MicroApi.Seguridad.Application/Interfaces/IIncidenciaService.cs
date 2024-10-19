@@ -10,7 +10,7 @@ namespace MicroApi.Seguridad.Application.Interfaces
 {
     public interface IIncidenciaService
     {
-        Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona);
+        Task<RespuestaGeneral> ConsultarContratoAsync(int IdContrato);
         Task<RespuestaGeneral> ConsultarCategoriaAreaTecnicaAsync();
         Task<RespuestaGeneral> ConsultarAreaTecnicaAsync(int CategoriaId);
         Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto);

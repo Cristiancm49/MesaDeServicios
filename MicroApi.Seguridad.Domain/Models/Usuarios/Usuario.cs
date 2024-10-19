@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MicroApi.Seguridad.Domain.Models.Inventario;
 using MicroApi.Seguridad.Domain.Models.Diagnostico;
 
-namespace MicroApi.Seguridad.Domain.Models.Persona
+namespace MicroApi.Seguridad.Domain.Models.Usuarios
 {
     [Table("Usuario")]
     public class Usuario
@@ -17,14 +17,8 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Usua_Id { get; set; }
 
-        [Required] // Clave foránea de Contrato
+        [Required]
         public int Cont_Id { get; set; }
-
-        [Required] // Parte de la clave compuesta en Contrato
-        public int Unid_Id { get; set; }
-
-        [Required] // Parte de la clave compuesta en Contrato
-        public int PeGe_Id { get; set; }
 
         [Required]
         public int UsRo_Id { get; set; }
@@ -37,16 +31,12 @@ namespace MicroApi.Seguridad.Domain.Models.Persona
         [Required]
         public bool Usua_Estado { get; set; }
 
-
-        // Relación con Contrato (clave foránea compuesta)
-        [ForeignKey("Cont_Id, PeGe_Id, Unid_Id")]
-        public virtual Contrato Contrato { get; set; }
-
         // Relación con UsuarioRol
         [ForeignKey("UsRo_Id")]
         public virtual UsuarioRol UsuarioRol { get; set; }
 
         public virtual ICollection<Incidencia.Incidencia> Incidencia { get; set; }
         public virtual ICollection<IncidenciaDiagnostico> IncidenciasDiagnostico { get; set; }
+        public virtual ICollection<HojaDeVida> HojaDeVidas { get; set; }
     }
 }

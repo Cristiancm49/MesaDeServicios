@@ -10,7 +10,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
     [ApiController]
     public class UnidadController : ControllerBase
     {
-        private readonly IUnidadService unidadService;
+        /*private readonly IUnidadService unidadService;
 
         public UnidadController(IUnidadService unidadService)
         {
@@ -37,6 +37,6 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V2
                 return NotFound(respuesta.Answer); // Devuelve 404 con el mensaje de respuesta
             }
             return Ok(respuesta); // Devuelve 200 con la respuesta general
-        }
+        }*/
     }
 }

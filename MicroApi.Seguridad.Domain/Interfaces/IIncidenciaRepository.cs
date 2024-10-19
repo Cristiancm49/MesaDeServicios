@@ -11,7 +11,7 @@ namespace MicroApi.Seguridad.Domain.Interfaces
 {
     public interface IIncidenciaRepository
     {
-        Task<RespuestaGeneral> ConsultarContratoAsync(long documentoPersona);
+        Task<RespuestaGeneral> ConsultarContratoAsync(int IdContrato);
         Task<RespuestaGeneral> ConsultarCategoriaAreaTecnicaAsync();
         Task<RespuestaGeneral> ConsultarAreaTecnicaAsync(int CategoriaId);
         Task<RespuestaGeneral> InsertarIncidenciaAsync(InsertarIncidenciaDTO dto);

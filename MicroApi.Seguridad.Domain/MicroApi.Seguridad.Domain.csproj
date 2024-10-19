@@ -15,13 +15,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Usuario\**" />
-    <EmbeddedResource Remove="Models\Usuario\**" />
-    <None Remove="Models\Usuario\**" />
+    <None Remove="DTOs\Usuario\" />
+    <None Remove="Models\Inventario\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Usuario\" />
+    <Folder Include="Models\Inventario\" />
+  </ItemGroup>
 </Project>

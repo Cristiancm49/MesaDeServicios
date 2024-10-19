@@ -20,10 +20,10 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             this.incidenciaService = incidenciaService;
         }
 
-        [HttpGet("consultar-Contrato/{documentoPersona}")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarContrato(long documentoPersona)
+        [HttpGet("consultar-Contrato/{IdContrato}")]//Complemento a Oracle
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarContrato(int IdContrato)
         {
-            var respuesta = await incidenciaService.ConsultarContratoAsync(documentoPersona);
+            var respuesta = await incidenciaService.ConsultarContratoAsync(IdContrato);
             if (respuesta.Status == "NotFound")
             {
                 return NotFound(respuesta.Answer);

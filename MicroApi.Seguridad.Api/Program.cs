@@ -12,6 +12,9 @@ using Microsoft.OpenApi.Models;
 using System.Configuration;
 using System.Text;
 using Microsoft.AspNetCore.Cors;
+using MicroApi.Seguridad.Data.Conections;
+using MicroApi.Seguridad.Data.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -145,14 +148,18 @@ builder.Services.AddDbContext<ModelContextORACLE>(options =>
 builder.Services.AddDbContext<ModelContextSQL>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("sqlServerConnection")));
 
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("mongoConnection"));
+builder.Services.AddSingleton<MongoConnection>();
+
+
 builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
 builder.Services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
 
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 
-builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
-builder.Services.AddScoped<IUnidadService, UnidadService>();
+builder.Services.AddScoped<IOracleRepository, OracleRepository>();
+builder.Services.AddScoped<IOracleService, OracleService>();
 
 builder.Services.AddScoped<IIncidenciaRepository, IncidenciaRepository>();
 builder.Services.AddScoped<IIncidenciaService, IncidenciaService>();
@@ -165,6 +172,15 @@ builder.Services.AddScoped<ISeguimientoService, SeguimientoService>();
 
 builder.Services.AddScoped<IHistoricoRepository, HistoricoRepository>();
 builder.Services.AddScoped<IHistoricoService, HistoricoService>();
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+builder.Services.AddScoped<IInventarioRepository, InventarioRepository>();
+builder.Services.AddScoped<IInventarioService, InventarioService>();
+
+builder.Services.AddScoped<IEvidenciaRepository, EvidenciaRepository>();
+builder.Services.AddScoped<IEvidenciaService, EvidenciaService>();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 

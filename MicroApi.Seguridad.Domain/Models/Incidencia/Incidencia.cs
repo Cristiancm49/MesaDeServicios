@@ -1,5 +1,4 @@
-﻿using MicroApi.Seguridad.Domain.Models.Persona;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MicroApi.Seguridad.Domain.Models.Encuesta;
 using MicroApi.Seguridad.Domain.Models.Trazabilidad;
+using MicroApi.Seguridad.Domain.Models.Usuarios;
+using MicroApi.Seguridad.Domain.Models.Inventario;
 
 namespace MicroApi.Seguridad.Domain.Models.Incidencia
 {
@@ -21,12 +22,6 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
 
         [Required]
         public int Cont_IdSolicitante { get; set; }
-
-        [Required]
-        public int Unid_IdSolicitante { get; set; }
-
-        [Required]
-        public int PeGe_IdSolicitante { get; set; }
 
         [Required]
         public DateTime Inci_FechaRegistro { get; set; }
@@ -50,9 +45,6 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
         public int? Inci_UsuarioAsignado { get; set; }
 
         // Relaciones
-        [ForeignKey("Cont_IdSolicitante, PeGe_IdSolicitante, Unid_IdSolicitante")]
-        public virtual Contrato Solicitante { get; set; }
-
         [ForeignKey("Usua_IdAdminExc")]
         public virtual Usuario AdminExc { get; set; }
 
@@ -64,5 +56,6 @@ namespace MicroApi.Seguridad.Domain.Models.Incidencia
 
         public virtual EncuestaCalidad EncuestaCalidad { get; set; }
         public virtual ICollection<IncidenciaTrazabilidad> IncidenciasTrazabilidad { get; set; }
+        public virtual ICollection<HojaDeVida> HojaDeVidas { get; set; }
     }
 }

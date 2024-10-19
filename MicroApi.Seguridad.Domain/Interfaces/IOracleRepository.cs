@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.Interfaces
 {
-    public interface IUnidadRepository
+    public interface IOracleRepository
     {
-        Task<RespuestaGeneral> GetUnidadesAsync(); // Cambiar a RespuestaGeneral
-        Task<RespuestaGeneral> GetUnidadByIdAsync(int id); // Cambiar a RespuestaGeneral
+        Task<RespuestaGeneral> ConsultarContratosActivosAsync(string documentoIdentidad);
     }
 }
