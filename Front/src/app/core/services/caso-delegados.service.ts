@@ -4,22 +4,25 @@ import { Observable } from 'rxjs';
 import { ViewIncidenciaAsignada } from '../../interfaces/CasoDelegado/ViewIncidenciaAsignada';
 import { ViewTipoSoluciones } from '../../interfaces/CasoDelegado/ViewTipoSoluciones';
 import { InsertDiagnostico } from '../../interfaces/CasoDelegado/InsertDiagnostico';
+import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class Casodelegado{
-  private selectincidenciaasignada = 'https://localhost:44346/api/v5/AsignadasIncidencia/MisIncidenciasAsignadas';
+  private selectincidenciaasignada = 'https://localhost:44346/api/Incidencia/Trazabilidad/consultar-MisIncidenciasActivas';
   private TipoSolucion = 'https://localhost:44346/api/v5/DiagnosticosIncidencia/TipoSolucionDiagnosticos';
   private Diagnostic = 'https://localhost:44346/api/v5/DiagnosticosIncidencia';
 
   constructor(private http: HttpClient) { }
 
 
-  selectIncidenciaasignada(documentoIdentidad: number): Observable<ViewIncidenciaAsignada[]> {
-    return this.http.get<ViewIncidenciaAsignada[]>(`${this.selectincidenciaasignada}?documentoIdentidad=${documentoIdentidad}`);
+  selectIncidenciaasignada(documentoIdentidad: number): Observable<ApiResponse<ViewIncidenciaAsignada>> {
+    return this.http.get<ApiResponse<ViewIncidenciaAsignada>>(`${this.selectincidenciaasignada}/${documentoIdentidad}`);
   }
+
+
 
   TipoS(): Observable<ViewTipoSoluciones[]> {
     return this.http.get<ViewTipoSoluciones[]>(`${this.TipoSolucion}`); 

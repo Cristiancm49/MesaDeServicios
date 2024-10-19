@@ -7,7 +7,7 @@
           <select id="Prioridad" name="Prioridad" (change)="onPrioridadSelected($event)">
             <option value="">Seleccionar</option>
             @for (prio of vistraprioridad; track prio.inPr_Id) {
-              <option [value]="prio.inPr_Id">{{ prio.inPr_Tipo }}</option>
+              <option [value]="prio.inPr_Id">{{ prio.inPr_Nombre }}</option>
             }
           </select>
         </div>

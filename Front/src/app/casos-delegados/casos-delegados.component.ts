@@ -68,8 +68,8 @@ export class CasosDelegadosComponent {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
     this.casodelegado.selectIncidenciaasignada(Documento).subscribe({
-      next: (data) => {
-        this.vistaasignada = data;
+      next: (response) => {
+        this.vistaasignada = response.data || [];
         this.isLoading = false;
         console.log('Datos Incidencia asignada:', this.vistaasignada);
       },

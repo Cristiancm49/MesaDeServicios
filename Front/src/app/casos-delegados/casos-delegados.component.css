@@ -76,6 +76,15 @@
   vertical-align: middle;
 }
 
+.cases-table th:nth-child(8),
+  .cases-table td:nth-child(8) {
+    width: 20%; /* Columna "No." toma solo el 5% del ancho */
+  }
+.cases-table th:nth-child(2),
+  .cases-table td:nth-child(2) {
+    width: 20%; /* Columna "No." toma solo el 5% del ancho */
+  }
+
 .selected-row {
   background-color: #077D35;
   color: white;

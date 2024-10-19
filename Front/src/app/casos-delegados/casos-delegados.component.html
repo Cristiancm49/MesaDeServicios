@@ -15,12 +15,10 @@
               <th>Documento Identidad</th>
               <th>Cargo</th>
               <th>Dependencia</th>
-              <th>Teléfono Dependencia</th>
               <th>Categoría Técnica</th>
               <th>Área Técnica</th>
               <th>Descripción</th>
               <th>Fecha Registro</th>
-              <th>Admin Responsable</th>
               <th>Prioridad</th>
             </tr>
           </thead>
@@ -29,21 +27,19 @@
               [class.selected-row]="selectedRowIndexP === asignada.inci_Id"
               (click)="onRowSelectP(asignada.inci_Id, asignada)">
               <td>{{ asignada.inci_Id }}</td>
-              <td>{{ asignada.solicitante_NombreCompleto }}</td>
-              <td>{{ asignada.solicitante_DocumentoIdentidad }}</td>
-              <td>{{ asignada.cont_Cargo }}</td>
-              <td>{{ asignada.unid_Nombre }}</td>
-              <td>{{ asignada.unid_Telefono }}</td>
-              <td>{{ asignada.categoriaAreaTecnica_Nombre }}</td>
-              <td>{{ asignada.areaTecnica_Nombre }}</td>
+              <td>{{ asignada.nombreSolicitante }}</td>
+              <td>{{ asignada.documentoSolicitante }}</td>
+              <td>{{ asignada.cargoSolicitante }}</td>
+              <td>{{ asignada.nombreDependencia }}</td>
+              <td>{{ asignada.nombreCategoria }}</td>
+              <td>{{ asignada.areaTecnica }}</td>
               <td>{{ asignada.inci_Descripcion }}</td>
               <td>{{ asignada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
-              <td>{{ asignada.admin_NombreCompleto || 'Sin asignar' }}</td>
-              <td>{{ asignada.prioridad_Tipo }}</td>
+              <td>{{ asignada.inPr_Nombre }}</td>
             </tr>
           </tbody>
         </table>
-      </div>
+      </div>      
     </div>
     <div class="section-diagnostico">
       <h3 class="section-header">DIAGNÓSTICO</h3>

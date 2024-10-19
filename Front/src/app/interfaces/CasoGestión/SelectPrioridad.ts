@@ -1,6 +1,6 @@
 export interface SelectPrioridad{
 
     inPr_Id: number,
-    inPr_Tipo: string
+    inPr_Nombre: string
 
 }

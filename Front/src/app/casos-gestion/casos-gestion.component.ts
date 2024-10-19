@@ -72,7 +72,7 @@ export class CasosGestionComponent implements OnInit{
     
     this.casoGestion.insertIncidencia().subscribe({
       next: (response) => {
-        this.vistadatos = response.data || [];;
+        this.vistadatos = response.data || [];
         this.isLoading = false;
         console.log('Datos Incidencia:', this.vistadatos);
       },

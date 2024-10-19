@@ -100,8 +100,8 @@ export class ModalPrioridadComponent {
   loadPrioridades() {
     this.isLoading = true;
     this.casoGestion.getPrioridad().subscribe({
-      next: (data) => {
-        this.vistraprioridad = data;
+      next: (response) => {
+        this.vistraprioridad = response.data || [];
         this.isLoading = false;
         console.log('Good Prioridades:', this.vistraprioridad);
       },

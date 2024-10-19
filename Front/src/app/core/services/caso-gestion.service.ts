@@ -19,8 +19,8 @@ export class CasoGestion {
   private insertarasignacion = 'https://localhost:44346/api/Incidencia/Gestion';
   private selectroles = 'https://localhost:44346/api/Incidencia/Gestion/consultar-rolesUsuarios';
   private rechazar = 'https://localhost:44346/api/Incidencia/Gestion';
-  private prioridad = 'https://localhost:44346/api/v5/GestionIncidencia/SelectPrioridad';
-  private cambioprioridad = 'https://localhost:44346/api/v5/GestionIncidencia';
+  private prioridad = 'https://localhost:44346/api/Incidencia/Gestion/consultar-Prioridades ';
+  private cambioprioridad = 'https://localhost:44346/api/Incidencia/Gestion';
 
   constructor(private http: HttpClient) { }
 
@@ -61,13 +61,14 @@ export class CasoGestion {
     });
   }
 
-  getPrioridad(): Observable<SelectPrioridad[]> {
-    return this.http.get<SelectPrioridad[]>(`${this.prioridad}`);
+  getPrioridad(): Observable<ApiResponse<SelectPrioridad>> {
+    return this.http.get<ApiResponse<SelectPrioridad>>(`${this.prioridad}`);
   }
 
 
+
   cambiarprioridad(nuevapri: CambioPrioridad): Observable<HttpResponse<any>> {
-    const url = `${this.cambioprioridad}/CambioPrioridad`;
+    const url = `${this.cambioprioridad}/cambiarPrioridad-Incidencia`;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post(url, nuevapri, { 
