@@ -2,6 +2,7 @@
 using MicroApi.Seguridad.Domain.DTOs;
 using MicroApi.Seguridad.Domain.DTOs.Evidencias;
 using MicroApi.Seguridad.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace MicroApi.Seguridad.Application.Services
             this.evidenciaRepository = evidenciaRepository;
         }
 
-        public Task<RespuestaGeneral> InsertarEvidenciaAsync(InsertarEvidenciaDTO dto)
+        public Task<RespuestaGeneral> InsertarEvidenciaAsync(InsertarEvidenciaDTO dto, IFormFile soporte)
         {
-            return this.evidenciaRepository.InsertarEvidenciaAsync(dto);
+            return this.evidenciaRepository.InsertarEvidenciaAsync(dto, soporte);
         }
 
         public Task<RespuestaGeneral> ConsultarEvidenciasAsync(int inciId)
