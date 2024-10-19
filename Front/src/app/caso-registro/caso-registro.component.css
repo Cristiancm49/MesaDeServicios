@@ -84,6 +84,17 @@
   margin-bottom: 10px;
 }
 
+.input-group input[type="file"] {
+  padding: 10px;
+  font-size: 1em;
+}
+
+.input-group.short input[type="file"] {
+  width: 135%;
+  height: 100%;
+
+}
+
 
 .input-group.nombre input {
   padding: 10px;

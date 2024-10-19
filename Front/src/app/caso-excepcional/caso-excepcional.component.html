@@ -6,7 +6,7 @@
       <div class="form-group">
         <div class="input-group nombre2">
           <label for="nombre">Nombre del Solicitador:</label>
-          @for (Duser of DatosAdministrador; track Duser.numeroDocumento) {
+          @for (Duser of DatosAdministrador; track Duser.peGe_DocumentoIdentidad) {
           <input [value]="Duser.nombreCompleto" disabled>
           }
         </div>

@@ -12,7 +12,7 @@ import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 })
 export class CasoRegistroService {
   private apiUrl = 'https://localhost:44346/api/Incidencia/Insertar/consultar-AreaTecnica';
-  private apiDatosUsurio = 'https://localhost:44346/api/Incidencia/Insertar/consultar-Contrato';
+  private apiDatosUsurio = 'https://localhost:44346/api/v1/Oracle/Cotratos_Oracle';
   private apiCategorias ="https://localhost:44346/api/Incidencia/Insertar/consultar-CategoriaAreaTecnica"
   private apiInsertIncidencia = 'https://localhost:44346/api/Incidencia/Insertar/insertar-Incidencia';
 
@@ -23,7 +23,7 @@ export class CasoRegistroService {
   }
 
   getDatosUsuario(peGe_DocumentoIdentidad: number): Observable<ApiResponse<DatosUser>> {
-    return this.http.get<ApiResponse<DatosUser>>(`${this.apiDatosUsurio}/${peGe_DocumentoIdentidad}`);
+    return this.http.get<ApiResponse<DatosUser>>(`${this.apiDatosUsurio}?documentoIdentidad=${peGe_DocumentoIdentidad}`);
   }
 
   getDatosAdministrador(peGe_DocumentoIdentidad: number): Observable<ApiResponse<DatosUser>> {

@@ -97,11 +97,11 @@ export class CasoExcepcionalComponent implements OnInit{
   }
   
   getCargo(): string {
-    return this.DatosUsuario[0]?.cargo|| '';
+    return this.DatosUsuario[0]?.tnom_Descripcion|| '';
   }
   
   getDependencia(): string {
-    return this.DatosUsuario[0]?.nombreUnidad || '';
+    return this.DatosUsuario[0]?.unid_Nombre || '';
   }
 
   loadDatosUser(identificacion: number) {
@@ -184,7 +184,7 @@ onAreaTecnicaSelected(event: any) {
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.documentoSolicitante = this.DatosUsuario[0].numeroDocumento;
+      this.incidencia.documentoSolicitante = parseInt(this.DatosUsuario[0].peGe_DocumentoIdentidad, 10);
     }
 
     console.log('id_Incidencias:', this.incidencia.documentoSolicitante);
@@ -195,7 +195,7 @@ onAreaTecnicaSelected(event: any) {
     console.log('descripcion:', this.incidencia.descripcion);
 
     if (this.DatosAdministrador.length > 0) {
-      this.incidencia.documentoAdmin = this.DatosAdministrador[0].numeroDocumento;
+      this.incidencia.documentoAdmin = parseInt(this.DatosAdministrador[0].peGe_DocumentoIdentidad, 10);
     }
 
     

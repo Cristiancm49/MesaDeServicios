@@ -8,26 +8,26 @@
         <div class="form-group">
           <div class="input-group short">
             <label for="identificacion">Identificación:</label>
-            @for (Duser of DatosUsuario; track Duser.numeroDocumento) {
-            <input type="text" id="identificacion" name="identificacion" [value]="Duser.numeroDocumento" disabled>
+            @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+            <input type="text" id="identificacion" name="identificacion" [value]="Duser.peGe_DocumentoIdentidad" disabled>
             }
           </div>
           <div class="input-group nombre">
             <label for="nombre">Nombre del Solicitante:</label>
-            @for (Duser of DatosUsuario; track Duser.numeroDocumento) {
+            @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
             <input [value]="Duser.nombreCompleto" disabled>
             }
           </div>
           <div class="input-group short">
             <label for="cargo">Cargo:</label>
-            @for (Duser of DatosUsuario; track Duser.numeroDocumento) {
-            <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.cargo" disabled>
+            @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+            <input type="text" id="cargo" name="cargo" class="short" [value]="Duser.tnom_Descripcion" disabled>
             }
           </div>
           <div class="input-group short">
             <label for="dependencia">Dependencia:</label>
-            @for (Duser of DatosUsuario; track Duser.numeroDocumento) {
-            <input type="text" id="dependencia" name="dependencia" [value]="Duser.nombreUnidad" disabled>
+            @for (Duser of DatosUsuario; track Duser.peGe_DocumentoIdentidad) {
+            <input type="text" id="dependencia" name="dependencia" [value]="Duser.unid_Nombre" disabled>
             }
           </div>
         </div>
@@ -63,6 +63,10 @@
                   <option [ngValue]="area.arTe_Id">{{area.arTe_Nombre }}</option>
                   }
                 </select>
+              </div>
+              <div class="input-group short">
+                <label for="soporte">Cargar Soporte:</label>
+                <input type="file" id="soporte" name="soporte" accept="image/*" (change)="onFileSelected($event)">
               </div>
             </div>
           </div>

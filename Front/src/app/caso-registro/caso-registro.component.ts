@@ -74,7 +74,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     console.log('Requesting DatosUsuario...');
     this.casoRegistroService.getDatosUsuario(Documento).subscribe({
       next: (response) => {
-        this.DatosUsuario = response.data || [];  // Accede a 'data'
+        this.DatosUsuario = response.data || [];
         this.isLoading = false;
         console.log('Datos Usuario:', this.DatosUsuario);
       },
@@ -89,7 +89,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.casoRegistroService.getCategorias().subscribe({
       next: (response) => {
-        this.catego = response.data || [];  // Accede a 'data'
+        this.catego = response.data || [];  
         this.isLoading = false;
         console.log('Good Categorias:', this.catego);
       },
@@ -107,6 +107,15 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     this.areasTec = [];
     console.log('dato restablecido', this.incidencia.areaTecnica);
     this.loadAreasTec(this.selectedCategoriaId);
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      // Aquí puedes manejar el archivo seleccionado
+      console.log('Archivo seleccionado:', file.name);
+      // Implementa la lógica para subir el archivo si es necesario
+    }
   }
 
   cargarFechaHora() {
@@ -134,8 +143,9 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.documentoSolicitante = this.DatosUsuario[0].numeroDocumento;
+      this.incidencia.documentoSolicitante = parseInt(this.DatosUsuario[0].peGe_DocumentoIdentidad, 10);
     }
+    
 
     console.log('id_Incidencias:', this.incidencia.documentoSolicitante);
 
