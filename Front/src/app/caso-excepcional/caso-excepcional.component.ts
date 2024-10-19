@@ -33,8 +33,9 @@ export class CasoExcepcionalComponent implements OnInit{
 
 
   incidencia: Incidencia = {
-    documentoSolicitante: 0,
-    documentoAdmin: null,
+    idContratoSolicitante: 0,
+    valorUnidadSolicitante: 0,
+    idContratoAdmin: 0,
     areaTecnica: 0,
     descripcion: ""
   };
@@ -125,7 +126,7 @@ export class CasoExcepcionalComponent implements OnInit{
     console.log('Requesting DatosUsuario...');
     this.casoRegistroService.getDatosUsuario(Documento).subscribe({
       next: (response) => {
-        this.DatosAdministrador = response.data || [];  // Accede a 'data'
+        this.DatosAdministrador = response.data || [];
         this.isLoading = false;
         console.log('Datos Usuario:', this.DatosAdministrador);
       },
@@ -184,18 +185,18 @@ onAreaTecnicaSelected(event: any) {
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.documentoSolicitante = parseInt(this.DatosUsuario[0].peGe_DocumentoIdentidad, 10);
+      this.incidencia.idContratoSolicitante = this.DatosUsuario[0].peGe_Id;
+      this.incidencia.valorUnidadSolicitante = this.DatosUsuario[0].unid_Id;
     }
 
-    console.log('id_Incidencias:', this.incidencia.documentoSolicitante);
     console.log('Valores capturados:');
-    console.log('IdSolicitante:', this.incidencia.documentoSolicitante);
-    console.log('IdAdmin:', this.incidencia.documentoAdmin);
+    console.log('IdSolicitante:', this.incidencia.idContratoSolicitante);
+    console.log('IdAdmin:', this.incidencia.idContratoAdmin);
     console.log('areatecnica:', this.incidencia.areaTecnica);
     console.log('descripcion:', this.incidencia.descripcion);
 
     if (this.DatosAdministrador.length > 0) {
-      this.incidencia.documentoAdmin = parseInt(this.DatosAdministrador[0].peGe_DocumentoIdentidad, 10);
+      this.incidencia.idContratoAdmin = this.DatosAdministrador[0].cont_Id;
     }
 
     
@@ -222,10 +223,11 @@ onAreaTecnicaSelected(event: any) {
 
   private resetIncidencia() {
     this.incidencia = {
-      documentoSolicitante: 0,
-      documentoAdmin: 0,
+      idContratoSolicitante: 0,
+      valorUnidadSolicitante: 0,
+      idContratoAdmin: 0,
       areaTecnica: 0,
-      descripcion: ''
+      descripcion: ""
     };
     this.cargarFechaHora();
     this.selectedCategoriaId = 0;

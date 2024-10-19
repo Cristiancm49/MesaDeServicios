@@ -29,8 +29,9 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   intervalo: any;
 
   incidencia: Incidencia = {
-    documentoSolicitante: 0,
-    documentoAdmin: null,
+    idContratoSolicitante: 0,
+    valorUnidadSolicitante: 0,
+    idContratoAdmin: null,
     areaTecnica: 0,
     descripcion: ""
   };
@@ -143,15 +144,14 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.documentoSolicitante = parseInt(this.DatosUsuario[0].peGe_DocumentoIdentidad, 10);
+      this.incidencia.idContratoSolicitante = this.DatosUsuario[0].peGe_Id;
+      this.incidencia.valorUnidadSolicitante = parseInt(this.DatosUsuario[0].unid_Nivel, 10);
     }
     
-
-    console.log('id_Incidencias:', this.incidencia.documentoSolicitante);
-
     console.log('Valores capturados:');
-    console.log('IdSolicitante:', this.incidencia.documentoSolicitante);
-    console.log('IdAdmin:', this.incidencia.documentoAdmin);
+    console.log('IdSolicitante:', this.incidencia.idContratoSolicitante);
+    console.log('ValorUnidad:', this.incidencia.valorUnidadSolicitante);
+    console.log('IdAdmin:', this.incidencia.idContratoAdmin);
     console.log('areatecnica:', this.incidencia.areaTecnica);
     console.log('descripcion:', this.incidencia.descripcion);
     

@@ -1,6 +1,7 @@
 export interface Incidencia {
-  documentoSolicitante: number,
-  documentoAdmin: number | null,
+  idContratoSolicitante: number,
+  valorUnidadSolicitante: number,
+  idContratoAdmin: number | null,
   areaTecnica: number,
   descripcion: string
 }
