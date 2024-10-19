@@ -10,6 +10,7 @@ using Microsoft.Data.SqlClient;
 using MicroApi.Seguridad.Application.Interfaces;
 using MicroApi.Seguridad.Domain.DTOs.Incidencia;
 using MicroApi.Seguridad.Domain.DTOs.Evidencias;
+using MongoDB.Bson;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
@@ -25,14 +26,26 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         }
 
         [HttpPost("insertar-Evidencias")]
-        public async Task<ActionResult<RespuestaGeneral>> InsertarEvidencia([FromBody] InsertarEvidenciaDTO dto)
+        public async Task<ActionResult<RespuestaGeneral>> InsertarEvidencia([FromForm] InsertarEvidenciaDTO dto, [FromForm] IFormFile soporte)
         {
-            var respuesta = await evidenciaService.InsertarEvidenciaAsync(dto);
-            if (respuesta.Status == "NotFound")
+            // Verificar si el archivo es nulo
+            if (soporte == null || soporte.Length == 0)
             {
-                return NotFound(respuesta.Answer);
+                return BadRequest("No se ha subido ningún archivo.");
             }
-            return Ok(respuesta);
+
+            // Convertir el archivo IFormFile a un arreglo de bytes
+            using var memoryStream = new MemoryStream();
+            await soporte.CopyToAsync(memoryStream);
+            var fileBytes = memoryStream.ToArray();
+
+            // Aquí puedes convertir los bytes a BsonBinaryData
+            var bsonData = new BsonBinaryData(fileBytes);
+
+            // No necesitas asignar BsonBinaryData al DTO, solo pasa los bytes al repositorio
+            var resultado = await evidenciaService.InsertarEvidenciaAsync(dto, soporte); // El método ahora acepta IFormFile
+
+            return StatusCode(resultado.StatusCode, resultado);
         }
 
         [HttpGet("consultar-Evidencias/{inciId}")]

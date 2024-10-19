@@ -13,7 +13,7 @@ namespace MicroApi.Seguridad.Domain.Models.Mongo
         [BsonId]
         public ObjectId Id { get; set; }
         public int Inci_Id { get; set; }
-        public string Soporte { get; set; }
+        public BsonBinaryData Soporte { get; set; }
         public DateTime FechaCargue { get; set; }
     }
 }
