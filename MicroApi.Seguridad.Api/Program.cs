@@ -151,6 +151,7 @@ builder.Services.AddDbContext<ModelContextSQL>(options =>
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("mongoConnection"));
 builder.Services.AddSingleton<MongoConnection>();
 
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SMTP"));
 
 builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
 builder.Services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();
@@ -181,6 +182,9 @@ builder.Services.AddScoped<IInventarioService, InventarioService>();
 
 builder.Services.AddScoped<IEvidenciaRepository, EvidenciaRepository>();
 builder.Services.AddScoped<IEvidenciaService, EvidenciaService>();
+
+builder.Services.AddScoped<IEnviarCorreoRepository, EnviarCorreoRepository>();
+builder.Services.AddScoped<IEnviarCorreoService, EnviarCorreoService>();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 
