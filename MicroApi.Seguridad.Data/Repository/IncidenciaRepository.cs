@@ -610,15 +610,11 @@ namespace MicroApi.Seguridad.Data.Repository
 
                 if (incidencia != null)
                 {
-                    respuesta.Status = "Success";
-                    respuesta.Data = incidencia; // Asignar los resultados a Data
-                    respuesta.StatusCode = 200; // Código de éxito
+                    respuesta.Data = "True";
                 }
                 else
                 {
-                    respuesta.Status = "NotFound";
-                    respuesta.Answer = "No se encontró una incidencia con el estado resuelto.";
-                    respuesta.StatusCode = 404; // Código de no encontrado
+                    respuesta.Data = "False";
                 }
             }
             catch (Exception ex)
