@@ -4,11 +4,11 @@ namespace MicroApi.Seguridad.Data.Utilities
 {
     public class PlantillaCorreo
     {
-        private readonly string _plantilla;
+        private readonly string plantilla;
 
         public PlantillaCorreo()
         {
-            _plantilla = @"
+            plantilla = @"
                 <html>
                     <head>
                         <title></title>
@@ -68,7 +68,7 @@ namespace MicroApi.Seguridad.Data.Utilities
 
         public string ObtenerPlantillaCorreo(string contenido)
         {
-            return string.Format(_plantilla, contenido);
+            return plantilla.Replace("{0}", contenido);
         }
     }
 }

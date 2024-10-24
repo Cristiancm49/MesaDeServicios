@@ -151,7 +151,7 @@ builder.Services.AddDbContext<ModelContextSQL>(options =>
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("mongoConnection"));
 builder.Services.AddSingleton<MongoConnection>();
 
-builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SMTP"));
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddScoped<IUtilitiesService, UtilitiesService>();
 builder.Services.AddScoped<IUtilitiesRepository, UtilitiesRepository>();

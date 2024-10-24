@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MicroApi.Seguridad.Domain.Interfaces
 {
     public interface IEnviarCorreoRepository
-	{
+    {
         Task NotificarCorreoAsync(NotificarCorreoDTO dto);
     }
 }

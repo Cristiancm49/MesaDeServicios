@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Domain.DTOs.Correo
 {
-	public class NotificarCorreoDTO
-	{
-        public string Nombres { get; set; } // Nombre del destinatario o del usuario
-        public string Correo { get; set; }   // Dirección de correo electrónico del destinatario
-        public string Asunto { get; set; }   // Asunto del correo (opcional)
-        public string Mensaje { get; set; }   // Mensaje adicional (opcional)
+    public class NotificarCorreoDTO
+    {
+        public string Correo { get; set; }
+        public string Asunto { get; set; }
+        public string Mensaje { get; set; }
     }
 }
