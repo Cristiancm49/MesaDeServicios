@@ -1,14 +1,17 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ViewIncidenciaSolicitada } from '../interfaces/CasoActivo/ViewIncidenciaSolicitada';
 import { ViewTrazabilidadSolicitante } from '../interfaces/CasoActivo/Trazabilidad-Solicitante';
 import { Casoactivo } from '../core/services/caso-activo.service';
+import { UserDataStateService } from '../core/Datos/datos-usuario.service';
 import { ValidarEstado } from '../interfaces/CasoActivo/ValidarEstado';
 import { EvaluarIncidencia } from '../interfaces/CasoActivo/EvaluarIndicencia';
 import { HttpResponse } from '@angular/common/http';
 import { ViewEncapsulation } from '@angular/core';
 import { Documento } from '../DatosLogin/User';
+import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-caso-activo',
@@ -18,10 +21,11 @@ import { Documento } from '../DatosLogin/User';
   styleUrl: './caso-activo.component.css',
   encapsulation: ViewEncapsulation.None
 })
-export class CasoActivoComponent {
+export class CasoActivoComponent implements OnInit, OnDestroy{
 
   vistasolicitud: ViewIncidenciaSolicitada[] = [];
   vistatrazabilidad: ViewTrazabilidadSolicitante[] = [];
+  DatosUsuario: DatosUser[] = [];
   Validar: ValidarEstado[] = [];
   showNotification = false;
   notificationMessage = '';
@@ -36,6 +40,7 @@ export class CasoActivoComponent {
     'Frecuencia y relevancia de las actualizaciones proporcionadas',
     'Usabilidad de la plataforma de soporte'
   ];
+  private userDataSubscription: Subscription | undefined;
 
   evaluar: EvaluarIncidencia = {
     inci_Id: 0,
@@ -47,13 +52,23 @@ export class CasoActivoComponent {
   }
 
 
-  constructor(private casoactivo: Casoactivo){}
+  constructor(
+    private casoactivo: Casoactivo,
+    private userDataState: UserDataStateService
+  ){}
 
   ngOnInit() {
-    this.loadDatosIncidencia();
+    this.setupUserData();  
     this.loadDatosTrazabilidad(0);
-    this.ValidacionEvaluacion(0);
-    this.evaluacionHabilitada = false;
+    this.ValidacionEvaluacion(0); 
+    this.evaluacionHabilitada = false; 
+  }
+
+  ngOnDestroy(): void {
+
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 
   onSubmit() {
@@ -85,22 +100,55 @@ export class CasoActivoComponent {
     }
   }
 
+  private setupUserData(): void {
+    this.userDataState.loading$.subscribe(
+      isLoading => this.isLoading = isLoading
+    );
 
-  loadDatosIncidencia() {
-    this.isLoading = true;
-    console.log('Requesting Datos Incidencia...');
-    
-    this.casoactivo.selectIncidenciaSolicitada(Documento).subscribe({
+    this.userDataSubscription = this.userDataState.userData$.subscribe({
       next: (data) => {
-        this.vistasolicitud = data;
-        this.isLoading = false;
-        console.log('Datos Incidencia Solicitada:', this.vistasolicitud);
+        if (data && data.length > 0) {
+          this.DatosUsuario = data;
+          console.log('Datos Usuario:', this.DatosUsuario);
+          console.log('Pge:', this.DatosUsuario[0].peGe_Id);
+          
+          // Llamamos a loadDatosIncidencia después de que se carguen los datos de usuario
+          this.loadDatosIncidencia();
+        } else {
+          console.error('No se encontraron datos de usuario');
+        }
       },
       error: (error) => {
-        console.error('Sin Datos Incidencia Solicitada:', error);
-        this.isLoading = false;
+        console.error('Error en la suscripción de datos de usuario:', error);
       }
     });
+
+    if (!this.userDataState.currentUserData) {
+      this.userDataState.loadUserData(Documento);
+    }
+  }
+
+
+  loadDatosIncidencia() {
+    if (this.DatosUsuario.length > 0) {
+      this.isLoading = true;
+      console.log('Requesting Datos Incidencia...');
+      console.log('Pge cargue incidencia:', this.DatosUsuario[0].peGe_Id);
+      
+      this.casoactivo.selectIncidenciaSolicitada(this.DatosUsuario[0].peGe_Id).subscribe({
+        next: (response) => {
+          this.vistasolicitud = response.data || [];
+          this.isLoading = false;
+          console.log('Datos Incidencia Solicitada:', this.vistasolicitud);
+        },
+        error: (error) => {
+          console.error('Sin Datos Incidencia Solicitada:', error);
+          this.isLoading = false;
+        }
+      });
+    } else {
+      console.error('DatosUsuario está vacío o indefinido');
+    }
   }
 
   loadDatosTrazabilidad(selectedRowIndexP: number) {
@@ -108,8 +156,8 @@ export class CasoActivoComponent {
     console.log('Requesting Datos Trazabilidad...');
     
     this.casoactivo.selectTrazabilidadSolicitada(selectedRowIndexP).subscribe({
-      next: (data) => {
-        this.vistatrazabilidad = data;
+      next: (response) => {
+        this.vistatrazabilidad = response.data || [];
         this.isLoading = false;
         console.log('Datos Trazabilidad:', this.vistatrazabilidad);
       },

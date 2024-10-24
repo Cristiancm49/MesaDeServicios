@@ -2,12 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CasoRegistroService } from '../core/services/caso-registro.service';
+import { UserDataStateService } from '../core/Datos/datos-usuario.service'; // Importamos el nuevo servicio
 import { AreaTec } from '../interfaces/CasoRegistro/area-tec';
 import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
 import { Categorias } from '../interfaces/CasoRegistro/Interfaz-categoria';
 import { Incidencia } from '../interfaces/CasoRegistro/Insert-Incidencia';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Documento } from '../DatosLogin/User';  // Asegúrate que Documento está correctamente definido
+import { Documento } from '../DatosLogin/User';
+import { Subscription } from 'rxjs'; // Importamos Subscription para manejar las suscripciones
 
 @Component({
   selector: 'app-caso-registro',
@@ -27,6 +29,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   notificationMessage = '';
   valorprioridad: number = 0;
   intervalo: any;
+  private userDataSubscription: Subscription | undefined;
 
   incidencia: Incidencia = {
     idContratoSolicitante: 0,
@@ -36,25 +39,59 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     descripcion: ""
   };
 
-  constructor(private casoRegistroService: CasoRegistroService) { }
+  constructor(
+    private casoRegistroService: CasoRegistroService,
+    private userDataState: UserDataStateService // Inyectamos el nuevo servicio
+  ) { }
 
   ngOnInit(): void {
     this.loadAreasTec(0);
-    this.loadDatosUser();
+    this.setupUserData(); // Nuevo método para configurar los datos del usuario
     this.loadCategorias();
     this.cargarFechaHora();
 
     this.intervalo = setInterval(() => {
       this.cargarFechaHora();
-    }, 10000); 
+    }, 10000);
   }
 
   ngOnDestroy(): void {
     if (this.intervalo) {
       clearInterval(this.intervalo);
     }
+    // Cancelamos la suscripción al destruir el componente
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 
+  // Nuevo método para configurar los datos del usuario
+  private setupUserData(): void {
+    // Nos suscribimos al loading state
+    this.userDataState.loading$.subscribe(
+      isLoading => this.isLoading = isLoading
+    );
+
+    // Nos suscribimos a los datos del usuario
+    this.userDataSubscription = this.userDataState.userData$.subscribe({
+      next: (data) => {
+        if (data) {
+          this.DatosUsuario = data;
+          console.log('Datos Usuario:', this.DatosUsuario);
+        }
+      },
+      error: (error) => {
+        console.error('Error en la suscripción de datos de usuario:', error);
+      }
+    });
+
+    // Cargamos los datos solo si no están ya cargados
+    if (!this.userDataState.currentUserData) {
+      this.userDataState.loadUserData(Documento);
+    }
+  }
+
+  // El resto de los métodos permanecen igual
   loadAreasTec(selectedCategoriaId: number) {
     this.isLoading = true;
     this.casoRegistroService.getAreasTec(selectedCategoriaId).subscribe({
@@ -65,22 +102,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error fetching areas tec:', error);
-        this.isLoading = false;
-      }
-    });
-  }
-
-  loadDatosUser() {
-    this.isLoading = true;
-    console.log('Requesting DatosUsuario...');
-    this.casoRegistroService.getDatosUsuario(Documento).subscribe({
-      next: (response) => {
-        this.DatosUsuario = response.data || [];
-        this.isLoading = false;
-        console.log('Datos Usuario:', this.DatosUsuario);
-      },
-      error: (error) => {
-        console.error('Error fetching Datos User:', error);
         this.isLoading = false;
       }
     });
@@ -113,21 +134,14 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      // Aquí puedes manejar el archivo seleccionado
       console.log('Archivo seleccionado:', file.name);
-      // Implementa la lógica para subir el archivo si es necesario
     }
   }
 
   cargarFechaHora() {
     const now = new Date();
-
-    // Reducimos las 5 horas para ajustar a la zona horaria local
     const adjustedDate = new Date(now.getTime() - (5 * 60 * 60 * 1000));
-
-    // Convertimos la fecha ajustada a ISO string sin la diferencia horaria
     this.fechaHoraString = adjustedDate.toISOString().slice(0, 16);
-
     console.log("Fecha actual registro actualizada");
   }
 
@@ -148,12 +162,8 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
       this.incidencia.valorUnidadSolicitante = parseInt(this.DatosUsuario[0].unid_Nivel, 10);
     }
     
-    console.log('Valores capturados:');
-    console.log('IdSolicitante:', this.incidencia.idContratoSolicitante);
-    console.log('ValorUnidad:', this.incidencia.valorUnidadSolicitante);
-    console.log('IdAdmin:', this.incidencia.idContratoAdmin);
-    console.log('areatecnica:', this.incidencia.areaTecnica);
-    console.log('descripcion:', this.incidencia.descripcion);
+    console.log('Valores capturados:', this.incidencia);
+    console.log("Prueba", this.DatosUsuario[0].peGe_Id);
     
     this.casoRegistroService.insertIncidencia(this.incidencia).subscribe({
       next: (response) => {

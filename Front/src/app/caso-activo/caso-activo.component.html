@@ -10,26 +10,26 @@
               <th>No.</th>
               <th>Fecha de Registro</th>
               <th>Descripción</th>
-              <th>Evidencia</th>
               <th>Solicitante</th>
               <th>Categoría Técnica</th>
               <th>Área Técnica</th>
+              <th>Estado Actual</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let solicitada of vistasolicitud; let i = index"
-              [class.selected-row]="selectedRowIndexP === solicitada.inci_Id"
-              (click)="onRowSelectP(solicitada.inci_Id, solicitada)">
+                [class.selected-row]="selectedRowIndexP === solicitada.inci_Id"
+                (click)="onRowSelectP(solicitada.inci_Id, solicitada)">
               <td>{{ i + 1 }}</td>
               <td>{{ solicitada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
               <td>{{ solicitada.inci_Descripcion }}</td>
-              <td>{{ solicitada.inci_Evidencia }}</td>
-              <td>{{ solicitada.nombreCompleto }}</td>
-              <td>{{ solicitada.nombreCategoriaAreaTecnica }}</td>
-              <td>{{ solicitada.nombreAreaTecnica }}</td>
+              <td>{{ solicitada.inPr_Nombre }}</td>
+              <td>{{ solicitada.nombreCategoria }}</td>
+              <td>{{ solicitada.areaTecnica }}</td>
+              <td>{{ solicitada.inci_EstadoActual }}</td>
             </tr>
           </tbody>
-        </table>
+        </table>        
       </div>
     </div>
     <div *ngIf="showNotification" class="notification">
@@ -50,9 +50,9 @@
           <tbody>
             <tr *ngFor="let traza of vistatrazabilidad; let i = index">
               <td>{{ i + 1 }}</td>
-              <td>{{ traza.inTr_FechaActualizacion }}</td>
-              <td>{{ traza.estado }}</td>
-              <td>{{ traza.descripcion }}</td>
+              <td>{{ traza.inTr_FechaGenerada }}</td>
+              <td>{{ traza.trEs_Nombre }}</td>
+              <td>{{ traza.trEs_Descripcion }}</td>
             </tr>
           </tbody>
         </table>
