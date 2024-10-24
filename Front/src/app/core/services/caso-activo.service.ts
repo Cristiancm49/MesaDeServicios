@@ -5,26 +5,27 @@ import { ViewIncidenciaSolicitada } from '../../interfaces/CasoActivo/ViewIncide
 import { ViewTrazabilidadSolicitante } from '../../interfaces/CasoActivo/Trazabilidad-Solicitante';
 import { ValidarEstado } from '../../interfaces/CasoActivo/ValidarEstado';
 import { EvaluarIncidencia } from '../../interfaces/CasoActivo/EvaluarIndicencia';
+import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class Casoactivo{
-  private selectincidenciasolicitada = 'https://localhost:44346/api/v5/SolicitanteIncidencia/VistaIncidenciasFuncionario';
-  private selecttrazabilidad = 'https://localhost:44346/api/v5/SolicitanteIncidencia/VistaTrazabilidadFuncionario';
+  private selectincidenciasolicitada = 'https://localhost:44346/api/Incidencia/Historico/consultar-MisSolicitudes';
+  private selecttrazabilidad = 'https://localhost:44346/api/Incidencia/Seguimiento/consultar-TrazabilidadIncidencias';
   private Validar = 'https://localhost:44346/api/v5/SolicitanteIncidencia/ValidarEstadoResuelto';
   private Evaluación = 'https://localhost:44346/api/v5/SolicitanteIncidencia';
   
   constructor(private http: HttpClient) { }
 
 
-  selectIncidenciaSolicitada(documento: number): Observable<ViewIncidenciaSolicitada[]> {
-    return this.http.get<ViewIncidenciaSolicitada[]>(`${this.selectincidenciasolicitada}?documento=${documento}`);
+  selectIncidenciaSolicitada(peGe_Id: number): Observable<ApiResponse<ViewIncidenciaSolicitada>> {
+    return this.http.get<ApiResponse<ViewIncidenciaSolicitada>>(`${this.selectincidenciasolicitada}/${peGe_Id}&true`);
   }
 
-  selectTrazabilidadSolicitada(inci_id: number): Observable<ViewTrazabilidadSolicitante[]> {
-    return this.http.get<ViewTrazabilidadSolicitante[]>(`${this.selecttrazabilidad}?inci_id=${inci_id}`);
+  selectTrazabilidadSolicitada(inci_id: number): Observable<ApiResponse<ViewTrazabilidadSolicitante>> {
+    return this.http.get<ApiResponse<ViewTrazabilidadSolicitante>>(`${this.selecttrazabilidad}/${inci_id}`);
   }
 
   ValidarIndicencia(inci_id: number): Observable<ValidarEstado[]> {

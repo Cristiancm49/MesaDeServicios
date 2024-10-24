@@ -1,6 +1,6 @@
 export interface ViewTrazabilidadSolicitante{
 
-    inTr_FechaActualizacion: Date,
-    estado: string,
-    descripcion: string
+    inTr_FechaGenerada: Date,
+    trEs_Nombre: string,
+    trEs_Descripcion: string
 }

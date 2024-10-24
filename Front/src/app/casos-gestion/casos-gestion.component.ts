@@ -83,17 +83,6 @@ export class CasosGestionComponent implements OnInit{
     });
   }
 
-
-
-  
-
-
-  
-
-
-
-
-
   onRowSelect(index: number, inci_Id: number): void {
     this.selectedRowIndex = index;  // Usamos el índice para seleccionar la fila
     this.isRowSelected = true;  // Habilitar los botones cuando se selecciona una fila

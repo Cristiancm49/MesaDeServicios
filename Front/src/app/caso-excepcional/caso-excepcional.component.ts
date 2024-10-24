@@ -121,6 +121,8 @@ export class CasoExcepcionalComponent implements OnInit{
     });
   }
 
+  
+
   loadDatosAdmin() {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
