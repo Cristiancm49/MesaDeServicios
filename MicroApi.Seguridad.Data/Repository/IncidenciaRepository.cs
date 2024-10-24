@@ -318,11 +318,11 @@ namespace MicroApi.Seguridad.Data.Repository
             try
             {
                 var prioridades = await (from pr in modelContext.IncidenciasPrioridad
-                                           select new
-                                           {
-                                               pr.InPr_Id,
-                                               pr.InPr_Nombre
-                                           }).ToListAsync();
+                                         select new
+                                         {
+                                             pr.InPr_Id,
+                                             pr.InPr_Nombre
+                                         }).ToListAsync();
 
                 if (prioridades.Any())
                 {
@@ -591,6 +591,49 @@ namespace MicroApi.Seguridad.Data.Repository
             {
                 respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
             }
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> ValidarEstadoResueltoAsync(int inciId)
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var incidencia = await (from i in modelContext.Incidencias
+                                        where i.Inci_EstadoActual == 8 && i.Inci_Id == inciId
+                                        select new
+                                        {
+                                            i.Inci_Id,
+                                            i.Inci_EstadoActual
+                                        }).FirstOrDefaultAsync();
+
+                if (incidencia != null)
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = incidencia; // Asignar los resultados a Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontró una incidencia con el estado resuelto.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando la incidencia: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+
             return respuesta;
         }
 

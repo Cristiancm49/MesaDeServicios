@@ -70,6 +70,11 @@ namespace MicroApi.Seguridad.Application.Services
             return await incidenciaRepository.AsignarIncidenciaAsync(dto);
         }
 
+        public async Task<RespuestaGeneral> ValidarEstadoResueltoAsync(int inciId)
+        {
+            return await incidenciaRepository.ValidarEstadoResueltoAsync(inciId);
+        }
+
         public async Task<RespuestaGeneral> ResolverIncidenciaAsync(ResolverIncidenciaDTO dto)
         {
             return await incidenciaRepository.ResolverIncidenciaAsync(dto);

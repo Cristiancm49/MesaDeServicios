@@ -111,6 +111,19 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
+        [HttpGet("consultar-estadoResuelto/{inciId}")]
+        public async Task<ActionResult<RespuestaGeneral>> ValidarEstadoResuelto(int inciId)
+        {
+            var respuesta = await incidenciaService.ValidarEstadoResueltoAsync(inciId);
+
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+
+            return Ok(respuesta);
+        }
+
         [HttpPost("evaluar_cerrar-Incidencia")]
         public async Task<ActionResult<RespuestaGeneral>> EvaluarCerrarIncidencia([FromBody] EvaluarCerrarIncidenciaDTO dto)
         {
