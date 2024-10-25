@@ -110,7 +110,7 @@ export class CasoActivoComponent implements OnInit, OnDestroy{
         if (data && data.length > 0) {
           this.DatosUsuario = data;
           console.log('Datos Usuario:', this.DatosUsuario);
-          console.log('Pge:', this.DatosUsuario[0].peGe_Id);
+          console.log('Pge:', this.DatosUsuario[0].cont_Id);
           
           // Llamamos a loadDatosIncidencia después de que se carguen los datos de usuario
           this.loadDatosIncidencia();
@@ -133,9 +133,8 @@ export class CasoActivoComponent implements OnInit, OnDestroy{
     if (this.DatosUsuario.length > 0) {
       this.isLoading = true;
       console.log('Requesting Datos Incidencia...');
-      console.log('Pge cargue incidencia:', this.DatosUsuario[0].peGe_Id);
       
-      this.casoactivo.selectIncidenciaSolicitada(this.DatosUsuario[0].peGe_Id).subscribe({
+      this.casoactivo.selectIncidenciaSolicitada(this.DatosUsuario[0].cont_Id).subscribe({
         next: (response) => {
           this.vistasolicitud = response.data || [];
           this.isLoading = false;

@@ -91,7 +91,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
     }
   }
 
-  // El resto de los métodos permanecen igual
   loadAreasTec(selectedCategoriaId: number) {
     this.isLoading = true;
     this.casoRegistroService.getAreasTec(selectedCategoriaId).subscribe({
@@ -158,7 +157,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.idContratoSolicitante = this.DatosUsuario[0].peGe_Id;
+      this.incidencia.idContratoSolicitante = this.DatosUsuario[0].cont_Id;
       this.incidencia.valorUnidadSolicitante = parseInt(this.DatosUsuario[0].unid_Nivel, 10);
     }
     

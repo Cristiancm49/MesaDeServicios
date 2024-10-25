@@ -3,51 +3,49 @@
             <div class="section">
                 <h3 class="section-header">GESTIÓN DE INCIDENCIAS</h3>
                 <div class="table-container">
-                    <table class="cases-table">
-                      <thead>
-                        <tr>
-                          <th>No.</th>
-                          <th>Nombre Solicitante</th>
-                          <th>Cargo</th>
-                          <th>Dependencia</th>
-                          <th>Teléfono</th>
-                          <th>Tipo de Incidencia</th>
-                          <th>Área Técnica</th>
-                          <th>Descripción</th>
-                          <th>Fecha Solicitud</th>
-                          <th>Prioridad</th>
-                          <th>Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let incidencia of vistadatos; let i = index"
-                            [class.selected-row]="selectedRowIndex === i"
-                            (click)="onRowSelect(i, incidencia.inci_Id)">
-                          <td>{{ incidencia.inci_Id }}</td>
-                          <td>{{ incidencia.nombreCompletoSolicitante }}</td>
-                          <td>{{ incidencia.cont_Cargo }}</td>
-                          <td>{{ incidencia.unid_Nombre }}</td>
-                          <td>{{ incidencia.unid_Telefono }}</td>
-                          <td>{{ incidencia.caAr_Nombre }}</td>
-                          <td>{{ incidencia.arTe_Nombre }}</td>
-                          <td>{{ incidencia.inci_Descripcion }}</td>
-                          <td>{{ incidencia.inTr_FechaGenerada | date:'dd/MM/yyyy HH:mm' }}</td>
-                          <td>{{ incidencia.nombrePrioridad }}</td>
-                          <td>
-                            <button type="button" class="report-button" 
-                                    [disabled]="!isRowSelected" 
-                                    (click)="abrirModalAsignacion()">Asignar</button>
-                            <button type="button" class="report-button" 
-                                    [disabled]="!isRowSelected"
-                                    (click)="abrirModalPrioridad()">Prioridad</button>
-                            <button type="button" class="report-button" 
-                                    [disabled]="!isRowSelected"
-                                    (click)="abrirModalRechazo()">Rechazar</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>                  
+                  <table class="cases-table">
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>Nombre Solicitante</th>
+                        <th>Cargo</th>
+                        <th>Dependencia</th>
+                        <th>Tipo de Incidencia</th>
+                        <th>Área Técnica</th>
+                        <th>Descripción</th>
+                        <th>Fecha Solicitud</th>
+                        <th>Prioridad</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let incidencia of vistadatos; let i = index"
+                          [class.selected-row]="selectedRowIndex === i"
+                          (click)="onRowSelect(i, incidencia.inci_Id)">
+                        <td>{{ incidencia.inci_Id }}</td>
+                        <td>{{ incidencia.nombreCompleto }}</td>
+                        <td>{{ incidencia.tnom_Descripcion }}</td>
+                        <td>{{ incidencia.unid_Nombre }}</td>
+                        <td>{{ incidencia.caAr_Nombre }}</td>
+                        <td>{{ incidencia.arTe_Nombre }}</td>
+                        <td>{{ incidencia.inci_Descripcion }}</td>
+                        <td>{{ incidencia.inTr_FechaGenerada | date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ incidencia.nombrePrioridad }}</td>
+                        <td>
+                          <button type="button" class="report-button" 
+                                  [disabled]="!isRowSelected" 
+                                  (click)="abrirModalAsignacion()">Asignar</button>
+                          <button type="button" class="report-button" 
+                                  [disabled]="!isRowSelected"
+                                  (click)="abrirModalPrioridad()">Prioridad</button>
+                          <button type="button" class="report-button" 
+                                  [disabled]="!isRowSelected"
+                                  (click)="abrirModalRechazo()">Rechazar</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>                               
         </div>
 
     <div *ngIf="showNotification" class="notification">
