@@ -13,6 +13,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
         Task<RespuestaGeneral> ConsultarUsuarioRolAsync();
         Task<RespuestaGeneral> ConsultarUsuariosAsync(int UsRoId);
         Task<RespuestaGeneral> InsertarUsuarioAsync(InsertarUsuarioDTO dto);
+        Task<RespuestaGeneral> ActualizarUsuarioAsync(ActualizarUsuarioDTO dto);
     }
 }
-

@@ -157,5 +157,60 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             return respuesta;
         }
+
+        public async Task<RespuestaGeneral> ActualizarUsuarioAsync(ActualizarUsuarioDTO dto)
+        {
+            var respuesta = new RespuestaGeneral();
+            var errorMessage = new SqlParameter("@ErrorMessage", SqlDbType.NVarChar, 255)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            try
+            {
+                // Parámetro obligatorio
+                var usuaIdParam = new SqlParameter("@Usua_Id", dto.Usua_Id);
+
+                // Parámetros opcionales
+                var contIdParam = new SqlParameter("@Cont_Id", (object?)dto.Cont_Id ?? DBNull.Value);
+                var usRoIdParam = new SqlParameter("@UsRo_Id", (object?)dto.UsRo_Id ?? DBNull.Value);
+                var usuaEstadoParam = new SqlParameter("@Usua_Estado", (object?)dto.Usua_Estado ?? DBNull.Value);
+
+                await modelContext.Database.ExecuteSqlRawAsync(
+                    "EXEC [dbo].[ActualizarUsuario] @Usua_Id, @Cont_Id, @UsRo_Id, @Usua_Estado, @ErrorMessage OUTPUT",
+                    usuaIdParam,
+                    contIdParam,
+                    usRoIdParam,
+                    usuaEstadoParam,
+                    errorMessage);
+
+                if (!string.IsNullOrEmpty(errorMessage.Value?.ToString()))
+                {
+                    respuesta.Status = "Error";
+                    respuesta.Answer = errorMessage.Value.ToString();
+                    respuesta.StatusCode = 400; // Código de error
+                    respuesta.Errors.Add(respuesta.Answer);
+                }
+                else
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Answer = "Usuario actualizado correctamente.";
+                    respuesta.StatusCode = 200;
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error al actualizar usuario: {ex.Message}";
+                respuesta.StatusCode = 500;
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message;
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString();
+            }
+            return respuesta;
+        }
     }
 }

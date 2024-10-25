@@ -51,6 +51,17 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpPut("actualizar-Usuario")]
+        public async Task<ActionResult<RespuestaGeneral>> ActualizarUsuario([FromBody] ActualizarUsuarioDTO dto)
+        {
+            var respuesta = await usuarioService.ActualizarUsuarioAsync(dto);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }
 

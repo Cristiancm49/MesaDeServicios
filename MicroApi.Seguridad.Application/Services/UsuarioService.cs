@@ -30,6 +30,11 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await usuarioRepository.InsertarUsuarioAsync(dto);
         }
+
+        public async Task<RespuestaGeneral> ActualizarUsuarioAsync(ActualizarUsuarioDTO dto)
+        {
+            return await usuarioRepository.ActualizarUsuarioAsync(dto);
+        }
     }
 }
 
