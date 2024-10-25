@@ -29,7 +29,18 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
-        
+
+        [HttpGet("consultar-usuarios/{UsRoId}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarUsuarios(int UsRoId)
+        {
+            var respuesta = await usuarioService.ConsultarUsuariosAsync(UsRoId);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
+
         [HttpPost("insertar-Usuarios")]
         public async Task<ActionResult<RespuestaGeneral>> InsertarUsuario([FromBody] InsertarUsuarioDTO dto)
         {

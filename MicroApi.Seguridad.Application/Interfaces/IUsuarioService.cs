@@ -11,6 +11,7 @@ namespace MicroApi.Seguridad.Application.Interfaces
     public interface IUsuarioService
 	{
         Task<RespuestaGeneral> ConsultarUsuarioRolAsync();
+        Task<RespuestaGeneral> ConsultarUsuariosAsync(int UsRoId);
         Task<RespuestaGeneral> InsertarUsuarioAsync(InsertarUsuarioDTO dto);
     }
 }

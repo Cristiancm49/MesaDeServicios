@@ -32,5 +32,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpGet("IdCotratos_Oracle/{ContId}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarIdContrato(int ContId)
+        {
+            var respuesta = await oracleService.ConsultarIdContratoAsync(ContId);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }
