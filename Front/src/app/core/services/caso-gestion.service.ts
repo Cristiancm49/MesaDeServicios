@@ -8,6 +8,7 @@ import { ViewRoles } from '../../interfaces/CasoGestión/ViewRoles';
 import { RechazarIncidencia } from '../../interfaces/CasoGestión/RechazarIncidencia';
 import { SelectPrioridad } from '../../interfaces/CasoGestión/SelectPrioridad';
 import { CambioPrioridad } from '../../interfaces/CasoGestión/CambioPrioridad';
+import { viewpersonaoracle } from '../../interfaces/CasoGestión/personaoracle';
 import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 
 @Injectable({
@@ -15,6 +16,7 @@ import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 })
 export class CasoGestion {
   private selectincidencia = 'https://localhost:44346/api/Incidencia/Gestion/consultar-IncidenciasResgistradas';
+  private oracleperso = 'https://localhost:44346/api/v1/Oracle/IdCotratos_Oracle';
   private selectpersonal = 'https://localhost:44346/api/Incidencia/Gestion/consultar-usuario';
   private insertarasignacion = 'https://localhost:44346/api/Incidencia/Gestion';
   private selectroles = 'https://localhost:44346/api/Incidencia/Gestion/consultar-rolesUsuarios';
@@ -27,6 +29,10 @@ export class CasoGestion {
 
   insertIncidencia(): Observable<ApiResponse<ViewIncidencia>> {
     return this.http.get<ApiResponse<ViewIncidencia>>(`${this.selectincidencia}`);
+  }
+
+  personaloracle(ContId: number): Observable<ApiResponse<viewpersonaoracle>> {
+    return this.http.get<ApiResponse<viewpersonaoracle>>(`${this.oracleperso}/${ContId}`);
   }
 
   mostrarpersonal(id_Rol: number): Observable<ApiResponse<ViewPersonalAsignacion>> {
