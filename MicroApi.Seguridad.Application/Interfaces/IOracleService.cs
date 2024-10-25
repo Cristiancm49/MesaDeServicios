@@ -10,5 +10,6 @@ namespace MicroApi.Seguridad.Application.Interfaces
     public interface IOracleService
     {
         Task<RespuestaGeneral> ConsultarContratosActivosAsync(string documentoIdentidad);
+        Task<RespuestaGeneral> ConsultarIdContratoAsync(int ContId);
     }
 }

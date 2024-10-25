@@ -22,5 +22,10 @@ namespace MicroApi.Seguridad.Application.Services
         {
             return await oracleRepository.ConsultarContratosActivosAsync(documentoIdentidad);
         }
+
+        public async Task<RespuestaGeneral> ConsultarIdContratoAsync(int ContId)
+        {
+            return await oracleRepository.ConsultarIdContratoAsync(ContId);
+        }
     }
 }

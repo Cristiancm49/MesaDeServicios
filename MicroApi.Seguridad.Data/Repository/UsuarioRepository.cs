@@ -65,6 +65,51 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
+        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int UsRoId)
+        {
+            var respuesta = new RespuestaGeneral();
+
+            try
+            {
+                var usuarios = await (from us in modelContext.Usuarios
+                                      where us.UsRo_Id == UsRoId && us.Usua_Estado == true
+                                   select new
+                                   {
+                                       us.Usua_Id,
+                                       us.Cont_Id,
+                                       us.UsRo_Id,
+                                       us.Usua_PromedioEvaluacion
+                                   }).ToListAsync();
+
+                if (usuarios.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = usuarios;
+                    respuesta.StatusCode = 200;
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron usuarios con este rol.";
+                    respuesta.StatusCode = 404;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error Consultando los usuarios: {ex.Message}";
+                respuesta.StatusCode = 500;
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message;
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString();
+            }
+            return respuesta;
+        }
+
         public async Task<RespuestaGeneral> InsertarUsuarioAsync(InsertarUsuarioDTO dto)
         {
             var respuesta = new RespuestaGeneral();
