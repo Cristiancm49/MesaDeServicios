@@ -18,8 +18,8 @@ export class Casodelegado{
   constructor(private http: HttpClient) { }
 
 
-  selectIncidenciaasignada(documentoIdentidad: number): Observable<ApiResponse<ViewIncidenciaAsignada>> {
-    return this.http.get<ApiResponse<ViewIncidenciaAsignada>>(`${this.selectincidenciaasignada}/${documentoIdentidad}`);
+  selectIncidenciaasignada(IdContrato: number): Observable<ApiResponse<ViewIncidenciaAsignada>> {
+    return this.http.get<ApiResponse<ViewIncidenciaAsignada>>(`${this.selectincidenciaasignada}/${IdContrato}`);
   }
 
 

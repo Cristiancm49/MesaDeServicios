@@ -9,6 +9,9 @@ import { ViewTipoSoluciones } from '../interfaces/CasoDelegado/ViewTipoSolucione
 import { Documento } from '../DatosLogin/User';
 import { InsertDiagnostico } from '../interfaces/CasoDelegado/InsertDiagnostico';
 import { ViewEncapsulation } from '@angular/core';
+import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
+import { UserDataStateService } from '../core/Datos/datos-usuario.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-casos-delegados',
@@ -24,6 +27,7 @@ export class CasosDelegadosComponent {
 
   vistaasignada: ViewIncidenciaAsignada[] = [];
   Tiposolucion: ViewTipoSoluciones[] = [];
+  DatosUsuario: DatosUser[] = [];
   showNotification = false;
   notificationMessage = '';
   isLoading = true;
@@ -34,6 +38,7 @@ export class CasosDelegadosComponent {
   casoSolucionado: boolean | null = null;
   escalable: boolean | null = null;
   resolucionCaso: string = '';
+  private userDataSubscription: Subscription | undefined;
 
   diagnotico: InsertDiagnostico = {
     inci_Id: 0,
@@ -45,9 +50,10 @@ export class CasosDelegadosComponent {
   }
 
 
-  constructor(private casodelegado: Casodelegado,  private cdr: ChangeDetectorRef) { }
+  constructor(private casodelegado: Casodelegado,  private cdr: ChangeDetectorRef, private userDataState: UserDataStateService) { }
 
   ngOnInit() {
+    this.setupUserData();
     this.loadDatosIncidencia();
     this.cargarFechaHora();
     this.loadTipoSolucion();
@@ -61,13 +67,42 @@ export class CasosDelegadosComponent {
     if (this.intervalo) {
       clearInterval(this.intervalo);
     }
+
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
+  }
+
+  private setupUserData(): void {
+    // Nos suscribimos al loading state
+    this.userDataState.loading$.subscribe(
+      isLoading => this.isLoading = isLoading
+    );
+
+    this.userDataSubscription = this.userDataState.userData$.subscribe({
+      next: (data) => {
+        if (data && data.length > 0) {
+          this.DatosUsuario = data;
+          console.log('Datos Usuario:', this.DatosUsuario);
+          this.loadDatosIncidencia();
+        }
+      },
+      error: (error) => {
+        console.error('Error en la suscripción de datos de usuario:', error);
+      }
+    });
+
+    // Cargamos los datos solo si no están ya cargados
+    if (!this.userDataState.currentUserData) {
+      this.userDataState.loadUserData(Documento);
+    }
   }
 
 
   loadDatosIncidencia() {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
-    this.casodelegado.selectIncidenciaasignada(Documento).subscribe({
+    this.casodelegado.selectIncidenciaasignada(this.DatosUsuario[0].cont_Id).subscribe({
       next: (response) => {
         this.vistaasignada = response.data || [];
         this.isLoading = false;
