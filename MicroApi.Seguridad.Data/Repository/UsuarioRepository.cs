@@ -65,21 +65,31 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
-        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int UsRoId)
+        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int? UsRoId)
         {
             var respuesta = new RespuestaGeneral();
 
             try
             {
-                var usuarios = await (from us in modelContext.Usuarios
-                                      where us.UsRo_Id == UsRoId && us.Usua_Estado == true
-                                   select new
-                                   {
-                                       us.Usua_Id,
-                                       us.Cont_Id,
-                                       us.UsRo_Id,
-                                       us.Usua_PromedioEvaluacion
-                                   }).ToListAsync();
+                // Consulta de usuarios con estado activo
+                var query = modelContext.Usuarios.AsQueryable();
+
+                // Si se proporciona UsRo_Id, filtrar por rol
+                if (UsRoId.HasValue)
+                {
+                    query = query.Where(us => us.UsRo_Id == UsRoId.Value);
+                }
+
+                var usuarios = await query
+                    .Where(us => us.Usua_Estado == true)
+                    .Select(us => new
+                    {
+                        us.Usua_Id,
+                        us.Cont_Id,
+                        us.UsRo_Id,
+                        us.Usua_PromedioEvaluacion
+                    })
+                    .ToListAsync();
 
                 if (usuarios.Any())
                 {
@@ -93,7 +103,6 @@ namespace MicroApi.Seguridad.Data.Repository
                     respuesta.Answer = "No se encontraron usuarios con este rol.";
                     respuesta.StatusCode = 404;
                 }
-
             }
             catch (Exception ex)
             {
@@ -109,6 +118,7 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             return respuesta;
         }
+
 
         public async Task<RespuestaGeneral> InsertarUsuarioAsync(InsertarUsuarioDTO dto)
         {

@@ -30,8 +30,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             return Ok(respuesta);
         }
 
-        [HttpGet("consultar-usuarios/{UsRoId}")]
-        public async Task<ActionResult<RespuestaGeneral>> ConsultarUsuarios(int UsRoId)
+        [HttpGet("consultar-usuarios")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarUsuarios(int? UsRoId)
         {
             var respuesta = await usuarioService.ConsultarUsuariosAsync(UsRoId);
             if (respuesta.Status == "NotFound")
