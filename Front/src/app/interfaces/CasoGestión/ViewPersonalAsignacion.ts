@@ -1,10 +1,10 @@
 export interface ViewPersonalAsignacion{
 
     usua_Id: number,
-    nombreCompleto: string,
-    numeroDocumento: number,
+    cont_Id: number,
     rol: string,
     promedioEvaluacion: number | null,
-    nivelRol: number
+    nivelRol: number,
+    incidenciasActivas: 0
 
 }

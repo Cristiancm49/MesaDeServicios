@@ -5,9 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { CasoGestion } from '../../core/services/caso-gestion.service';
 import {ViewRoles} from '../../interfaces/CasoGestión/ViewRoles'
+import { viewpersonaoracle } from '../../interfaces/CasoGestión/personaoracle';
 import { ViewPersonalAsignacion } from '../../interfaces/CasoGestión/ViewPersonalAsignacion';
 import { InsertAsignacion } from '../../interfaces/CasoGestión/Insert-Asignacion';
 import { MatDialogActions } from '@angular/material/dialog';
+import { forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-modal-asignacion',
@@ -17,7 +19,7 @@ import { MatDialogActions } from '@angular/material/dialog';
   styleUrl: './modal-asignacion.component.css'
 })
 export class ModalAsignacionComponent {
-  vistapersonal: ViewPersonalAsignacion[] = [];
+  vistadatos: (ViewPersonalAsignacion & Partial<viewpersonaoracle>)[] = [];
   insertarpersonal: InsertAsignacion[] = [];
   vistaroles: ViewRoles[] = [];
   isLoading = true;
@@ -35,12 +37,15 @@ export class ModalAsignacionComponent {
   }
 
   valorRecibido: any;
+  conid: any;
   constructor(
     public matDialogRef: MatDialogRef<ModalAsignacionComponent>, private casoGestion: CasoGestion,
-    @Inject(MAT_DIALOG_DATA) public data: { valor: any }
+    @Inject(MAT_DIALOG_DATA) public data: { valor: any, contid: any }
   ) {
     this.valorRecibido = data.valor;
+    this.conid = data.contid;
     console.log('dato recibido',this.valorRecibido);
+    console.log('dato recibido conid',this.valorRecibido);
     this.InsertAsignacion.inci_Id = this.valorRecibido;
   }
   
@@ -83,20 +88,58 @@ export class ModalAsignacionComponent {
     this.matDialogRef.close() 
   }
 
+
   loadDatosPersonal(selectedRolId: number) {
     this.isLoading = true;
-    console.log('Requesting DatosPersonal...');
+    console.log('Requesting DatosUsuario...');
     
     this.casoGestion.mostrarpersonal(selectedRolId).subscribe({
       next: (response) => {
-        this.vistapersonal = response.data || [];
+        const incidencias = response.data || [];
         this.isLoading = false;
-        console.log('Datos Personal:', this.vistapersonal);
+  
+        const observables = incidencias.map((incidencia: ViewPersonalAsignacion) => 
+          this.casoGestion.personaloracle(incidencia.cont_Id).pipe(
+            map(personaResponse => {
+              const persona = personaResponse.data?.[0] || {};
+              return {
+                ...incidencia,
+                nombreCompleto: persona.nombreCompleto || ''
+              };
+            })
+          )
+        );
+  
+        // Ejecutar todas las llamadas y asignar a vistadatos
+        forkJoin(observables).subscribe({
+          next: (result) => {
+            this.vistadatos = result;
+            console.log('Datos combinados:', this.vistadatos);
+          },
+          error: (error) => console.error('Error al combinar datos:', error)
+        });
       },
       error: (error) => {
-        console.error('Sin datos de Personal:', error);
+        console.error('Sin datos de Incidencia:', error);
         this.isLoading = false;
       }
+    });
+  }
+  
+  
+
+  loadpersonal(contid: number): Promise<viewpersonaoracle | null> {
+    return new Promise((resolve) => {
+      this.casoGestion.personaloracle(contid).subscribe({
+        next: (response) => {
+          const personalData = response.data ? response.data[0] : null;
+          resolve(personalData); // Retorna el primer elemento de `viewpersonaoracle`
+        },
+        error: (error) => {
+          console.error('Error al cargar datos personales:', error);
+          resolve(null); // Retorna null si hay un error
+        }
+      });
     });
   }
 

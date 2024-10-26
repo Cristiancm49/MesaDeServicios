@@ -5,50 +5,52 @@
             <div class="search-section">
                 <div class="date-picker">
                     <label for="fecha-inicio">Identificación:</label>
-                    <input type="text" id="fecha-inicio">
+                    <input type="text" id="identificacion" name="identificacion" [(ngModel)]="identificacionUsuario"
+                        (keyup.enter)="buscarUsuario()">
                 </div>
-                <button type="button">Buscar</button>
             </div>
             <table class="cases-table">
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Prioridad</th>
-                        <th>Estado Actual</th>
-                        <th>Solicitud</th>
+                        <th>Nombre Completo</th>
+                        <th>Cargo</th>
                         <th>Dependencia</th>
-                        <th>Categorización</th>
-                        <th>Iniciación</th>
-                        <th>Tipo de Incidencia</th>
-                        <th>Teléfono</th>
+                        <th>Inicio de contrato</th>
+                        <th>Fin de contrato</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <tr *ngFor="let persona of DatosUsuario; let i = index"
+                        [class.selected-row]="selectedRowIndex === i" (click)="onRowSelect(i, persona.cont_Id)">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ persona.nombreCompleto }}</td>
+                        <td>{{ persona.tnom_Descripcion }}</td>
+                        <td>{{ persona.unid_Nombre }}</td>
+                        <td>{{ persona.cont_FechaInicio | date:'dd/MM/yyyy HH:mm'}}</td>
+                        <td>{{ persona.fechaFinContrato | date:'dd/MM/yyyy HH:mm'}}</td>
+                        <td>{{ persona.cont_EstadoContrato}}</td>
                     </tr>
                 </tbody>
 
             </table>
 
+            <div *ngIf="showNotification" class="notification">
+                {{ notificationMessage }}
+            </div>
+
             <div class="search-section">
                 <div class="date-picker">
                     <label for="fecha-inicio">Designar Rol:</label>
-                    <select>
-                        <option value="">Seleccione</option>
-                        <option value="admin">Administrador</option>
-                        <option value="user">Usuario</option>
+                    <select id="role-select" (change)="onRolSelected($event)">
+                        <option value="">Seleccionar</option>
+                        @for (roles of vistaroles; track roles.usRo_Id) {
+                        <option [value]="roles.usRo_Id">{{ roles.usRo_Nombre }}</option>
+                        }
                     </select>
                 </div>
-                <button type="button">Guardar</button>
+                <button type="button" (click)="onSubmit()">Guardar</button>
                 <button type="button">Eliminar Rol</button>
             </div>
         </div>
@@ -139,6 +141,4 @@
             </table>
         </div>
     </div>
-
-    
 </div>

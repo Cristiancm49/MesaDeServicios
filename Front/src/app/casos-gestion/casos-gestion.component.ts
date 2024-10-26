@@ -22,11 +22,12 @@ export class CasosGestionComponent implements OnInit {
   vistadatos: (ViewIncidencia & Partial<viewpersonaoracle>)[] = [];
   isLoading = true;
   selectedRowIndex: number | null = null;
+  isRowSelected: boolean = false;
   showNotification = false;
   notificationMessage = '';
   selectedRolId = 0;
   Pasarid = 0;
-  isRowSelected: boolean = false;
+  conid= 0;
 
   constructor(
     private casoGestion: CasoGestion,
@@ -47,7 +48,7 @@ export class CasosGestionComponent implements OnInit {
         const incidencias = response.data || [];
         this.isLoading = false;
   
-        const observables = incidencias.map((incidencia: ViewIncidencia) => 
+        const observables = incidencias.map((incidencia: ViewIncidencia) =>
           this.casoGestion.personaloracle(incidencia.cont_IdSolicitante).pipe(
             map(personaResponse => {
               const persona = personaResponse.data?.[0] || {};
@@ -100,7 +101,7 @@ export class CasosGestionComponent implements OnInit {
       maxWidth: '1000px',
       height: 'auto',
       maxHeight: '90vh',
-      data: { valor: this.Pasarid }
+      data: { valor: this.Pasarid, contid: this.conid}
     });
   }
 
@@ -130,5 +131,9 @@ export class CasosGestionComponent implements OnInit {
     console.log(`Fila seleccionada: ${index}`);
     console.log(`Id de la incidencia seleccionada: ${inci_Id}`);
     this.Pasarid = inci_Id;
+    const incidenciaSeleccionada = this.vistadatos[index];
+    if (incidenciaSeleccionada) {
+      this.conid = incidenciaSeleccionada.cont_IdSolicitante;
+    }
   }
 }
