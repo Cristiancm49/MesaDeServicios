@@ -1,10 +1,10 @@
 export interface InsertDiagnostico{
-    
+
         inci_Id: number,
-        peGe_DocumentoIdentidad: number,
-        inTr_Solucionado: boolean | null,
-        inTrTiSo_Id: number,
-        inTr_Escalable: boolean | null,
-        inTr_descripcion: string
+        idContratoUsuario: number,
+        diag_DescripcionDiagnostico: string,
+        diag_Solucionado: boolean,
+        tiSo_Id: number,
+        diag_Escalable: boolean
       
 }

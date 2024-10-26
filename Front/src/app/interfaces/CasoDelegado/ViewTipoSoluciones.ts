@@ -1,5 +1,5 @@
 export interface ViewTipoSoluciones{
-    inTrTiSo_Id: number,
-    inTrTiSo_Nombre: string,
-    inTrTiSo_Descripcion: string
+    tiSo_Id: number,
+    tiSo_Nombre: string,
+    tiSo_Descripcion: string
 }

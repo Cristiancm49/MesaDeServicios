@@ -12,8 +12,8 @@ import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 })
 export class Casodelegado{
   private selectincidenciaasignada = 'https://localhost:44346/api/Incidencia/Trazabilidad/consultar-MisIncidenciasActivas';
-  private TipoSolucion = 'https://localhost:44346/api/v5/DiagnosticosIncidencia/TipoSolucionDiagnosticos';
-  private Diagnostic = 'https://localhost:44346/api/v5/DiagnosticosIncidencia';
+  private TipoSolucion = 'https://localhost:44346/api/Incidencia/Trazabilidad/consultar-TiposDeSolucion';
+  private Diagnostic = 'https://localhost:44346/api/Incidencia/Trazabilidad/generar-Diagnostico';
 
   constructor(private http: HttpClient) { }
 
@@ -24,18 +24,13 @@ export class Casodelegado{
 
 
 
-  TipoS(): Observable<ViewTipoSoluciones[]> {
-    return this.http.get<ViewTipoSoluciones[]>(`${this.TipoSolucion}`); 
+  TipoS(): Observable<ApiResponse<ViewTipoSoluciones>> {
+    return this.http.get<ApiResponse<ViewTipoSoluciones>>(`${this.TipoSolucion}`); 
   }
 
-  insertDiagnostico(Diagnostico: InsertDiagnostico): Observable<HttpResponse<any>> {
-    const url = `${this.Diagnostic}/GenerarDiagnosticos`;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(url, Diagnostico, { 
-      headers: headers, 
-      observe: 'response', 
-      responseType: 'text' 
-    });
+
+  insertDiagnostico(Diagnostico: InsertDiagnostico): Observable<any> {
+    return this.http.post(this.Diagnostic, Diagnostico);
   }
 
 

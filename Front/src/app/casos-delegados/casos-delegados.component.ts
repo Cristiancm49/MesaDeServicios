@@ -10,8 +10,10 @@ import { Documento } from '../DatosLogin/User';
 import { InsertDiagnostico } from '../interfaces/CasoDelegado/InsertDiagnostico';
 import { ViewEncapsulation } from '@angular/core';
 import { DatosUser } from '../interfaces/CasoRegistro/DatosUser';
+import { viewpersonaoracle } from '../interfaces/CasoGestión/personaoracle';
 import { UserDataStateService } from '../core/Datos/datos-usuario.service';
-import { Subscription } from 'rxjs';
+import { CasoGestion } from '../core/services/caso-gestion.service';
+import { forkJoin, map, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-casos-delegados',
@@ -25,6 +27,7 @@ import { Subscription } from 'rxjs';
 
 export class CasosDelegadosComponent {
 
+  vistadatos: (ViewIncidenciaAsignada & Partial<viewpersonaoracle>)[] = [];
   vistaasignada: ViewIncidenciaAsignada[] = [];
   Tiposolucion: ViewTipoSoluciones[] = [];
   DatosUsuario: DatosUser[] = [];
@@ -42,15 +45,15 @@ export class CasosDelegadosComponent {
 
   diagnotico: InsertDiagnostico = {
     inci_Id: 0,
-    peGe_DocumentoIdentidad: 0,
-    inTr_Solucionado: null,
-    inTrTiSo_Id: 0,
-    inTr_Escalable: null,
-    inTr_descripcion: ""
+    idContratoUsuario: 0,
+    diag_DescripcionDiagnostico: '',
+    diag_Solucionado: true,
+    tiSo_Id: 0,
+    diag_Escalable: true
   }
 
 
-  constructor(private casodelegado: Casodelegado,  private cdr: ChangeDetectorRef, private userDataState: UserDataStateService) { }
+  constructor(private casodelegado: Casodelegado,  private cdr: ChangeDetectorRef, private userDataState: UserDataStateService, private casoGestion: CasoGestion,) { }
 
   ngOnInit() {
     this.setupUserData();
@@ -74,7 +77,6 @@ export class CasosDelegadosComponent {
   }
 
   private setupUserData(): void {
-    // Nos suscribimos al loading state
     this.userDataState.loading$.subscribe(
       isLoading => this.isLoading = isLoading
     );
@@ -92,35 +94,55 @@ export class CasosDelegadosComponent {
       }
     });
 
-    // Cargamos los datos solo si no están ya cargados
     if (!this.userDataState.currentUserData) {
       this.userDataState.loadUserData(Documento);
     }
   }
 
-
   loadDatosIncidencia() {
     this.isLoading = true;
     console.log('Requesting DatosUsuario...');
+    
     this.casodelegado.selectIncidenciaasignada(this.DatosUsuario[0].cont_Id).subscribe({
       next: (response) => {
-        this.vistaasignada = response.data || [];
+        const incidencias = response.data || [];
         this.isLoading = false;
-        console.log('Datos Incidencia asignada:', this.vistaasignada);
+  
+        const observables = incidencias.map((incidencia: ViewIncidenciaAsignada) =>
+          this.casoGestion.personaloracle(incidencia.contratoSolicitante).pipe(
+            map(personaResponse => {
+              const persona = personaResponse.data?.[0] || {};
+              return {
+                ...incidencia,
+                nombreCompleto: persona.nombreCompleto || '',
+                tnom_Descripcion: persona.tnom_Descripcion || '',
+              };
+            })
+          )
+        );
+  
+        forkJoin(observables).subscribe({
+          next: (result) => {
+            this.vistadatos = result;
+            console.log('Datos combinados:', this.vistadatos);
+          },
+          error: (error) => console.error('Error al combinar datos:', error)
+        });
       },
       error: (error) => {
-        console.error('Sin datos de Incidencia asignada:', error);
+        console.error('Sin datos de Incidencia:', error);
         this.isLoading = false;
       }
     });
   }
 
+
   loadTipoSolucion() {
     this.isLoading = true;
     console.log('Requesting Tipos de solución');
     this.casodelegado.TipoS().subscribe({
-      next: (data) => {
-        this.Tiposolucion = data;
+      next: (response) => {
+        this.Tiposolucion = response.data || [];;
         this.isLoading = false;
         console.log('Datos Tipos Full:', this.Tiposolucion);
       },
@@ -134,19 +156,17 @@ export class CasosDelegadosComponent {
   onTipoSolucionSelected(event: any) {
     this.selectedTipoId = parseInt(event.target.value) || 0;
     console.log('Tipo seleccionada:', this.selectedTipoId);
-    this.diagnotico.inTrTiSo_Id = this.selectedTipoId;
+    this.diagnotico.tiSo_Id = this.selectedTipoId;
   }
 
-  onRowSelectP(usua_Id: number, item: any): void {
-    this.selectedRowIndexP = usua_Id; // Guarda el usua_Id seleccionado
-    console.log(`Usuario seleccionado con usua_Id: ${usua_Id}`);
-    console.log('Datos del usuario seleccionado:', item);
+  onRowSelectP(inci_Id: number, item: any): void {
+    this.selectedRowIndexP = inci_Id; // Guarda el usua_Id seleccionado
+    console.log(`Usuario seleccionado con inci_Id: ${inci_Id}`);
     this.diagnotico.inci_Id = this.selectedRowIndexP; // Muestra los datos del usuario seleccionado el usua_Id a InsertAsignacion sin modificarlo
   }
 
   cargarFechaHora() {
     const now = new Date();
-
     // Reducimos las 5 horas para ajustar a la zona horaria local
     const adjustedDate = new Date(now.getTime() - (5 * 60 * 60 * 1000));
 
@@ -169,7 +189,7 @@ export class CasosDelegadosComponent {
   }
 
   onSubmit() {
-    if (this.diagnotico.inTr_Solucionado === null) {
+    if (this.diagnotico.diag_Solucionado === null) {
       this.showNotification = true;
       this.notificationMessage = 'Por favor, seleccione si la incidencia fue solucionada o no.';
       setTimeout(() => {
@@ -178,7 +198,7 @@ export class CasosDelegadosComponent {
       return;
     }
 
-    if (this.diagnotico.inTr_Solucionado && this.diagnotico.inTrTiSo_Id === 0) {
+    if (this.diagnotico.diag_Solucionado && this.diagnotico.tiSo_Id === 0) {
       this.showNotification = true;
       this.notificationMessage = 'Por favor, seleccione un tipo de solución.';
       setTimeout(() => {
@@ -188,9 +208,9 @@ export class CasosDelegadosComponent {
     }
 
     console.log("Id_Incidencia", this.diagnotico.inci_Id);
-    this.diagnotico.peGe_DocumentoIdentidad = Documento;
-    console.log("peGe_Documento", this.diagnotico.peGe_DocumentoIdentidad);
-    console.log("Escalable", this.diagnotico.inTr_Escalable);
+    this.diagnotico.idContratoUsuario = this.DatosUsuario[0].cont_Id;
+    console.log("idcontrato", this.diagnotico.idContratoUsuario);
+    console.log("Escalable", this.diagnotico.diag_Escalable);
     console.log("Datos a insertar", this.diagnotico);
 
     this.casodelegado.insertDiagnostico(this.diagnotico).subscribe({

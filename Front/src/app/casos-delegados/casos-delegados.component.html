@@ -12,9 +12,7 @@
             <tr>
               <th>No.</th>
               <th>Solicitante</th>
-              <th>Documento Identidad</th>
               <th>Cargo</th>
-              <th>Dependencia</th>
               <th>Categoría Técnica</th>
               <th>Área Técnica</th>
               <th>Descripción</th>
@@ -23,14 +21,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let asignada of vistaasignada; let i = index"
+            <tr *ngFor="let asignada of vistadatos; let i = index"
               [class.selected-row]="selectedRowIndexP === asignada.inci_Id"
               (click)="onRowSelectP(asignada.inci_Id, asignada)">
-              <td>{{ asignada.inci_Id }}</td>
-              <td>{{ asignada.nombreSolicitante }}</td>
-              <td>{{ asignada.documentoSolicitante }}</td>
-              <td>{{ asignada.cargoSolicitante }}</td>
-              <td>{{ asignada.nombreDependencia }}</td>
+              <td>{{ i + 1}}</td>
+              <td>{{ asignada.nombreCompleto }}</td>
+              <td>{{ asignada.tnom_Descripcion }}</td>
               <td>{{ asignada.nombreCategoria }}</td>
               <td>{{ asignada.areaTecnica }}</td>
               <td>{{ asignada.inci_Descripcion }}</td>
@@ -53,11 +49,11 @@
             <label>¿Incidencia Solucionada?</label>
             <div class="radio-group">
               <label>
-                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="true">
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.diag_Solucionado" [value]="true">
                 <span>Sí</span>
               </label>
               <label>
-                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.inTr_Solucionado" [value]="false">
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.diag_Solucionado" [value]="false">
                 <span>No</span>
               </label>
             </div>
@@ -65,10 +61,10 @@
           <div class="form-group">
             <label for="Tipo">Tipo de solución:</label>
             <select id="Tipo" name="Tipo" (change)="onTipoSolucionSelected($event)"
-              [disabled]="!diagnotico.inTr_Solucionado">
+              [disabled]="!diagnotico.diag_Solucionado">
               <option value="">Seleccionar</option>
-              @for (tipo of Tiposolucion; track tipo.inTrTiSo_Id) {
-              <option [value]="tipo.inTrTiSo_Id">{{ tipo.inTrTiSo_Nombre }}</option>
+              @for (tipo of Tiposolucion; track tipo.tiSo_Id) {
+              <option [value]="tipo.tiSo_Id">{{ tipo.tiSo_Nombre }}</option>
               }
             </select>
           </div>
@@ -76,11 +72,11 @@
             <label>¿Escalable?</label>
             <div class="radio-group">
               <label>
-                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="true">
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.diag_Escalable" [value]="true">
                 <span>Sí</span>
               </label>
               <label>
-                <input type="radio" name="escalable" [(ngModel)]="diagnotico.inTr_Escalable" [value]="false">
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.diag_Escalable" [value]="false">
                 <span>No</span>
               </label>
             </div>
@@ -89,7 +85,7 @@
         <div class="right-column">
           <div class="form-group">
             <label for="resolucion-caso">Resolución de la incidencia:</label>
-            <textarea id="resolucion-caso" name="resolucion-caso" [(ngModel)]="diagnotico.inTr_descripcion"></textarea>
+            <textarea id="resolucion-caso" name="resolucion-caso" [(ngModel)]="diagnotico.diag_DescripcionDiagnostico"></textarea>
           </div>
         </div>
       </div>
