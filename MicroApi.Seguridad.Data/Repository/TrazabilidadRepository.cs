@@ -35,8 +35,8 @@ namespace MicroApi.Seguridad.Data.Repository
                                          let rn = (from subIt in modelContext.IncidenciasTrazabilidad
                                                    where subIt.Inci_Id == it.Inci_Id
                                                    orderby subIt.InTr_FechaGenerada descending
-                                                   select subIt).Take(1).Count() // Contar hasta el primer elemento
-                                         where rn == 1
+                                                   select subIt).FirstOrDefault()
+                                         where rn != null && rn.InTr_Revisado == true // Solo incluir si InTr_Revisado es 1
                                          select new
                                          {
                                              it.Inci_Id,
@@ -52,9 +52,9 @@ namespace MicroApi.Seguridad.Data.Repository
                                                 join ca in modelContext.IncidenciasAreaTecnicaCategoria on at.CaAr_Id equals ca.CaAr_Id
                                                 join ip in modelContext.IncidenciasPrioridad on i.InPr_Id equals ip.InPr_Id
                                                 where (i.Inci_EstadoActual == 3 || i.Inci_EstadoActual == 4 ||
-                                                   i.Inci_EstadoActual == 5 || i.Inci_EstadoActual == 6 ||
-                                                   i.Inci_EstadoActual == 8) // Filtrar por estados 3, 4, 5, 6, 8
-                                                    && u.Cont_Id == IdContrato // Filtrar por documento de identidad
+                                                       i.Inci_EstadoActual == 5 || i.Inci_EstadoActual == 6 ||
+                                                       i.Inci_EstadoActual == 8) // Filtrar por estados 3, 4, 5, 6, 8
+                                                       && u.Cont_Id == IdContrato // Filtrar por contrato del usuario
                                                 orderby i.Inci_FechaRegistro ascending
                                                 select new
                                                 {
