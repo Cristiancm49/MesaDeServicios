@@ -10,7 +10,7 @@
               <th>No.</th>
               <th>Fecha de Registro</th>
               <th>Descripción</th>
-              <th>Solicitante</th>
+              <th>Prioridad</th>
               <th>Categoría Técnica</th>
               <th>Área Técnica</th>
               <th>Estado Actual</th>
@@ -49,7 +49,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let traza of vistatrazabilidad; let i = index">
-              <td>{{ i + 1 }}</td>
+              <td>{{ vistatrazabilidad.length - i }}</td>
               <td>{{ traza.inTr_FechaGenerada }}</td>
               <td>{{ traza.trEs_Nombre }}</td>
               <td>{{ traza.trEs_Descripcion }}</td>
