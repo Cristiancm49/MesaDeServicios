@@ -21,7 +21,7 @@ namespace MicroApi.Seguridad.Application.Services
             return await usuarioRepository.ConsultarUsuarioRolAsync();
         }
 
-        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int UsRoId)
+        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int? UsRoId)
         {
             return await usuarioRepository.ConsultarUsuariosAsync(UsRoId);
         }
@@ -29,6 +29,11 @@ namespace MicroApi.Seguridad.Application.Services
         public async Task<RespuestaGeneral> InsertarUsuarioAsync(InsertarUsuarioDTO dto)
         {
             return await usuarioRepository.InsertarUsuarioAsync(dto);
+        }
+
+        public async Task<RespuestaGeneral> ActualizarUsuarioAsync(ActualizarUsuarioDTO dto)
+        {
+            return await usuarioRepository.ActualizarUsuarioAsync(dto);
         }
     }
 }

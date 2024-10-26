@@ -65,21 +65,31 @@ namespace MicroApi.Seguridad.Data.Repository
             return respuesta;
         }
 
-        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int UsRoId)
+        public async Task<RespuestaGeneral> ConsultarUsuariosAsync(int? UsRoId)
         {
             var respuesta = new RespuestaGeneral();
 
             try
             {
-                var usuarios = await (from us in modelContext.Usuarios
-                                      where us.UsRo_Id == UsRoId && us.Usua_Estado == true
-                                   select new
-                                   {
-                                       us.Usua_Id,
-                                       us.Cont_Id,
-                                       us.UsRo_Id,
-                                       us.Usua_PromedioEvaluacion
-                                   }).ToListAsync();
+                // Consulta de usuarios con estado activo
+                var query = modelContext.Usuarios.AsQueryable();
+
+                // Si se proporciona UsRo_Id, filtrar por rol
+                if (UsRoId.HasValue)
+                {
+                    query = query.Where(us => us.UsRo_Id == UsRoId.Value);
+                }
+
+                var usuarios = await query
+                    .Where(us => us.Usua_Estado == true)
+                    .Select(us => new
+                    {
+                        us.Usua_Id,
+                        us.Cont_Id,
+                        us.UsRo_Id,
+                        us.Usua_PromedioEvaluacion
+                    })
+                    .ToListAsync();
 
                 if (usuarios.Any())
                 {
@@ -93,7 +103,6 @@ namespace MicroApi.Seguridad.Data.Repository
                     respuesta.Answer = "No se encontraron usuarios con este rol.";
                     respuesta.StatusCode = 404;
                 }
-
             }
             catch (Exception ex)
             {
@@ -109,6 +118,7 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             return respuesta;
         }
+
 
         public async Task<RespuestaGeneral> InsertarUsuarioAsync(InsertarUsuarioDTO dto)
         {
@@ -147,6 +157,61 @@ namespace MicroApi.Seguridad.Data.Repository
             {
                 respuesta.Status = "Error";
                 respuesta.Answer = $"Error al insertar usuario: {ex.Message}";
+                respuesta.StatusCode = 500;
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message;
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString();
+            }
+            return respuesta;
+        }
+
+        public async Task<RespuestaGeneral> ActualizarUsuarioAsync(ActualizarUsuarioDTO dto)
+        {
+            var respuesta = new RespuestaGeneral();
+            var errorMessage = new SqlParameter("@ErrorMessage", SqlDbType.NVarChar, 255)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            try
+            {
+                // Parámetro obligatorio
+                var usuaIdParam = new SqlParameter("@Usua_Id", dto.Usua_Id);
+
+                // Parámetros opcionales
+                var contIdParam = new SqlParameter("@Cont_Id", (object?)dto.Cont_Id ?? DBNull.Value);
+                var usRoIdParam = new SqlParameter("@UsRo_Id", (object?)dto.UsRo_Id ?? DBNull.Value);
+                var usuaEstadoParam = new SqlParameter("@Usua_Estado", (object?)dto.Usua_Estado ?? DBNull.Value);
+
+                await modelContext.Database.ExecuteSqlRawAsync(
+                    "EXEC [dbo].[ActualizarUsuario] @Usua_Id, @Cont_Id, @UsRo_Id, @Usua_Estado, @ErrorMessage OUTPUT",
+                    usuaIdParam,
+                    contIdParam,
+                    usRoIdParam,
+                    usuaEstadoParam,
+                    errorMessage);
+
+                if (!string.IsNullOrEmpty(errorMessage.Value?.ToString()))
+                {
+                    respuesta.Status = "Error";
+                    respuesta.Answer = errorMessage.Value.ToString();
+                    respuesta.StatusCode = 400; // Código de error
+                    respuesta.Errors.Add(respuesta.Answer);
+                }
+                else
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Answer = "Usuario actualizado correctamente.";
+                    respuesta.StatusCode = 200;
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error al actualizar usuario: {ex.Message}";
                 respuesta.StatusCode = 500;
                 respuesta.Errors.Add(ex.Message);
                 respuesta.LocalizedMessage = ex.InnerException?.Message;

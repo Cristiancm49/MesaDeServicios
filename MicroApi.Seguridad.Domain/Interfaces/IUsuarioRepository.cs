@@ -11,8 +11,8 @@ namespace MicroApi.Seguridad.Domain.Interfaces
     public interface IUsuarioRepository
 	{
         Task<RespuestaGeneral> ConsultarUsuarioRolAsync();
-        Task<RespuestaGeneral> ConsultarUsuariosAsync(int UsRoId);
+        Task<RespuestaGeneral> ConsultarUsuariosAsync(int? UsRoId);
         Task<RespuestaGeneral> InsertarUsuarioAsync(InsertarUsuarioDTO dto);
+        Task<RespuestaGeneral> ActualizarUsuarioAsync(ActualizarUsuarioDTO dto);
     }
 }
-
