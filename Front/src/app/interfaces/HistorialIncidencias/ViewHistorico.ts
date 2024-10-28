@@ -1,16 +1,12 @@
 export interface ViewHistorico {
     inci_Id: number;
-    solicitante_NombreCompleto: string;
-    solicitante_DocumentoIdentidad: number;
-    cont_Cargo: string;
-    unid_Nombre: string;
-    unid_Telefono: number;
-    categoriaAreaTecnica_Nombre: string;
-    areaTecnica_Nombre: string;
+    idContratoSolicitante: number;
     inci_Descripcion: string;
-    inci_FechaRegistro: string;
-    admin_NombreCompleto: string;
-    inci_ValorTotal: number;
-    prioridad_Tipo: string;
-    inci_UltimoEstado: number;
+    inci_FechaRegistro: Date;
+    caAr_Nombre: string;
+    arTe_Nombre: string;
+    nombrePrioridad: string;
+    idContratoAdmin: number | null;
+    inTr_FechaGenerada: Date;
+    inci_EstadoActual: number;
 }

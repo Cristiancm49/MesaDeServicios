@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ViewIncidenciaSolicitada } from '../../interfaces/CasoActivo/ViewIncidenciaSolicitada';
 import { ViewTrazabilidadSolicitante } from '../../interfaces/CasoActivo/Trazabilidad-Solicitante';
-import { ValidarEstado } from '../../interfaces/CasoActivo/ValidarEstado';
 import { EvaluarIncidencia } from '../../interfaces/CasoActivo/EvaluarIndicencia';
 import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 
@@ -14,8 +13,8 @@ import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 export class Casoactivo{
   private selectincidenciasolicitada = 'https://localhost:44346/api/Incidencia/Historico/consultar-MisSolicitudes';
   private selecttrazabilidad = 'https://localhost:44346/api/Incidencia/Seguimiento/consultar-TrazabilidadIncidencias';
-  private Validar = 'https://localhost:44346/api/v5/SolicitanteIncidencia/ValidarEstadoResuelto';
-  private Evaluación = 'https://localhost:44346/api/v5/SolicitanteIncidencia';
+  private Validar = 'https://localhost:44346/api/Incidencia/Gestion/consultar-estadoResuelto';
+  private Evaluación = 'https://localhost:44346/api/Incidencia/Gestion/evaluar_cerrar-Incidencia';
   
   constructor(private http: HttpClient) { }
 
@@ -28,19 +27,13 @@ export class Casoactivo{
     return this.http.get<ApiResponse<ViewTrazabilidadSolicitante>>(`${this.selecttrazabilidad}/${inci_id}`);
   }
 
-  ValidarIndicencia(inci_id: number): Observable<ValidarEstado[]> {
-    return this.http.get<ValidarEstado[]>(`${this.Validar}?inci_id=${inci_id}`);
+  ValidarIndicencia(inci_id: number): Observable<ApiResponse<string>> {
+    return this.http.get<ApiResponse<string>>(`${this.Validar}/${inci_id}`);
   }
+  
 
-  enviarEvaluacion(evaluacion: EvaluarIncidencia): Observable<HttpResponse<any>> {
-    const url = `${this.Evaluación}/CerrarIncidencia(SinActualizarPromedioUsuario)`;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    return this.http.post(url, evaluacion, { 
-      headers: headers, 
-      observe: 'response', 
-      responseType: 'text' 
-    });
+  enviarEvaluacion(evaluacion: EvaluarIncidencia): Observable<any> {
+    return this.http.post(this.Evaluación, evaluacion);
   }
 
 

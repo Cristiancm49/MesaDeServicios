@@ -6,145 +6,58 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Nombre Solicitante</th>
+                        <th>Nombre Encargado</th>
                         <th>Cargo</th>
-                        <th>Dependencia</th>
-                        <th>Fecha Solicitud</th>
+                        <th>Fecha Registro</th>
+                        <th>Fecha Diagnóstico</th>
                         <th>Prioridad</th>
-                        <th>Encargado</th>
-                        <th>Fecha Último Reporte</th>
-                        <th>Reporte</th>
+                        <th>Estado</th>
+                        <th>Revisado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="report-button">Revisar</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>2</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="report-button">Revisar</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>3</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="report-button">Revisar</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>4</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="report-button">Revisar</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>5</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="report-button">Revisar</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>6</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="report-button">Revisar</button></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>7</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button type="button" class="report-button">Revisar</button></td>
+                    <tr *ngFor="let asignada of vistadatos; let i = index"
+                        [class.selected-row]="selectedRowIndexP === asignada.inci_Id"
+                        (click)="onRowSelectP(asignada.inci_Id, asignada)">
+                        <td>{{ i + 1}}</td>
+                        <td>{{ asignada.nombreCompleto }}</td>
+                        <td>{{ asignada.tnom_Descripcion }}</td>
+                        <td>{{ asignada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm'}}</td>
+                        <td>{{ asignada.ultimaFechaReporte | date:'dd/MM/yyyy HH:mm'}}</td>
+                        <td>{{ asignada.nombrePrioridad }}</td>
+                        <td>{{ asignada.estado }}</td>
+                        <td>{{ asignada.revisado }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div *ngIf="mostrarDefault">
             <div class="filter-container">
-                
                 <h1>REVISAR INCIDENCIA</h1>
                 <table class="cases-table">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Diagnóstico Inicial</th>
-                        <th>Solucionado</th>
-                        <th>Escalable</th>
-                        <th>Resolución</th>
-                    </tr>
-                    <tr>
-                        <td>01/01/2000</td>
-                        <td>Falla disco duro</td>
-                        <td>Si</td>
-                        <td>No</td>
-                        <td>Remplazo de pieza</td>
-                    </tr>
-                    <tr>
-                        <td>01/01/2000</td>
-                        <td>Falla disco duro</td>
-                        <td>Si</td>
-                        <td>No</td>
-                        <td>Remplazo de pieza</td>
-                    </tr>
-                    <tr>
-                        <td>01/01/2000</td>
-                        <td>Falla disco duro</td>
-                        <td>Si</td>
-                        <td>No</td>
-                        <td>Remplazo de pieza</td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Fecha reporte</th>
+                            <th>Descripción</th>
+                            <th>solucionado</th>
+                            <th>Tipo de solución</th>
+                            <th>Escalable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let reporte of vistareporte; let i = index">
+                            <td>{{ i + 1}}</td>
+                            <td>{{ reporte.inTr_FechaGenerada | date:'dd/MM/yyyy HH:mm'}}</td>
+                            <td>{{ reporte.diag_Descripcion}}</td>
+                            <td>{{ reporte.diag_Solucionado }}</td>
+                            <td>{{ reporte.tiSo_Nombre}}</td>
+                            <td>{{ reporte.diag_Escalable }}</td>
+                        </tr>
+                    </tbody>
                 </table>
                 <div class="buttons">
-                    <button >Aceptar</button>
+                    <button type="button" (click)="onSubmit()">Aceptar</button>
                     <button (click)="mostrarSeccion('escalar')">Escalar</button>
                     <button (click)="mostrarSeccion('editar')">Editar</button>
                     <button (click)="mostrarSeccion('devolver')">Devolver</button>

@@ -19,27 +19,27 @@
                     <tr>
                         <th>No.</th>
                         <th>Fecha de Registro</th>
+                        <th>Fecha de Cierre</th>
                         <th>Descripción</th>
                         <th>Solicitante</th>
                         <th>Categoría Técnica</th>
                         <th>Área Técnica</th>
-                        <th>Valor Total</th>
                         <th>Prioridad</th>
                         <th>Estado Actual</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let historico of vistahistorico; let i = index">
+                    <tr *ngFor="let historico of vistadatos; let i = index">
                         <td>{{ i + 1 }}</td>
                         <td>{{ historico.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ historico.inTr_FechaGenerada| date:'dd/MM/yyyy HH:mm' }}</td>
                         <td>{{ historico.inci_Descripcion }}</td>
-                        <td>{{ historico.solicitante_NombreCompleto }}</td>
-                        <td>{{ historico.categoriaAreaTecnica_Nombre }}</td>
-                        <td>{{ historico.areaTecnica_Nombre }}</td>
-                        <td>{{ historico.inci_ValorTotal | currency }}</td>
-                        <td>{{ historico.prioridad_Tipo }}</td>
-                        <td>{{ historico.inci_UltimoEstado }}</td>
+                        <td>{{ historico.nombreCompleto }}</td>
+                        <td>{{ historico.caAr_Nombre }}</td>
+                        <td>{{ historico.arTe_Nombre }}</td>
+                        <td>{{ historico.nombrePrioridad }}</td>
+                        <td>{{ historico.inci_EstadoActual }}</td>
                         <td>
                             <button type="button" class="report-button" (click)="verReporte(historico.inci_Id)">Ver Reporte</button>
                         </td>

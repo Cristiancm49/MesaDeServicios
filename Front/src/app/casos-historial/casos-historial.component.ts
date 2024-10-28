@@ -5,8 +5,11 @@ import { Historico } from '../core/services/Historico.service';
 import { HttpResponse } from '@angular/common/http';
 import { ViewEncapsulation } from '@angular/core';
 import { Documento } from '../DatosLogin/User';
+import { CasoGestion } from '../core/services/caso-gestion.service';
 import { TrazabilidadHistorico} from '../interfaces/HistorialIncidencias/ViewTrazabilidad';
 import { ViewHistorico } from '../interfaces/HistorialIncidencias/ViewHistorico';
+import { viewpersonaoracle } from '../interfaces/CasoGestión/personaoracle';
+import { forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-casos-historial',
@@ -18,33 +21,54 @@ import { ViewHistorico } from '../interfaces/HistorialIncidencias/ViewHistorico'
 })
 export class CasosHistorialComponent {
 
-  vistahistorico: ViewHistorico[] = [];
   vistatrazabilidad: TrazabilidadHistorico[] = [];
+  vistadatos: (ViewHistorico & Partial<viewpersonaoracle>)[] = [];
   showNotification = false;
   notificationMessage = '';
   isLoading = true;
 
 
-  constructor(private historico: Historico){}
+  constructor(private historico: Historico,
+    private casoGestion: CasoGestion
+  ){}
 
   ngOnInit() {
-    this.loadDatosIncidencias();
+    this.loadDatosIncidencia();
     this.loadDatosTrazabilidad(0);
-
   }
 
-  loadDatosIncidencias() {
+  loadDatosIncidencia() {
     this.isLoading = true;
-    console.log('Requesting Datos Incidencias...');
+    console.log('Requesting DatosUsuario...');
     
     this.historico.selectIncidenciaHistorica().subscribe({
-      next: (data) => {
-        this.vistahistorico = data;
+      next: (response) => {
+        const incidencias = response.data || [];
         this.isLoading = false;
-        console.log('Datos Incidencias: ', this.vistahistorico);
+  
+        const observables = incidencias.map((incidencia: ViewHistorico) =>
+          this.casoGestion.personaloracle(incidencia.idContratoSolicitante).pipe(
+            map(personaResponse => {
+              const persona = personaResponse.data?.[0] || {};
+              return {
+                ...incidencia,
+                nombreCompleto: persona.nombreCompleto || '',
+                tnom_Descripcion: persona.tnom_Descripcion || ''
+              };
+            })
+          )
+        );
+  
+        forkJoin(observables).subscribe({
+          next: (result) => {
+            this.vistadatos = result;
+            console.log('Datos combinados:', this.vistadatos);
+          },
+          error: (error) => console.error('Error al combinar datos:', error)
+        });
       },
       error: (error) => {
-        console.error('Sin Datos de Incidencias:', error);
+        console.error('Sin datos de Incidencia:', error);
         this.isLoading = false;
       }
     });
