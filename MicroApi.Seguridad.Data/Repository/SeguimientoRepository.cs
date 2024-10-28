@@ -42,6 +42,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                          join estado in modelContext.IncidenciasTrazabilidadEstado on i.Inci_EstadoActual equals estado.TrEs_Id
 
                                          where i.Inci_EstadoActual != 1 && i.Inci_EstadoActual != 2 && i.Inci_EstadoActual != 9
+                                         && it.InTr_Revisado == false
                                          && it.InTr_FechaGenerada == (from sub_it in modelContext.IncidenciasTrazabilidad
                                                                       where sub_it.Inci_Id == i.Inci_Id
                                                                       select sub_it.InTr_FechaGenerada).Max() // Subconsulta para obtener la fecha máxima
@@ -103,6 +104,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                             join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id into rolGroup
                                             from ur in rolGroup.DefaultIfEmpty()
                                             where it.Inci_Id == incidenciaId
+                                            && it.InTr_Revisado == false
                                             orderby it.InTr_FechaGenerada descending
                                             select new
                                             {
