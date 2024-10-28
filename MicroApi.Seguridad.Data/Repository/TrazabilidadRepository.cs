@@ -66,8 +66,7 @@ namespace MicroApi.Seguridad.Data.Repository
                                                     i.Inci_FechaRegistro,
                                                     ip.InPr_Nombre,
                                                     ContratoUsuarioAsignado = u.Cont_Id
-                                                }).ToListAsync();
-
+                                                }).Distinct().ToListAsync();
 
                 if (incidenciasActivas.Any())
                 {
