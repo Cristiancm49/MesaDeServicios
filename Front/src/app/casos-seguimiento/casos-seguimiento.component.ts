@@ -6,8 +6,10 @@ import { Seguimiento } from '../core/services/Seguimiento.service';
 import { CasoGestion } from '../core/services/caso-gestion.service';
 import { viewpersonaoracle } from '../interfaces/CasoGestión/personaoracle';
 import { ViewReporte } from '../interfaces/CasoSeguimiento/Viewreportes';
-import { Insertaceptacion } from '../interfaces/CasoSeguimiento/Aceptar';
+import { ModalRevisarIncidenciaComponent } from '../Modales/modal-revisar-incidencia/modal-revisar-incidencia.component';
+
 import { forkJoin, map } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-casos-seguimiento',
@@ -26,13 +28,13 @@ export class CasosSeguimientoComponent implements OnInit{
   vistadatos: (ViewSeguimiento & Partial<viewpersonaoracle>)[] = [];
   vistareporte: ViewReporte[] = [];
   selectedRowIndexP: number | null = null;
+  Pasarid = 0;
 
-  aceptado: Insertaceptacion = {
-    inci_Id: 0
-  }
+  
 
   constructor(private casoseguimieto: Seguimiento,
-    private casoGestion: CasoGestion
+    private casoGestion: CasoGestion,
+    private _matDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -77,40 +79,26 @@ export class CasosSeguimientoComponent implements OnInit{
     });
   }
 
-  loadReporte(Idince: number) {
-    this.isLoading = true;
-    console.log('Requesting Tipos de solución');
-    this.casoseguimieto.selectdiagnostico(Idince).subscribe({
-      next: (response) => {
-        this.vistareporte = response.data || [];;
-        this.isLoading = false;
-        console.log('Datos Reporte Full:', this.vistareporte);
-      },
-      error: (error) => {
-        console.error('Sin datos de Reportes:', error);
-        this.isLoading = false;
-      }
-    });
-  }
-
   onRowSelectP(inci_Id: number, item: any): void {
     this.selectedRowIndexP = inci_Id; // Guarda el usua_Id seleccionado
     console.log(`Usuario seleccionado con inci_Id: ${inci_Id}`);
-    this.aceptado.inci_Id = this.selectedRowIndexP;
-    this.loadReporte(this.selectedRowIndexP);
+    this.Pasarid=this.selectedRowIndexP;
+    this.abrirModalRevisar();
   }
 
-  onSubmit() {
-    this.casoseguimieto.insertDiagnostico(this.aceptado).subscribe({
-      next: (response) => {
-        console.log('Aceptación insertado con éxito:', response);
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
-      },
-      error: (error) => {
-        console.error('Error al insertar la aceptación:', error);
-      }
+  
+
+  abrirModalRevisar(): void {
+    const dialogRef = this._matDialog.open(ModalRevisarIncidenciaComponent, {
+      width: '80%',
+      maxWidth: '1000px',
+      height: 'auto',
+      maxHeight: '90vh',
+      data: { valor: this.Pasarid }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadDatosIncidencia();
     });
   }
 

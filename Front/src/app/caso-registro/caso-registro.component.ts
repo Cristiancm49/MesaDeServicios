@@ -45,7 +45,6 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loadAreasTec(0);
     this.setupUserData(); // Nuevo método para configurar los datos del usuario
     this.loadCategorias();
     this.cargarFechaHora();
@@ -124,6 +123,7 @@ export class CasoRegistroComponent implements OnInit, OnDestroy {
   onCategoriaSelected(event: any) {
     this.selectedCategoriaId = parseInt(event.target.value) || 0;
     console.log('Categoría seleccionada:', this.selectedCategoriaId);
+    this.loadAreasTec(this.selectedCategoriaId);
     this.incidencia.areaTecnica = 0;
     this.areasTec = [];
     console.log('dato restablecido', this.incidencia.areaTecnica);

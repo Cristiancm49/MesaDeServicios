@@ -31,57 +31,6 @@
                 </tbody>
             </table>
         </div>
-        <div *ngIf="mostrarDefault">
-            <div class="filter-container">
-                <h1>REVISAR INCIDENCIA</h1>
-                <table class="cases-table">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Fecha reporte</th>
-                            <th>Descripción</th>
-                            <th>solucionado</th>
-                            <th>Tipo de solución</th>
-                            <th>Escalable</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let reporte of vistareporte; let i = index">
-                            <td>{{ i + 1}}</td>
-                            <td>{{ reporte.inTr_FechaGenerada | date:'dd/MM/yyyy HH:mm'}}</td>
-                            <td>{{ reporte.diag_Descripcion}}</td>
-                            <td>{{ reporte.diag_Solucionado }}</td>
-                            <td>{{ reporte.tiSo_Nombre}}</td>
-                            <td>{{ reporte.diag_Escalable }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="buttons">
-                    <button type="button" (click)="onSubmit()">Aceptar</button>
-                    <button (click)="mostrarSeccion('escalar')">Escalar</button>
-                    <button (click)="mostrarSeccion('editar')">Editar</button>
-                    <button (click)="mostrarSeccion('devolver')">Devolver</button>
-                    <button (click)="mostrarSeccion('default')">Cancelar</button>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="mostrarEscalar">
-            <div class="filter-container">
-                <h1>REVISAR INCIDENCIA</h1>
-                <div class="filter-role-escalar">
-                    <label for="role-select">Seleccionar Dependencia a Escalar:</label>
-                    <select id="role-select">
-                        <option>Seleccione</option>
-                        <option value="admin">Biblioteca</option>
-                        <option value="user">Registro y Control</option>
-                    </select>
-                </div>
-                <div class="buttons">
-                    <button (click)="mostrarSeccion('default')">Enviar</button>
-                    <button (click)="mostrarSeccion('default')">Cancelar</button>
-                </div>
-            </div>
-        </div>
         <div *ngIf="mostrarEditar">
             <div class="filter-container">
                 <h1>REVISAR INCIDENCIA</h1>
