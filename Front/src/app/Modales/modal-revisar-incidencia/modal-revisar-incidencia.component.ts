@@ -7,6 +7,8 @@ import { Seguimiento } from '../../core/services/Seguimiento.service';
 import { viewpersonaoracle } from '../../interfaces/CasoGestión/personaoracle';
 import { ViewReporte } from '../../interfaces/CasoSeguimiento/Viewreportes';
 import { Insertaceptacion } from '../../interfaces/CasoSeguimiento/Aceptar';
+import { ModalEscalarInternoComponent } from '../modal-escalar-interno/modal-escalar-interno.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-modal-revisar-incidencia',
@@ -30,7 +32,7 @@ export class ModalRevisarIncidenciaComponent {
   valorRecibido: any;
   conid: any;
 
-  constructor(public matDialogRef: MatDialogRef<ModalRevisarIncidenciaComponent>, private casoseguimieto: Seguimiento,
+  constructor(public matDialogRef: MatDialogRef<ModalRevisarIncidenciaComponent>, private casoseguimieto: Seguimiento, private _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: { valor: any}
 ) {
   this.valorRecibido = data.valor;
@@ -80,7 +82,22 @@ export class ModalRevisarIncidenciaComponent {
 
   onEscalar(): void {
     console.log('Escalar incidencia.');
+    this.abrirModalEscalar();
     // Lógica para abrir el modal de escalación.
+  }
+
+  abrirModalEscalar(): void {
+    const dialogRef = this._matDialog.open(ModalEscalarInternoComponent, {
+      width: '80%',
+      maxWidth: '1000px',
+      height: 'auto',
+      maxHeight: '90vh',
+      data: { valor: this.valorRecibido }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 
   onEditar(): void {

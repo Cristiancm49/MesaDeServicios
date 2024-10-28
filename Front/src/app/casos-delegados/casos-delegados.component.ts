@@ -48,7 +48,7 @@ export class CasosDelegadosComponent {
     idContratoUsuario: 0,
     diag_DescripcionDiagnostico: '',
     diag_Solucionado: true,
-    tiSo_Id: 0,
+    tiSo_Id: null,
     diag_Escalable: true
   }
 

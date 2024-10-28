@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ViewSeguimiento } from '../../interfaces/CasoSeguimiento/viewseguimiento';
 import { ViewReporte } from '../../interfaces/CasoSeguimiento/Viewreportes';
 import { Insertaceptacion } from '../../interfaces/CasoSeguimiento/Aceptar';
+import { InsertAsignacion } from '../../interfaces/CasoGestión/Insert-Asignacion';
 import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 
 
@@ -15,6 +16,7 @@ export class Seguimiento{
   private selectsegui = 'https://localhost:44346/api/Incidencia/Seguimiento/consultar-SeguimientoIncidencias';
   private selectreporte = 'https://localhost:44346/api/Incidencia/Seguimiento/consultar-TrazabilidadIncidencias';
   private aceptar = 'https://localhost:44346/api/Incidencia/Gestion/resolver-Incidencia';
+  private escalar = 'https://localhost:44346/api/Incidencia/Trazabilidad/escalarInterno-Incidencia';
   
   constructor(private http: HttpClient) { }
 
@@ -29,6 +31,10 @@ export class Seguimiento{
 
   insertDiagnostico(Diagnostico: Insertaceptacion): Observable<any> {
     return this.http.post(this.aceptar, Diagnostico);
+  }
+
+  insertEscalado(asignado: InsertAsignacion): Observable<any> {
+    return this.http.post(this.escalar, asignado);
   }
 
 }
