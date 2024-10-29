@@ -1,16 +1,8 @@
-﻿using MicroApi.Seguridad.Domain.Models.Persona;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MicroApi.Seguridad.Data.Context;
-using MicroApi.Seguridad.Domain.DTOs;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
 using MicroApi.Seguridad.Application.Interfaces;
-using MicroApi.Seguridad.Domain.DTOs.Incidencia;
-using MicroApi.Seguridad.Domain.DTOs.Evidencias;
-using MongoDB.Bson;
+using MicroApi.Seguridad.Domain.DTOs;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
 {
@@ -26,7 +18,7 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
         }
 
         [HttpPost("insertar-Evidencias")]
-        public async Task<ActionResult<RespuestaGeneral>> InsertarEvidencia([FromForm] InsertarEvidenciaDTO dto, [FromForm] IFormFile soporte)
+        public async Task<ActionResult<RespuestaGeneral>> InsertarEvidencia([FromForm] int inciId, [FromForm] IFormFile soporte)
         {
             // Verificar si el archivo es nulo
             if (soporte == null || soporte.Length == 0)
@@ -34,16 +26,8 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
                 return BadRequest("No se ha subido ningún archivo.");
             }
 
-            // Convertir el archivo IFormFile a un arreglo de bytes
-            using var memoryStream = new MemoryStream();
-            await soporte.CopyToAsync(memoryStream);
-            var fileBytes = memoryStream.ToArray();
-
-            // Aquí puedes convertir los bytes a BsonBinaryData
-            var bsonData = new BsonBinaryData(fileBytes);
-
-            // No necesitas asignar BsonBinaryData al DTO, solo pasa los bytes al repositorio
-            var resultado = await evidenciaService.InsertarEvidenciaAsync(dto, soporte); // El método ahora acepta IFormFile
+            // Llamar al servicio para insertar la evidencia
+            var resultado = await evidenciaService.InsertarEvidenciaAsync(inciId, soporte);
 
             return StatusCode(resultado.StatusCode, resultado);
         }
