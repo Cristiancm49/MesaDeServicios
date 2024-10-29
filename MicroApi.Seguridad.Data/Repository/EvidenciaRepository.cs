@@ -1,16 +1,14 @@
 ﻿using MicroApi.Seguridad.Data.Conections;
 using MicroApi.Seguridad.Domain.DTOs;
-using MicroApi.Seguridad.Domain.DTOs.Evidencias;
 using MicroApi.Seguridad.Domain.Interfaces;
 using MicroApi.Seguridad.Domain.Models.Mongo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Driver;
 using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MicroApi.Seguridad.Data.Repository
 {
@@ -23,11 +21,20 @@ namespace MicroApi.Seguridad.Data.Repository
             this.mongoConnection = mongoConnection;
         }
 
-        public async Task<RespuestaGeneral> InsertarEvidenciaAsync(InsertarEvidenciaDTO dto, IFormFile soporte)
+        public async Task<RespuestaGeneral> InsertarEvidenciaAsync(int inciId, IFormFile soporte)
         {
             var respuesta = new RespuestaGeneral();
             try
             {
+                // Verifica si el archivo es nulo o está vacío
+                if (soporte == null || soporte.Length == 0)
+                {
+                    respuesta.Status = "Error";
+                    respuesta.Answer = "El archivo no puede estar vacío.";
+                    respuesta.StatusCode = 400; // Bad Request
+                    return respuesta;
+                }
+
                 // Convertir el archivo IFormFile a un arreglo de bytes
                 using var memoryStream = new MemoryStream();
                 await soporte.CopyToAsync(memoryStream);
@@ -38,13 +45,13 @@ namespace MicroApi.Seguridad.Data.Repository
 
                 var evidencia = new Evidencia
                 {
-                    Inci_Id = dto.Inci_Id,
-                    Soporte = bsonData, // Almacena el archivo en formato BsonBinaryData
+                    Inci_Id = inciId,            // Almacenar el ID de la incidencia directamente
+                    Soporte = bsonData,          // Almacenar el archivo en formato BsonBinaryData
                     FechaCargue = DateTime.UtcNow.AddHours(-5)
                 };
 
-                var collection = mongoConnection.GetCollection<Evidencia>("Evidencias");
-                await collection.InsertOneAsync(evidencia);
+                var collection = mongoConnection.GetEvidenciaCollection(); // Obtener la colección de evidencias
+                await collection.InsertOneAsync(evidencia); // Insertar la evidencia
 
                 respuesta.Status = "Success";
                 respuesta.Answer = "Evidencia insertada exitosamente";
@@ -70,7 +77,7 @@ namespace MicroApi.Seguridad.Data.Repository
             var respuesta = new RespuestaGeneral();
             try
             {
-                var collection = mongoConnection.GetCollection<Evidencia>("Evidencias");
+                var collection = mongoConnection.GetEvidenciaCollection(); // Usar la colección adecuada
                 var evidencias = await collection.Find(e => e.Inci_Id == inciId).ToListAsync();
 
                 if (evidencias.Any())
