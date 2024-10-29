@@ -125,8 +125,6 @@ export class ModalRevisarIncidenciaComponent {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
-
-
   onCancel(): void {
     this.matDialogRef.close();
   }
