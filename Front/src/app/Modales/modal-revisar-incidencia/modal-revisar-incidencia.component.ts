@@ -30,14 +30,17 @@ export class ModalRevisarIncidenciaComponent {
   }
 
   valorRecibido: any;
+  Valorevisado: any;
   conid: any;
 
   constructor(public matDialogRef: MatDialogRef<ModalRevisarIncidenciaComponent>, private casoseguimieto: Seguimiento, private _matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: { valor: any}
+    @Inject(MAT_DIALOG_DATA) public data: { valor: any, revisado: any}
 ) {
   this.valorRecibido = data.valor;
+  this.Valorevisado = data.revisado;
   this.aceptado.inci_Id= this.valorRecibido;
   console.log('dato recibido',this.valorRecibido);
+  console.log('dato recibido revisado',this.Valorevisado);
 }
 
 
@@ -75,9 +78,14 @@ export class ModalRevisarIncidenciaComponent {
   }
 
   onAceptar(): void {
-    this.onSubmit();
-    console.log('Incidencia aceptada.');
-    this.matDialogRef.close();
+    if (this.vistareporte[0].diag_Solucionado == true){
+      
+      this.onSubmit();
+      console.log('Incidencia aceptada.');
+      this.matDialogRef.close();
+    }else{
+      console.log("Escale internamente, incidencia no resulta.")
+    }
   }
 
   onEscalar(): void {

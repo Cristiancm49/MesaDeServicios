@@ -39,11 +39,13 @@ export class ModalEscalarInternoComponent {
   }
 
   valorRecibido: any;
+  Valorevisado: any;
   constructor(
     public matDialogRef: MatDialogRef<ModalEscalarInternoComponent>, private casoGestion: CasoGestion, private casoseguimiento: Seguimiento,
-    @Inject(MAT_DIALOG_DATA) public data: { valor: any }
+    @Inject(MAT_DIALOG_DATA) public data: { valor: any, revisado: any }
   ) {
     this.valorRecibido = data.valor;
+
     console.log('dato recibido',this.valorRecibido);
     this.InsertAsignacion.inci_Id = this.valorRecibido;
   }

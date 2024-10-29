@@ -94,7 +94,7 @@ export class CasosSeguimientoComponent implements OnInit{
       maxWidth: '1000px',
       height: 'auto',
       maxHeight: '90vh',
-      data: { valor: this.Pasarid }
+      data: { valor: this.Pasarid, revisado: this.vistadatos[0].revisado }
     });
   
     dialogRef.afterClosed().subscribe(result => {
