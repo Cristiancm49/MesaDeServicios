@@ -152,5 +152,71 @@ namespace MicroApi.Seguridad.Data.Repository
             }
             return respuesta;
         }
+
+        public async Task<RespuestaGeneral> ConsultarTrazabilidadGeneralAsync(int incidenciaId)
+        {
+            var respuesta = new RespuestaGeneral();
+            try
+            {
+                var trazabilidades = await (from it in modelContext.IncidenciasTrazabilidad
+                                            join d in modelContext.IncidenciasDiagnostico on it.Diag_Id equals d.Diag_Id into diagGroup
+                                            from d in diagGroup.DefaultIfEmpty()
+                                            join ts in modelContext.IncidenciasDiagnosticoTipoSolucion on d.TiSo_Id equals ts.TiSo_Id into tsGroup
+                                            from ts in tsGroup.DefaultIfEmpty()
+                                            join ite in modelContext.IncidenciasTrazabilidadEstado on it.TrEs_Id equals ite.TrEs_Id into iteGroup
+                                            from ite in iteGroup.DefaultIfEmpty()
+                                            join u in modelContext.Usuarios on d.Usua_Id equals u.Usua_Id into userGroup
+                                            from u in userGroup.DefaultIfEmpty()
+                                            join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id into rolGroup
+                                            from ur in rolGroup.DefaultIfEmpty()
+                                            where it.Inci_Id == incidenciaId
+                                            && it.InTr_Revisado == false
+                                            orderby it.InTr_FechaGenerada descending
+                                            select new
+                                            {
+                                                it.InTr_Id,
+                                                it.InTr_FechaGenerada,
+                                                Diag_Descripcion = d.Diag_DescripcionDiagnostico, // Manejo de nulos
+                                                Diag_Solucionado = d != null && d.Diag_Solucionado != null ? d.Diag_Solucionado : false, // Manejo de nulos
+                                                TiSo_Id = ts != null ? ts.TiSo_Id : (int?)null, // Manejo de nulos
+                                                TiSo_Nombre = ts != null ? ts.TiSo_Nombre : "No disponible - No aplica", // Manejo de nulos
+                                                TiSo_Descripcion = ts != null ? ts.TiSo_Descripcion : "No disponible - No aplica", // Manejo de nulos
+                                                Diag_Escalable = d != null && d.Diag_Escalable != null ? d.Diag_Escalable : false, // Manejo de nulos
+                                                TrEs_Id = ite.TrEs_Id, // Manejo de nulos
+                                                TrEs_Nombre = ite.TrEs_Nombre,
+                                                TrEs_Descripcion = ite.TrEs_Descripcion, // Manejo de nulos
+                                                Usua_Id = d != null ? (d.Usua_Id) : (int?)null, // Manejo de nulos
+                                                ContratoUsuario = u != null ? (int?)u.Cont_Id : null,
+                                                NombreRol = ur != null ? ur.UsRo_Nombre : "No disponible - No aplica"// Manejo de nulos
+                                            }).ToListAsync();
+
+
+                if (trazabilidades.Any())
+                {
+                    respuesta.Status = "Success";
+                    respuesta.Data = trazabilidades; // Guardar resultados en Data
+                    respuesta.StatusCode = 200; // Código de éxito
+                }
+                else
+                {
+                    respuesta.Status = "NotFound";
+                    respuesta.Answer = "No se encontraron incidencias.";
+                    respuesta.StatusCode = 404; // Código de no encontrado
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta.Status = "Error";
+                respuesta.Answer = $"Error consultando las incidencias: {ex.Message}";
+                respuesta.StatusCode = 500; // Código de error interno del servidor
+                respuesta.Errors.Add(ex.Message);
+                respuesta.LocalizedMessage = ex.InnerException?.Message; // Mensaje localizado si existe
+            }
+            finally
+            {
+                respuesta.RequestId = Guid.NewGuid().ToString(); // Asignar un ID único para la solicitud
+            }
+            return respuesta;
+        }
     }
 }

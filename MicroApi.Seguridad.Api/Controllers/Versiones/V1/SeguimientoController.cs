@@ -41,5 +41,16 @@ namespace MicroApi.Seguridad.Api.Controllers.Versiones.V1
             }
             return Ok(respuesta);
         }
+
+        [HttpGet("consultar-TrazabilidadIncidenciasGeneral/{incidenciaId}")]
+        public async Task<ActionResult<RespuestaGeneral>> ConsultarTrazabilidadGeneral(int incidenciaId)
+        {
+            var respuesta = await seguimientoService.ConsultarTrazabilidadGeneralAsync(incidenciaId);
+            if (respuesta.Status == "NotFound")
+            {
+                return NotFound(respuesta.Answer);
+            }
+            return Ok(respuesta);
+        }
     }
 }

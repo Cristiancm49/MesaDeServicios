@@ -13,5 +13,6 @@ namespace MicroApi.Seguridad.Domain.Interfaces
     {
         Task<RespuestaGeneral> ConsultarSeguimientoIncidenciaAsync();
         Task<RespuestaGeneral> ConsultarTrazabilidadIncidenciaAsync(int incidenciaId);
+        Task<RespuestaGeneral> ConsultarTrazabilidadGeneralAsync(int incidenciaId);
     }
 }
