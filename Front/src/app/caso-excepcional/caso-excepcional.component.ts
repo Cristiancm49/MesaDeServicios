@@ -223,6 +223,13 @@ onAreaTecnicaSelected(event: any) {
     });
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Archivo seleccionado:', file.name);
+    }
+  }
+
   private resetIncidencia() {
     this.incidencia = {
       idContratoSolicitante: 0,

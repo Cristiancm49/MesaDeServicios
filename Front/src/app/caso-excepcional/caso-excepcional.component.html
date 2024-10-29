@@ -42,13 +42,13 @@
           <h3 class="section-header">SOLICITUD</h3>
           <div class="form-group">
             <div class="form-row">
-              <div class="input-group short">
+              <div class="input-group short fecha-hora">
                 <label for="fecha">Fecha y Hora:</label>
                 <input type="datetime-local" id="fecha" name="fecha" [ngModel]="fechaHoraString" (ngModelChange)="onFechaHoraChange($event)" disabled="">
               </div>
               <div class="input-group short">
                 <label for="categoria">Categoría:</label>
-                <select id="categoria" name="categoria" class="short" (change)="onCategoriaSelected($event)">
+                <select id="categoria" name="categoria" (change)="onCategoriaSelected($event)">
                   <option value="">Seleccionar</option>
                   @for (categoria of catego; track categoria.caAr_Id) {
                   <option [value]="categoria.caAr_Id">{{ categoria.caAr_Nombre }}</option>
@@ -57,13 +57,16 @@
               </div>
               <div class="input-group short">
                 <label for="area-tecnica">Área técnica:</label>
-                <select id="area-tecnica" name="area-tecnica" class="short" [(ngModel)]="incidencia.areaTecnica"
-                  (change)="onAreaTecnicaSelected($event)">
+                <select id="area-tecnica" name="area-tecnica" [(ngModel)]="incidencia.areaTecnica" (change)="onAreaTecnicaSelected($event)">
                   <option [ngValue]="0">Seleccionar</option>
                   @for (area of areasTec; track area.arTe_Id) {
-                  <option [ngValue]="area.arTe_Id">{{ area.arTe_Nombre }}</option>
+                  <option [ngValue]="area.arTe_Id">{{area.arTe_Nombre }}</option>
                   }
                 </select>
+              </div>
+              <div class="input-group short">
+                <label for="soporte">Cargar Soporte:</label>
+                <input type="file" id="soporte" name="soporte" accept="image/*" (change)="onFileSelected($event)">
               </div>
             </div>
           </div>

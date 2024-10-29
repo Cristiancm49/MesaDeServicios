@@ -58,8 +58,7 @@
 }
 
 .form-row .input-group.short {
-  flex: 1;
-  max-width: calc(33.33% - 14px);
+  width: 350px;
 }
 
 .input-group.short input,
@@ -152,6 +151,27 @@ textarea#descripcion {
 .form-actions button[type="reset"] {
   background-color: #ccc;
   color: black;
+}
+
+.fecha-hora {
+  flex-basis: 100%; /* Toma todo el ancho disponible */
+  max-width: 100%; /* Elimina la restricción del ancho máximo */
+}
+
+.fecha-hora input {
+  width: 1000px; /* Ancho personalizado */
+  height: 48px; /* Alto personalizado */
+}
+
+.input-group input[type="file"] {
+  padding: 10px;
+  font-size: 1em;
+}
+
+.input-group.short input[type="file"] {
+  width: 135%;
+  height: 100%;
+
 }
 
 .notification {
