@@ -48,8 +48,6 @@ export class CasoExcepcionalComponent implements OnInit{
 
 
   ngOnInit() {
-    this.loadAreasTec(0);
-    this.loadDatosUser(0);
     this.loadCategorias();
     this.loadDatosAdmin();
     this.cargarFechaHora();
@@ -130,7 +128,7 @@ export class CasoExcepcionalComponent implements OnInit{
       next: (response) => {
         this.DatosAdministrador = response.data || [];
         this.isLoading = false;
-        console.log('Datos Usuario:', this.DatosAdministrador);
+        console.log('Datos Admin:', this.DatosAdministrador);
       },
       error: (error) => {
         console.error('Error fetching Datos User:', error);
@@ -187,20 +185,22 @@ onAreaTecnicaSelected(event: any) {
 
   onSubmit() {
     if (this.DatosUsuario.length > 0) {
-      this.incidencia.idContratoSolicitante = this.DatosUsuario[0].peGe_Id;
-      this.incidencia.valorUnidadSolicitante = this.DatosUsuario[0].unid_Id;
+      this.incidencia.idContratoSolicitante = this.DatosUsuario[0].cont_Id;
+      this.incidencia.valorUnidadSolicitante = parseInt(this.DatosUsuario[0].unid_Nivel, 10);
     }
-
-    console.log('Valores capturados:');
-    console.log('IdSolicitante:', this.incidencia.idContratoSolicitante);
-    console.log('IdAdmin:', this.incidencia.idContratoAdmin);
-    console.log('areatecnica:', this.incidencia.areaTecnica);
-    console.log('descripcion:', this.incidencia.descripcion);
 
     if (this.DatosAdministrador.length > 0) {
       this.incidencia.idContratoAdmin = this.DatosAdministrador[0].cont_Id;
     }
 
+    console.log('Valores capturados:');
+    console.log('IdSolicitante:', this.incidencia.idContratoSolicitante);
+    console.log('ValorUnidad:', this.incidencia.valorUnidadSolicitante);
+    console.log('IdAdmin:', this.incidencia.idContratoAdmin);
+    console.log('areatecnica:', this.incidencia.areaTecnica);
+    console.log('descripcion:', this.incidencia.descripcion);
+
+    console.log("Array de incidencia expecional: ", this.incidencia);
     
     this.casoRegistroService.insertIncidencia(this.incidencia).subscribe({
       next: (response) => {

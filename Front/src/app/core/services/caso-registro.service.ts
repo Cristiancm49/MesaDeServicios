@@ -27,7 +27,7 @@ export class CasoRegistroService {
   }
 
   getDatosAdministrador(peGe_DocumentoIdentidad: number): Observable<ApiResponse<DatosUser>> {
-    return this.http.get<ApiResponse<DatosUser>>(`${this.apiDatosUsurio}/${peGe_DocumentoIdentidad}`);
+    return this.http.get<ApiResponse<DatosUser>>(`${this.apiDatosUsurio}?documentoIdentidad=${peGe_DocumentoIdentidad}`);
   }
 
   getCategorias(): Observable<ApiResponse<Categorias>> {

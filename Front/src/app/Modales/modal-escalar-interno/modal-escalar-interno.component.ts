@@ -70,7 +70,7 @@ export class ModalEscalarInternoComponent {
         setTimeout(() => {
           this.showNotification = false;
           window.location.reload();
-        }, 5000); 
+        }, 1000); 
       },
       error: (error) => {
         console.error('Error al asignar la incidencia:', error);

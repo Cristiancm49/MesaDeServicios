@@ -8,6 +8,7 @@ import { viewpersonaoracle } from '../../interfaces/CasoGestión/personaoracle';
 import { ViewReporte } from '../../interfaces/CasoSeguimiento/Viewreportes';
 import { Insertaceptacion } from '../../interfaces/CasoSeguimiento/Aceptar';
 import { ModalEscalarInternoComponent } from '../modal-escalar-interno/modal-escalar-interno.component';
+import { ModalEscalarExternoComponent } from '../modal-escalar-externo/modal-escalar-externo.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -104,19 +105,27 @@ export class ModalRevisarIncidenciaComponent {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-
     });
   }
 
-  onEditar(): void {
-    console.log('Editar incidencia.');
-    // Lógica para abrir el modal de edición.
+  onEscalarexterno(): void {
+    console.log('Escalar Externo.');
+    this.abrirModalEscalarExterno();
   }
 
-  onDevolver(): void {
-    console.log('Devolver incidencia.');
-    // Lógica para devolver la incidencia.
+  abrirModalEscalarExterno(): void {
+    const dialogRef = this._matDialog.open(ModalEscalarExternoComponent, {
+      width: '80%',
+      maxWidth: '1000px',
+      height: 'auto',
+      maxHeight: '90vh',
+      data: { valor: this.valorRecibido }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
+
 
   onCancel(): void {
     this.matDialogRef.close();
