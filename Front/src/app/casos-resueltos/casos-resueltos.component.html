@@ -7,79 +7,25 @@
           <thead>
             <tr>
               <th>No.</th>
+              <th>Fecha de Registro</th>
+              <th>Descripción</th>
               <th>Prioridad</th>
+              <th>Categoría Técnica</th>
+              <th>Área Técnica</th>
               <th>Estado Actual</th>
-              <th>Solicitud</th>
-              <th>Dependencia</th>
-              <th>Categorización</th>
-              <th>Iniciación</th>
-              <th>Tipo de Incidencia</th>
-              <th>Evaluación</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td></td>
-              <td>Finalizado</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>5.0</td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <td>2</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <td>3</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <td>4</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <td>5</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+            <tr *ngFor="let solicitada of vistasolicitud; let i = index"
+                [class.selected-row]="selectedRowIndexP === solicitada.inci_Id"
+                (click)="onRowSelectP(solicitada.inci_Id, solicitada)">
+              <td>{{ i + 1 }}</td>
+              <td>{{ solicitada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ solicitada.inci_Descripcion }}</td>
+              <td>{{ solicitada.inPr_Nombre }}</td>
+              <td>{{ solicitada.nombreCategoria }}</td>
+              <td>{{ solicitada.areaTecnica }}</td>
+              <td>{{ solicitada.inci_EstadoActual }}</td>
             </tr>
           </tbody>
         </table>
@@ -93,13 +39,15 @@
                 <th>No.</th>
                 <th>Fecha</th>
                 <th>Estado</th>
+                <th>Descripción</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td></td>
-                <td></td>
+              <tr *ngFor="let traza of vistatrazabilidad; let i = index">
+                <td>{{ vistatrazabilidad.length - i }}</td>
+                <td>{{ traza.inTr_FechaGenerada }}</td>
+                <td>{{ traza.trEs_Nombre }}</td>
+                <td>{{ traza.trEs_Descripcion }}</td>
               </tr>
             </tbody>
           </table>
