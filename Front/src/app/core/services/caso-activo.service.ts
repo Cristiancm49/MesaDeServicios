@@ -12,7 +12,7 @@ import { ApiResponse } from '../../interfaces/Api/ApiResponse';
 })
 export class Casoactivo{
   private selectincidenciasolicitada = 'https://localhost:44346/api/Incidencia/Historico/consultar-MisSolicitudes';
-  private selecttrazabilidad = 'https://localhost:44346/api/Incidencia/Seguimiento/consultar-TrazabilidadIncidencias';
+  private selecttrazabilidad = 'https://localhost:44346/api/Incidencia/Seguimiento/consultar-TrazabilidadIncidenciasGeneral';
   private Validar = 'https://localhost:44346/api/Incidencia/Gestion/consultar-estadoResuelto';
   private Evaluación = 'https://localhost:44346/api/Incidencia/Gestion/evaluar_cerrar-Incidencia';
   
