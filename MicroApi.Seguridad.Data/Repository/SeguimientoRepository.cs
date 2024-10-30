@@ -170,7 +170,6 @@ namespace MicroApi.Seguridad.Data.Repository
                                             join ur in modelContext.UsuariosRoles on u.UsRo_Id equals ur.UsRo_Id into rolGroup
                                             from ur in rolGroup.DefaultIfEmpty()
                                             where it.Inci_Id == incidenciaId
-                                            && it.InTr_Revisado == false
                                             orderby it.InTr_FechaGenerada descending
                                             select new
                                             {
