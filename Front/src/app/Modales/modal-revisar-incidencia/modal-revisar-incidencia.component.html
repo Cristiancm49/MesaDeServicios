@@ -1,0 +1,35 @@
+<div class="modal-container">
+    <h2 class="modal-title">Revisar Incidencia</h2>
+    <div class="modal-content">
+        <div class="table-container">
+            <table class="cases-table-incidencias">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Fecha reporte</th>
+                        <th>Descripción</th>
+                        <th>solucionado</th>
+                        <th>Tipo de solución</th>
+                        <th>Escalable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let reporte of vistareporte; let i = index">
+                        <td>{{ i + 1}}</td>
+                        <td>{{ reporte.inTr_FechaGenerada | date:'dd/MM/yyyy HH:mm'}}</td>
+                        <td>{{ reporte.diag_Descripcion}}</td>
+                        <td>{{ reporte.diag_Solucionado }}</td>
+                        <td>{{ reporte.tiSo_Nombre}}</td>
+                        <td>{{ reporte.diag_Escalable }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-actions">
+        <button class="button-accept" (click)="onAceptar()">Aceptar</button>
+        <button class="button-escalar" (click)="onEscalar()">Escalar Interno</button>
+        <button class="button-editar" (click)="onEscalarexterno()">Escalar Externo</button>
+        <button class="button-cancel" (click)="onCancel()">Cancelar</button>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<router-outlet></router-outlet>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menú Principal</mat-toolbar>
+    <mat-nav-list>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Registrar</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/registar-caso">Registrar Incidencia</a>
+        <a mat-list-item routerLink="/caso-excepcional" class="notactive">Registrar Incidencia Excepcional</a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title><span class="icon-cases"></span>Mis Incidencias</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/Caso-activo" class="notactive">Mis Incidencias Activas</a>
+        <a mat-list-item routerLink="/Caso-resuelto" class="notactive">Mis Incidencias Resueltas</a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Administrador</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/gestion-casos" class="notactive">Gestión de Incidencias</a>
+        <a mat-list-item routerLink="/seguimiento-casos" class="notactive">Seguimiento de Incidencias</a>
+        <a mat-list-item routerLink="/Caso-historial" class="notactive">Historial de Incidencias</a>
+        <a mat-list-item routerLink="/Admi-Rol" class="notactive">Administrar roles</a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Herramientas</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/inventario-salas" class="notactive">Inventario de las salas</a>
+        <a mat-list-item routerLink="/DisponibilidadSalas" class="notactive">Disponibilidad de salas</a>
+        <a mat-list-item routerLink="/ReservaSalas" class="notactive">Reserva de salas</a>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Gestión de Incidencias</mat-panel-title>
+        </mat-expansion-panel-header>
+        <a mat-list-item routerLink="/Caso-Delegado" class="notactive">Incidencias Delegadas</a>
+        <a mat-list-item routerLink="/Caso-Finalizado" class="notactive">Incidencias Finalizadas</a>
+      </mat-expansion-panel>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

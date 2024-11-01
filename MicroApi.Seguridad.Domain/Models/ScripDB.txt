@@ -1,0 +1,242 @@
+CREATE TABLE [dbo].[AreaTecnica] (
+    [Id_AreaTec]  INT          NOT NULL,
+    [Nom_AreaTec] VARCHAR (50) NOT NULL,
+    [Val_AreaTec] INT          NOT NULL,
+    [Id_CatAre]   INT          NOT NULL,
+    CONSTRAINT [PK_AreaTecnica] PRIMARY KEY CLUSTERED ([Id_AreaTec] ASC),
+    CONSTRAINT [FK_AreaTecnica_CategoriaAreaTec] FOREIGN KEY ([Id_CatAre]) REFERENCES [dbo].[CategoriaAreaTec] ([Id_CatAre])
+);
+
+CREATE TABLE [dbo].[BloqueEdificio] (
+    [Id_BloqEdi]  INT           NOT NULL,
+    [Nom_BloqEdi] VARCHAR (MAX) NOT NULL,
+    CONSTRAINT [PK_BloqueEdificio] PRIMARY KEY CLUSTERED ([Id_BloqEdi] ASC)
+);
+
+CREATE TABLE [dbo].[CategoriaAreaTec] (
+    [Id_CatAre]  INT          NOT NULL,
+    [Nom_CatAre] VARCHAR (50) NOT NULL,
+    [Val_CatAre] INT          NOT NULL,
+    CONSTRAINT [PK_CategoriaAreaTec] PRIMARY KEY CLUSTERED ([Id_CatAre] ASC)
+);
+
+CREATE TABLE [dbo].[CategoriaProblema] (
+    [Id_CatProb]  INT          NOT NULL,
+    [Tip_CatProb] VARCHAR (50) NOT NULL,
+    CONSTRAINT [PK_EstadoDiagnostico] PRIMARY KEY CLUSTERED ([Id_CatProb] ASC)
+);
+
+CREATE TABLE [dbo].[ChairaLogin] (
+    [Id_ChaLog]    INT          NOT NULL,
+    [Nom_ChaLog]   VARCHAR (50) NOT NULL,
+    [Ape_ChaLog]   VARCHAR (50) NOT NULL,
+    [Doc_ChaLog]   INT          NOT NULL,
+    [Cargo_ChaLog] VARCHAR (50) NOT NULL,
+    [Id_DepenLog]  INT          NOT NULL,
+    CONSTRAINT [PK_ChairaLogin] PRIMARY KEY CLUSTERED ([Id_ChaLog] ASC),
+    CONSTRAINT [FK_ChairaLogin_DependenciaLogin] FOREIGN KEY ([Id_DepenLog]) REFERENCES [dbo].[DependenciaLogin] ([Id_DepenLog]) ON UPDATE CASCADE
+);
+
+CREATE TABLE [dbo].[DependenciaLogin] (
+    [Id_DepenLog]      INT          NOT NULL,
+    [Nom_DepenLog]     VARCHAR (50) NOT NULL,
+    [Tel_DepenLog]     VARCHAR (50) NOT NULL,
+    [IndiTel_DepenLog] VARCHAR (50) NOT NULL,
+    [Val_DepenLog]     INT          NOT NULL,
+    CONSTRAINT [PK_DependenciaLogin] PRIMARY KEY CLUSTERED ([Id_DepenLog] ASC)
+);
+
+CREATE TABLE [dbo].[Diagnosticos] (
+    [Id_Diag]           INT           NOT NULL,
+    [FechaHora_Diag]    DATETIME      NOT NULL,
+    [Report_Diag]       VARCHAR (50)  NOT NULL,
+    [ReportDetall_Diag] VARCHAR (MAX) NOT NULL,
+    [Soluc_Diag]        BIT           NOT NULL,
+    [Escal_Diag]        BIT           NOT NULL,
+    [Id_Perso]          INT           NOT NULL,
+    [Id_Incidencia]     INT           NOT NULL,
+    [Revisado_Diag]     BIT           CONSTRAINT [DEFAULT_Diagnosticos_Revisado_Diag] DEFAULT ((0)) NOT NULL,
+    [MotivDevol_Diag]   VARCHAR (MAX) NULL,
+    CONSTRAINT [PK_Diagnosticos] PRIMARY KEY CLUSTERED ([Id_Diag] ASC),
+    CONSTRAINT [FK_Diagnosticos_Incidencias] FOREIGN KEY ([Id_Incidencia]) REFERENCES [dbo].[Incidencias] ([Id_Incidencias]),
+    CONSTRAINT [FK_Diagnosticos_Personal] FOREIGN KEY ([Id_Perso]) REFERENCES [dbo].[Personal] ([Id_Perso])
+);
+
+CREATE TABLE [dbo].[Dispositivos] (
+    [Id_Dispo]          INT          NOT NULL,
+    [Serial_Dispo]      VARCHAR (50) NULL,
+    [Placa_Dispo]       INT          NULL,
+    [TIU_Dispo]         INT          NULL,
+    [Id_TipoDispo]      INT          NULL,
+    [PersonCargo_Dispo] INT          NULL,
+    [Id_PisOfi]         INT          NULL,
+    [Marca_Dispo]       VARCHAR (50) NULL,
+    [Modelo_Dispo]      VARCHAR (50) NULL,
+    [Procesador_Dispo]  VARCHAR (50) NULL,
+    [CapDisc_Dispo]     VARCHAR (50) NULL,
+    [TipoDisc_Dispo]    VARCHAR (50) NULL,
+    [CapRam_Dispo]      VARCHAR (50) NULL,
+    [FechaAdquis_Dispo] VARCHAR (50) NULL,
+    CONSTRAINT [PK_Dispositivos] PRIMARY KEY CLUSTERED ([Id_Dispo] ASC),
+    CONSTRAINT [FK_Dispositivos_PisoOficina] FOREIGN KEY ([Id_PisOfi]) REFERENCES [dbo].[PisoOficina] ([Id_PisOfi]),
+    CONSTRAINT [FK_Dispositivos_TipoDispositivo] FOREIGN KEY ([Id_TipoDispo]) REFERENCES [dbo].[TipoDispositivo] ([Id_TipDispo])
+);
+
+CREATE TABLE [dbo].[EstadoIncidencia] (
+    [Id_Estado]   INT          NOT NULL,
+    [Tipo_Estado] VARCHAR (50) NOT NULL,
+    CONSTRAINT [PK_EstadoIncidencia] PRIMARY KEY CLUSTERED ([Id_Estado] ASC)
+);
+
+CREATE TABLE [dbo].[Evaluacion] (
+    [Id_Eval]       INT NOT NULL,
+    [Id_Incidencia] INT NOT NULL,
+    [Preg1_Eval]    INT NOT NULL,
+    [Preg2_Eval]    INT NOT NULL,
+    [Preg3_Eval]    INT NOT NULL,
+    [Preg4_Eval]    INT NOT NULL,
+    [Preg5_Eval]    INT NOT NULL,
+    CONSTRAINT [PK_Evaluacion] PRIMARY KEY CLUSTERED ([Id_Eval] ASC),
+    CONSTRAINT [FK_Evaluacion_Incidencias] FOREIGN KEY ([Id_Incidencia]) REFERENCES [dbo].[Incidencias] ([Id_Incidencias])
+);
+
+CREATE TABLE [dbo].[HojaDeVida] (
+    [Id_HojVida]                INT          NOT NULL,
+    [Id_Dispo]                  INT          NOT NULL,
+    [FechaHora_HojVida]         DATETIME     NOT NULL,
+    [DescripIncidencia_HojVida] VARCHAR (50) NOT NULL,
+    [Id_Perso]                  INT          NOT NULL,
+    [EntregadoPor_HojVida]      INT          NOT NULL,
+    [Recomend_HojVida]          VARCHAR (50) NOT NULL,
+    [RecibidoPor_HojVida]       INT          NOT NULL,
+    [Id_CatProb]                INT          NOT NULL,
+    CONSTRAINT [PK_HojaDeVida] PRIMARY KEY CLUSTERED ([Id_HojVida] ASC),
+    CONSTRAINT [FK_HojaDeVida_CategoriaProblema] FOREIGN KEY ([Id_CatProb]) REFERENCES [dbo].[CategoriaProblema] ([Id_CatProb]),
+    CONSTRAINT [FK_HojaDeVida_Dispositivos] FOREIGN KEY ([Id_Dispo]) REFERENCES [dbo].[Dispositivos] ([Id_Dispo]),
+    CONSTRAINT [FK_HojaDeVida_Personal] FOREIGN KEY ([Id_Perso]) REFERENCES [dbo].[Personal] ([Id_Perso])
+);
+
+CREATE TABLE [dbo].[Incidencias] (
+    [Id_Incidencias]            INT             NOT NULL,
+    [IdSolicitante_Incidencias] INT             NOT NULL,
+    [EsExc_Incidencias]         BIT             CONSTRAINT [DEFAULT_Incidencias_EsExc_Incidencias] DEFAULT ((0)) NOT NULL,
+    [IdAdmin_IncidenciasExc]    INT             NULL,
+    [FechaHora_Incidencias]     DATETIME        NOT NULL,
+    [Id_AreaTec]                INT             NOT NULL,
+    [Descrip_Incidencias]       VARCHAR (MAX)   NOT NULL,
+    [Eviden_Incidencias]        VARBINARY (MAX) NULL,
+    [ValTotal_Incidencias]      FLOAT (53)      NOT NULL,
+    [Id_Estado]                 INT             CONSTRAINT [DEFAULT_Incidencias_Id_Estado] DEFAULT ((1)) NOT NULL,
+    [Id_Priori]                 INT             NOT NULL,
+    [Id_Perso]                  INT             NULL,
+    [EscaladoA_Incidencias]     VARCHAR (50)    NULL,
+    [MotivRechazo_Incidencias]  VARCHAR (MAX)   NULL,
+    [FechaCierre_Incidencias]   DATETIME        NULL,
+    [Resolu_Incidencias]        VARCHAR (MAX)   NULL,
+    [PromEval_Incidencias]      FLOAT (53)      NULL,
+    CONSTRAINT [PK_Incidencias] PRIMARY KEY CLUSTERED ([Id_Incidencias] ASC),
+    CONSTRAINT [FK_Incidencias_AdminExc] FOREIGN KEY ([IdAdmin_IncidenciasExc]) REFERENCES [dbo].[ChairaLogin] ([Id_ChaLog]),
+    CONSTRAINT [FK_Incidencias_AreaTecnica] FOREIGN KEY ([Id_AreaTec]) REFERENCES [dbo].[AreaTecnica] ([Id_AreaTec]),
+    CONSTRAINT [FK_Incidencias_ChairaLogin_Soli] FOREIGN KEY ([IdSolicitante_Incidencias]) REFERENCES [dbo].[ChairaLogin] ([Id_ChaLog]),
+    CONSTRAINT [FK_Incidencias_EstadoIncidencias] FOREIGN KEY ([Id_Estado]) REFERENCES [dbo].[EstadoIncidencia] ([Id_Estado]) ON UPDATE CASCADE,
+    CONSTRAINT [FK_Incidencias_Personal] FOREIGN KEY ([Id_Perso]) REFERENCES [dbo].[ChairaLogin] ([Id_ChaLog]),
+    CONSTRAINT [FK_Incidencias_Prioridad] FOREIGN KEY ([Id_Priori]) REFERENCES [dbo].[Prioridad] ([Id_Priori])
+);
+
+
+GO
+CREATE TRIGGER trg_BeforeInsert_Incidencias
+ON [dbo].[Incidencias]
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [dbo].[Incidencias] (
+        [Id_Incidencias],
+        [IdSolicitante_Incidencias],
+        [EsExc_Incidencias],
+        [IdAdmin_IncidenciasExc],
+        [FechaHora_Incidencias],
+        [Id_AreaTec],
+        [Descrip_Incidencias],
+        [Eviden_Incidencias],
+        [ValTotal_Incidencias],
+        [Id_Estado],
+        [Id_Priori],
+        [Id_Perso],
+        [EscaladoA_Incidencias],
+        [MotivRechazo_Incidencias],
+        [FechaCierre_Incidencias],
+        [Resolu_Incidencias],
+        [PromEval_Incidencias]
+    )
+    SELECT
+        i.[Id_Incidencias],
+        i.[IdSolicitante_Incidencias],
+        i.[EsExc_Incidencias],
+        i.[IdAdmin_IncidenciasExc],
+        i.[FechaHora_Incidencias],
+        i.[Id_AreaTec],
+        i.[Descrip_Incidencias],
+        i.[Eviden_Incidencias],
+        i.[ValTotal_Incidencias],
+        1 as [Id_Estado],
+        CASE
+            WHEN i.ValTotal_Incidencias > 100 THEN 1
+            WHEN i.ValTotal_Incidencias BETWEEN 50 AND 100 THEN 2
+            WHEN i.ValTotal_Incidencias BETWEEN 10 AND 49 THEN 3
+            ELSE 4
+        END AS Id_Priori,
+        i.[Id_Perso],
+        i.[EscaladoA_Incidencias],
+        i.[MotivRechazo_Incidencias],
+        i.[FechaCierre_Incidencias],
+        i.[Resolu_Incidencias],
+        i.[PromEval_Incidencias]
+    FROM inserted i;
+END;
+
+CREATE TABLE [dbo].[Parametros] (
+    [Id_Par]          INT          IDENTITY (1, 1) NOT NULL,
+    [Valor_Par]       INT          NULL,
+    [Descripcion_Par] VARCHAR (50) NULL,
+    CONSTRAINT [PK_Parámetros] PRIMARY KEY CLUSTERED ([Id_Par] ASC)
+);
+
+CREATE TABLE [dbo].[Personal] (
+    [Id_Perso]       INT        IDENTITY (1, 1) NOT NULL,
+    [Id_ChaLog]      INT        NOT NULL,
+    [Id_RolModulo]   INT        NOT NULL,
+    [PromEval_Perso] FLOAT (53) NULL,
+    CONSTRAINT [PK_Personal] PRIMARY KEY CLUSTERED ([Id_Perso] ASC),
+    CONSTRAINT [FK_Personal_ChairaLogin] FOREIGN KEY ([Id_ChaLog]) REFERENCES [dbo].[ChairaLogin] ([Id_ChaLog]) ON UPDATE CASCADE,
+    CONSTRAINT [FK_Personal_RolModulo] FOREIGN KEY ([Id_RolModulo]) REFERENCES [dbo].[RolModulo] ([Id_rolModulo])
+);
+
+CREATE TABLE [dbo].[PisoOficina] (
+    [Id_PisOfi]  INT           IDENTITY (1, 1) NOT NULL,
+    [Nom_PisOfi] VARCHAR (MAX) NOT NULL,
+    [Id_BloqEdi] INT           NOT NULL,
+    CONSTRAINT [PK_PisoOficina] PRIMARY KEY CLUSTERED ([Id_PisOfi] ASC),
+    CONSTRAINT [FK_PisoOficina_BloqueEdificio] FOREIGN KEY ([Id_BloqEdi]) REFERENCES [dbo].[BloqueEdificio] ([Id_BloqEdi])
+);
+
+CREATE TABLE [dbo].[Prioridad] (
+    [Id_Priori]   INT          NOT NULL,
+    [Tipo_Priori] VARCHAR (50) NOT NULL,
+    CONSTRAINT [PK_Prioridad] PRIMARY KEY CLUSTERED ([Id_Priori] ASC)
+);
+
+CREATE TABLE [dbo].[RolModulo] (
+    [Id_rolModulo]  INT          NOT NULL,
+    [Nom_rolModulo] VARCHAR (50) NOT NULL,
+    CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED ([Id_rolModulo] ASC)
+);
+
+CREATE TABLE [dbo].[TipoDispositivo] (
+    [Id_TipDispo]  INT          NOT NULL,
+    [Nom_TipDispo] VARCHAR (50) NOT NULL,
+    CONSTRAINT [PK_TipoDispositivo] PRIMARY KEY CLUSTERED ([Id_TipDispo] ASC)
+);
+

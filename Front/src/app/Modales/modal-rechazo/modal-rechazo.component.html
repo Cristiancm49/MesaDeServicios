@@ -1,0 +1,16 @@
+<div class="modal-container">
+    <h2 class="modal-title">Rechazo de Incidencia</h2>
+    <div class="modal-content">
+        <div class="form-container">
+            <div class="input-group">
+                <label for="Motivo">Motivo del cambio:</label>
+                <textarea id="Motivo" name="Motivo" rows="4"
+                    [(ngModel)]="RechazarIncidencia.inTr_MotivoRechazo"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-actions">
+        <button type="button" class="button-cancel" (click)="onCancel()">Cancelar</button>
+        <button type="button" class="button-assign" (click)="onRechazar()">Enviar</button>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="main-content">
+    <h2 class="header">INCIDENCIAS ACTIVAS</h2>
+    <div class="section">
+      <h3 class="section-header">INCIDENCIAS</h3>
+      <div class="table-container">
+        <table class="cases-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Fecha de Registro</th>
+              <th>Descripción</th>
+              <th>Prioridad</th>
+              <th>Categoría Técnica</th>
+              <th>Área Técnica</th>
+              <th>Estado Actual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let solicitada of vistasolicitud; let i = index"
+                [class.selected-row]="selectedRowIndexP === solicitada.inci_Id"
+                (click)="onRowSelectP(solicitada.inci_Id, solicitada)">
+              <td>{{ i + 1 }}</td>
+              <td>{{ solicitada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ solicitada.inci_Descripcion }}</td>
+              <td>{{ solicitada.inPr_Nombre }}</td>
+              <td>{{ solicitada.nombreCategoria }}</td>
+              <td>{{ solicitada.areaTecnica }}</td>
+              <td>{{ solicitada.inci_EstadoActual }}</td>
+            </tr>
+          </tbody>
+        </table>        
+      </div>
+    </div>
+    <div *ngIf="showNotification" class="notification">
+      {{ notificationMessage }}
+    </div>
+    <div class="section-container">
+      <div class="section trazabilidad-section">
+        <h3 class="section-header">TRAZABILIDAD</h3>
+        <table class="trazabilidad-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let traza of vistatrazabilidad; let i = index">
+              <td>{{ vistatrazabilidad.length - i }}</td>
+              <td>{{ traza.inTr_FechaGenerada }}</td>
+              <td>{{ traza.trEs_Nombre }}</td>
+              <td>{{ traza.trEs_Descripcion }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="section evaluacion-section">
+        <h3 class="section-header-evaluacion">EVALUACIÓN DE LA INCIDENCIA</h3>
+        <div class="evaluation-form">
+          <div class="form-group" *ngFor="let pregunta of preguntas; let i = index">
+            <label [for]="'pregunta' + i">{{i + 1}}. {{pregunta}}</label>
+            <select [id]="'pregunta' + i" [name]="'pregunta' + i" 
+                    [disabled]="!evaluacionHabilitada" 
+                    (change)="onPreguntaSelected($event, 'enCa_Preg' + (i + 1))">
+              <option value="">Seleccione</option>
+              <option *ngFor="let nota of notas" [value]="nota">{{ nota }}</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit" [disabled]="!evaluacionHabilitada" (click)="onSubmit()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

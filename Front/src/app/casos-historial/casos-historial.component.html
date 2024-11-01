@@ -1,0 +1,80 @@
+<div class="container">
+    <div class="main-content">
+        <div class="search-section">
+            <div class="date-picker">
+                <label for="fecha-inicio">Fecha Inicial:</label>
+                <input type="date" id="fecha-inicio">
+            </div>
+            <div class="date-picker">
+                <label for="fecha-final">Fecha Final:</label>
+                <input type="date" id="fecha-final">
+            </div>
+            <button type="button">Buscar</button>
+            <button type="button">Descargar</button>
+        </div>
+        <div class="section">
+            <h3 class="section-header">HISTÓRICO</h3>
+            <table class="cases-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Fecha de Registro</th>
+                        <th>Fecha de Cierre</th>
+                        <th>Descripción</th>
+                        <th>Solicitante</th>
+                        <th>Categoría Técnica</th>
+                        <th>Área Técnica</th>
+                        <th>Prioridad</th>
+                        <th>Estado Actual</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let historico of vistadatos; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ historico.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ historico.inTr_FechaGenerada| date:'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ historico.inci_Descripcion }}</td>
+                        <td>{{ historico.nombreCompleto }}</td>
+                        <td>{{ historico.caAr_Nombre }}</td>
+                        <td>{{ historico.arTe_Nombre }}</td>
+                        <td>{{ historico.nombrePrioridad }}</td>
+                        <td>{{ historico.inci_EstadoActual }}</td>
+                        <td>
+                            <button type="button" class="report-button" (click)="verReporte(historico.inci_Id)">Ver Reporte</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+
+        <div class="section">
+            <h3 class="section-header">REPORTES</h3>
+            <table class="cases-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Fecha</th>
+                  <th>Diagnóstico</th>
+                  <th>Solucionado</th>
+                  <th>Resolución</th>
+                  <th>Escalable</th>
+                  <th>Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let trazabilidad of vistatrazabilidad; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ trazabilidad.inTr_FechaActualizacion | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ trazabilidad.inTr_Descripcion || 'Sin diagnóstico' }}</td>
+                  <td>{{ trazabilidad.inTr_Solucionado ? 'Sí' : 'No' }}</td>
+                  <td>{{ trazabilidad.inTr_ObservacionAdmin || 'Sin resolución' }}</td>
+                  <td>{{ trazabilidad.inTr_Escalable ? 'Sí' : 'No' }}</td>
+                  <td>{{ trazabilidad.rolNombre || 'N/A' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+    </div>
+</div>

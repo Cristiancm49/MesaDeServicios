@@ -1,0 +1,179 @@
+import { Component, NgModule, OnInit, Inject  } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { CasoGestion } from '../../core/services/caso-gestion.service';
+import {ViewRoles} from '../../interfaces/CasoGestión/ViewRoles'
+import { viewpersonaoracle } from '../../interfaces/CasoGestión/personaoracle';
+import { ViewPersonalAsignacion } from '../../interfaces/CasoGestión/ViewPersonalAsignacion';
+import { InsertAsignacion } from '../../interfaces/CasoGestión/Insert-Asignacion';
+import { Seguimiento } from '../../core/services/Seguimiento.service';
+import { MatDialogActions } from '@angular/material/dialog';
+import { forkJoin, map } from 'rxjs';
+
+@Component({
+  selector: 'app-modal-escalar-interno',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './modal-escalar-interno.component.html',
+  styleUrl: './modal-escalar-interno.component.css'
+})
+export class ModalEscalarInternoComponent {
+
+  vistadatos: (ViewPersonalAsignacion & Partial<viewpersonaoracle>)[] = [];
+  insertarpersonal: InsertAsignacion[] = [];
+  vistaroles: ViewRoles[] = [];
+  isLoading = true;
+  selectedRowIndex: number | null = null;
+  selectedRowIndexP: number | null = null;
+  showNotification = false;
+  notificationMessage = '';
+  selectedRolId = 0;
+  activeTab: string = 'gestion';
+
+  InsertAsignacion: InsertAsignacion = {
+
+    inci_Id : 0,
+    usua_Id : 0  
+  }
+
+  valorRecibido: any;
+  Valorevisado: any;
+  constructor(
+    public matDialogRef: MatDialogRef<ModalEscalarInternoComponent>, private casoGestion: CasoGestion, private casoseguimiento: Seguimiento,
+    @Inject(MAT_DIALOG_DATA) public data: { valor: any, revisado: any }
+  ) {
+    this.valorRecibido = data.valor;
+
+    console.log('dato recibido',this.valorRecibido);
+    this.InsertAsignacion.inci_Id = this.valorRecibido;
+  }
+  
+
+  ngOnInit() {
+    this.loadDatosPersonal(0);
+    this.loadDatosRol();
+  }
+
+  onSubmit() {
+    
+    console.log('Valores para delegar:');
+    console.log('Id Incidencia:', this.InsertAsignacion.inci_Id);
+    console.log('Id Personal:', this.InsertAsignacion.usua_Id);
+    
+    this.casoseguimiento.insertEscalado(this.InsertAsignacion).subscribe({
+      next: (response) => {
+        console.log('Incidencia asignada con éxito:', response);
+        this.showNotification = true;
+        this.notificationMessage = 'Incidencia asignada con éxito';
+        setTimeout(() => {
+          this.showNotification = false;
+          window.location.reload();
+        }, 1000); 
+      },
+      error: (error) => {
+        console.error('Error al asignar la incidencia:', error);
+        this.showNotification = true;
+        this.notificationMessage = 'Incidencia asignada con éxito:';
+        setTimeout(() => {
+          this.showNotification = false;
+          window.location.reload();
+        }, 5000);
+      }
+    });
+
+    this.matDialogRef.close();
+  }
+
+  onCancel(): void {
+    // Cierra el modal sin hacer cambios
+    this.matDialogRef.close() 
+  }
+
+
+  loadDatosPersonal(selectedRolId: number) {
+    this.isLoading = true;
+    console.log('Requesting DatosUsuario...');
+    
+    this.casoGestion.mostrarpersonal(selectedRolId).subscribe({
+      next: (response) => {
+        const incidencias = response.data || [];
+        this.isLoading = false;
+  
+        const observables = incidencias.map((incidencia: ViewPersonalAsignacion) => 
+          this.casoGestion.personaloracle(incidencia.cont_Id).pipe(
+            map(personaResponse => {
+              const persona = personaResponse.data?.[0] || {};
+              return {
+                ...incidencia,
+                nombreCompleto: persona.nombreCompleto || ''
+              };
+            })
+          )
+        );
+  
+        // Ejecutar todas las llamadas y asignar a vistadatos
+        forkJoin(observables).subscribe({
+          next: (result) => {
+            this.vistadatos = result;
+            console.log('Datos combinados:', this.vistadatos);
+          },
+          error: (error) => console.error('Error al combinar datos:', error)
+        });
+      },
+      error: (error) => {
+        console.error('Sin datos de Incidencia:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+  
+  
+
+  loadpersonal(contid: number): Promise<viewpersonaoracle | null> {
+    return new Promise((resolve) => {
+      this.casoGestion.personaloracle(contid).subscribe({
+        next: (response) => {
+          const personalData = response.data ? response.data[0] : null;
+          resolve(personalData); // Retorna el primer elemento de `viewpersonaoracle`
+        },
+        error: (error) => {
+          console.error('Error al cargar datos personales:', error);
+          resolve(null); // Retorna null si hay un error
+        }
+      });
+    });
+  }
+
+  loadDatosRol() {
+    this.isLoading = true;
+    console.log('Requesting Datos Rol...');
+    
+    this.casoGestion.getRoles().subscribe({
+      next: (response) => {
+        this.vistaroles = response.data || [];
+        this.isLoading = false;
+        console.log('Datos Rol:', this.vistaroles);
+      },
+      error: (error) => {
+        console.error('Sin datos de Rol:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onRolSelected(event: any) {
+    this.selectedRolId = parseInt(event.target.value) || 0;
+    console.log('Categoría seleccionada:', this.selectedRolId);
+    this.loadDatosPersonal(this.selectedRolId);
+  }
+
+  onRowSelectP(usua_Id: number, item: any): void {
+    this.selectedRowIndexP = usua_Id; // Guarda el usua_Id seleccionado
+    console.log(`Usuario seleccionado con usua_Id: ${usua_Id}`);
+    console.log('Datos del usuario seleccionado:', item); // Muestra los datos del usuario seleccionado
+    this.InsertAsignacion.usua_Id = usua_Id; // Asigna el usua_Id a InsertAsignacion sin modificarlo
+    }
+
+}

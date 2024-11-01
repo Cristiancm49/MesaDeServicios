@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="main-content">
+      <h2 class="header">INCIDENCIAS FINALIZADAS</h2>
+      <div class="section">
+        <h3 class="section-header">INCIDENCIAS</h3>
+        <table class="cases-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Categoria</th>
+              <th>Area Tecnica</th>
+              <th>Descripción</th>
+              <th>Fecha de Inicio</th>
+              <th>Fecha de Fin</th>
+              <th>Evalalución</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let solicitada of Historico; let i = index"
+                [class.selected-row]="selectedRowIndexP === solicitada.inci_Id"
+                (click)="onRowSelectP(solicitada.inci_Id, solicitada)">
+              <td>{{ i + 1 }}</td>
+              <td>{{ solicitada.categoriaAreaTecnica_Nombre }}</td>
+              <td>{{ solicitada.areaTecnica_Nombre }}</td>
+              <td>{{ solicitada.inci_Descripcion }}</td>
+              <td>{{ solicitada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ solicitada.inci_FechaCierre | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ solicitada.inci_ValorTotal | currency }}</td>
+              <td>{{ solicitada.inci_UltimoEstado }}</td>
+            </tr>
+          </tbody>          
+        </table>
+      </div>
+      <div *ngIf="showNotification" class="notification">
+        {{ notificationMessage }}
+      </div>
+      <div class="section-container">
+        <div class="section diagnostico-section">
+          <h3 class="section-header-evaluacion">INFORMACIÓN DE DIAGNÓSTICO</h3>
+          <table class="diagnostico-table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Diagnóstico Inicial</th>
+                <th>Solucionado</th>
+                <th>Resolución</th>
+                <th>Escalable</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  

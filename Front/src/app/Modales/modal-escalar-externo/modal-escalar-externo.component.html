@@ -1,0 +1,16 @@
+<div class="modal-container">
+    <h2 class="modal-title">Escalonamiento Externo</h2>
+    <div class="modal-content">
+      <div class="filter-container">
+        <div class="filter-role">
+          <label for="motivo-escalonamiento">Motivo:</label>
+          <textarea id="motivo-escalonamiento" [(ngModel)]="motivoEscalamiento" placeholder="Escribe el motivo..." rows="5" class="motivo-textarea"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="button-cancel" (click)="onCancelar()">Cancelar</button>
+      <button class="button-accept" (click)="onAceptar()">Aceptar</button>
+    </div>
+  </div>
+  

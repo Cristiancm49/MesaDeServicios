@@ -1,0 +1,87 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ViewIncidencia } from '../../interfaces/CasoGestión/ViewIndicencia';
+import { ViewPersonalAsignacion } from '../../interfaces/CasoGestión/ViewPersonalAsignacion';
+import { InsertAsignacion } from '../../interfaces/CasoGestión/Insert-Asignacion';
+import { ViewRoles } from '../../interfaces/CasoGestión/ViewRoles';
+import { RechazarIncidencia } from '../../interfaces/CasoGestión/RechazarIncidencia';
+import { SelectPrioridad } from '../../interfaces/CasoGestión/SelectPrioridad';
+import { CambioPrioridad } from '../../interfaces/CasoGestión/CambioPrioridad';
+import { viewpersonaoracle } from '../../interfaces/CasoGestión/personaoracle';
+import { ApiResponse } from '../../interfaces/Api/ApiResponse';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CasoGestion {
+  private selectincidencia = 'https://localhost:44346/api/Incidencia/Gestion/consultar-IncidenciasResgistradas';
+  private oracleperso = 'https://localhost:44346/api/v1/Oracle/IdCotratos_Oracle';
+  private selectpersonal = 'https://localhost:44346/api/Incidencia/Gestion/consultar-usuario';
+  private insertarasignacion = 'https://localhost:44346/api/Incidencia/Gestion';
+  private selectroles = 'https://localhost:44346/api/Incidencia/Gestion/consultar-rolesUsuarios';
+  private rechazar = 'https://localhost:44346/api/Incidencia/Gestion';
+  private prioridad = 'https://localhost:44346/api/Incidencia/Gestion/consultar-Prioridades ';
+  private cambioprioridad = 'https://localhost:44346/api/Incidencia/Gestion';
+
+  constructor(private http: HttpClient) { }
+
+
+  insertIncidencia(): Observable<ApiResponse<ViewIncidencia>> {
+    return this.http.get<ApiResponse<ViewIncidencia>>(`${this.selectincidencia}`);
+  }
+
+  personaloracle(ContId: number): Observable<ApiResponse<viewpersonaoracle>> {
+    return this.http.get<ApiResponse<viewpersonaoracle>>(`${this.oracleperso}/${ContId}`);
+  }
+
+  mostrarpersonal(id_Rol: number): Observable<ApiResponse<ViewPersonalAsignacion>> {
+    return this.http.get<ApiResponse<ViewPersonalAsignacion>>(`${this.selectpersonal}?usRoId=${id_Rol}`);
+  }
+
+
+  insertasignacion(asignacion: InsertAsignacion): Observable<HttpResponse<any>> {
+    const url = `${this.insertarasignacion}/asignar-Incidencia`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(url, asignacion, { 
+      headers: headers, 
+      observe: 'response', 
+      responseType: 'text' 
+    });
+  }
+
+  getRoles(): Observable<ApiResponse<ViewRoles>> {
+    return this.http.get<ApiResponse<ViewRoles>>(`${this.selectroles}`);
+  }
+
+
+  rechazarinciden(rechazo: RechazarIncidencia): Observable<HttpResponse<any>> {
+    const url = `${this.rechazar}/rechazar-Incidencia`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(url, rechazo, { 
+      headers: headers, 
+      observe: 'response', 
+      responseType: 'text' 
+    });
+  }
+
+  getPrioridad(): Observable<ApiResponse<SelectPrioridad>> {
+    return this.http.get<ApiResponse<SelectPrioridad>>(`${this.prioridad}`);
+  }
+
+
+
+  cambiarprioridad(nuevapri: CambioPrioridad): Observable<HttpResponse<any>> {
+    const url = `${this.cambioprioridad}/cambiarPrioridad-Incidencia`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(url, nuevapri, { 
+      headers: headers, 
+      observe: 'response', 
+      responseType: 'text' 
+    });
+  }
+
+}

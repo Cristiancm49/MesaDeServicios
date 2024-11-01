@@ -1,0 +1,97 @@
+<div class="container">
+  <div *ngIf="showNotification" class="notification">
+    {{ notificationMessage }}
+  </div>
+  <div class="main-content">
+    <h2 class="header">INCIDENCIAS DELEGADAS</h2>
+    <div class="section">
+      <h3 class="section-header">INCIDENCIAS</h3>
+      <div class="table-container">
+        <table class="cases-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Solicitante</th>
+              <th>Cargo</th>
+              <th>Categoría Técnica</th>
+              <th>Área Técnica</th>
+              <th>Descripción</th>
+              <th>Fecha Registro</th>
+              <th>Prioridad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let asignada of vistadatos; let i = index"
+              [class.selected-row]="selectedRowIndexP === asignada.inci_Id"
+              (click)="onRowSelectP(asignada.inci_Id, asignada)">
+              <td>{{ i + 1}}</td>
+              <td>{{ asignada.nombreCompleto }}</td>
+              <td>{{ asignada.tnom_Descripcion }}</td>
+              <td>{{ asignada.nombreCategoria }}</td>
+              <td>{{ asignada.areaTecnica }}</td>
+              <td>{{ asignada.inci_Descripcion }}</td>
+              <td>{{ asignada.inci_FechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ asignada.inPr_Nombre }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>      
+    </div>
+    <div class="section-diagnostico">
+      <h3 class="section-header">DIAGNÓSTICO</h3>
+      <div class="form-columns">
+        <div class="left-column">
+          <div class="form-group">
+            <label for="fecha">Fecha y Hora:</label>
+            <input type="text" id="fecha" name="fecha" [ngModel]="fechaHoraString" disabled>
+          </div>
+          <div class="form-group">
+            <label>¿Incidencia Solucionada?</label>
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.diag_Solucionado" [value]="true">
+                <span>Sí</span>
+              </label>
+              <label>
+                <input type="radio" name="solucionado" [(ngModel)]="diagnotico.diag_Solucionado" [value]="false">
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Tipo">Tipo de solución:</label>
+            <select id="Tipo" name="Tipo" (change)="onTipoSolucionSelected($event)"
+              [disabled]="!diagnotico.diag_Solucionado">
+              <option value="">Seleccionar</option>
+              @for (tipo of Tiposolucion; track tipo.tiSo_Id) {
+              <option [value]="tipo.tiSo_Id">{{ tipo.tiSo_Nombre }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label>¿Escalable?</label>
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.diag_Escalable" [value]="true">
+                <span>Sí</span>
+              </label>
+              <label>
+                <input type="radio" name="escalable" [(ngModel)]="diagnotico.diag_Escalable" [value]="false">
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="right-column">
+          <div class="form-group">
+            <label for="resolucion-caso">Resolución de la incidencia:</label>
+            <textarea id="resolucion-caso" name="resolucion-caso" [(ngModel)]="diagnotico.diag_DescripcionDiagnostico"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="onSubmit()">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
